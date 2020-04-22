@@ -1,0 +1,10 @@
+In this paper,  we studied a network Root Cause Analysis (RCA) problem, under the condition that only limited system information is available. Specifically, we assume the traffic route over the network is unknown and the routers are not accessible to instrument diagnosis probes.
+
+We thereafter cast it as a multi-class classification problem. We presented some preliminary results from experiments over an emulated network on a Cloud testbed, for which we developed a suite of software tools to automate the whole process, which includes virtual network creation, routing control plane configuration, integrity error injection, experimental data transfer and integrity check, training data collection, and ML model training and analysis. This allows us to easily scale up the network, model training, and data analysis in a repeatable and efficient manner. 
+
+For our future work, we plan to experiment with larger networks with different graph characteristics to gain more insights on the accuracy of the ML models. As we have explained that end host level flow information is not sufficient to gain high accuracy, we will explore efficient algorithmic approaches that allow monitoring capability to be deployed in chosen locations of the network. While the network information inside a domain is unknown, all the border routers are normally exposed. We will refine the network model with explicit border routers so the RCA can be more pinpointed. Another aspect is to distinguish the error probabilities of different types of devices in the network. We need a finer RCA model that not only pinpoints the error locations, but also the error probability estimate. 
+
+Multi-class classification itself is a challenging and active research problem. We need to conduct more detailed analysis with finer parameter tuning and more comprehensive performance metrics such as confusion matrix and RoC curves suitable for Top-$k$ classification in the network RCA problem setting.
+
+Our ultimate goal is to apply the developed models to the production settings to achieve high-accuracy in real time RCA inference.
+

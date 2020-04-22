@@ -1,0 +1,76 @@
+\documentclass[conference]{IEEEtran}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{subfig}
+\usepackage{wrapfig}
+
+\usepackage[font=small,labelfont=bf]{caption}
+
+\usepackage{array}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+
+\newcommand{\ie}{{\em i.e.}}
+\newcommand{\eg}{{\em e.g.}}
+\newcommand{\et}{{\em et al.~}}
+\newcommand{\real}{\mathbb{R}}
+\newcommand{\integer}{\mathbb{N}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+
+\renewcommand{\refname}{\centerline{References cited}}
+\newcommand{\required}[1]{\section*{\hfil #1\hfil}}
+
+% this handles hanging indents for publications
+\def\rrr#1\\{\par
+\medskip\hbox{\vbox{\parindent=2em\hsize=6.12in
+\hangindent=4em\hangafter=1#1}}}
+
+\def\baselinestretch{1}
+
+\begin{document}
+
+\input{frontmatter-sv}
+
+\begin{abstract}
+\input{abstract}
+\end{abstract}
+
+\section{Introduction}
+\label{sec:introduction}
+\input{introduction}
+
+\section{RCA for Networks and Workflow Integrity Errors}
+\label{sec:integrity}
+\input{integrity}
+
+\section{Network Emulation and Fault Injection}
+\label{sec:emulation}
+\input{emulation}
+
+\section{Machine Learning for RCA}
+\label{sec:ml}
+\input{ml}
+
+\section{Experiments and Evaluation}
+\label{sec:evaluation}
+\input{evaluation}
+
+\section{Conclusions and Future Work}
+\label{sec:future}
+\input{future}
+
+\bibliographystyle{IEEEtran}
+\bibliography{iris}
+
+%\newpage
+%\begin{appendix} 
+%\input{demo}
+%\end{appendix} 
+
+% That's all folks!
+\end{document}
