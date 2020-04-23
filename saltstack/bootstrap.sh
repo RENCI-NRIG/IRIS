@@ -24,6 +24,8 @@ apt install -y salt-minion
 echo 'master: control' >/etc/salt/minion.d/50-main.conf
 perl -p -i -e 's;#default_include.*;default_include: minion.d/*.conf;' /etc/salt/minion
 salt-call --state-verbose=false state.highstate
+systemctl enable salt-minion
+systemctl restart salt-minion
 
 # also install a cron job to keep salt highstate
 curl -o /etc/cron.d/salt https://raw.githubusercontent.com/RENCI-NRIG/IRIS/master/saltstack/salt/salt/salt.cron
