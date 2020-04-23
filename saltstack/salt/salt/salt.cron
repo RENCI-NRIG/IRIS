@@ -1,0 +1,5 @@
+
+SHELL=/bin/bash
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
+
+ */5 *  * * *  root /usr/sbin/salt-highstate-cron >/dev/null 2>&1

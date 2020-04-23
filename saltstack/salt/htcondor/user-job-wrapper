@@ -1,0 +1,7 @@
+#!/bin/bash
+
+export http_proxy={{ salt['grains.get']('site_http_proxy') }}:8000
+
+# now, run the real job
+exec ${1+"$@"}
+

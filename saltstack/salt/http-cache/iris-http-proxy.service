@@ -1,0 +1,26 @@
+# https://fardog.io/blog/2017/12/30/running-docker-containers-with-systemd/
+
+[Unit]
+
+Description=iris-http-proxy
+#After=docker.service
+#Requires=docker.service
+
+[Service]
+
+TimeoutStartSec=0
+Restart=always
+
+ExecStartPre=-/usr/bin/docker kill iris-http-proxy
+ExecStartPre=-/usr/bin/docker rm iris-http-proxy
+ExecStartPre=-/usr/bin/docker pull ryantanaka/iris:http-proxy
+
+ExecStart=/usr/bin/docker run --name iris-http-proxy --rm --network=host -p 8000:8000 -v /cache:/cache -e PYTHONUNBUFFERED=1 ryantanaka/iris:http-proxy
+ExecStop=/usr/bin/docker stop iris-http-proxy
+
+
+[Install]
+
+WantedBy=multi-user.target
+
+
