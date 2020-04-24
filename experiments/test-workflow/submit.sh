@@ -10,8 +10,8 @@ mkdir -p $WORK_DIR
 export RUN_ID=test-workflow-`date +'%s'`
 
 # SET THESE VARIABLES
-SSH_PRIVATE_KEY_PATH=/home/$USER/.ssh/workflow
-ORIGIN_SHARED_SCRATCH_PATH=/home/$USER/public_html/
+SSH_PRIVATE_KEY_PATH=$HOME/.ssh/id_rsa
+ORIGIN_SHARED_SCRATCH_PATH=$HOME/public_html/
 
 # FILL IN <ip>
 ORIGIN_FILE_SERVER_GET_URL=http://uc-staging/~$USER/  
@@ -73,9 +73,6 @@ pegasus-plan \
     --output-site local \
     --dax workflow.xml \
     --cluster horizontal
-
-# set http_proxy to be set only when job lands on compute site
-find $WORK_DIR/$RUN_ID -name "*.sh" -exec perl -pi -e 's/#!\/bin\/bash/#!\/bin\/bash\nhttp_proxy=http:\/\/`\/bin\/hostname`:8000/' {} \;
 
 # run
 pegasus-run $WORK_DIR/$RUN_ID
