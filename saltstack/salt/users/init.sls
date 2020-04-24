@@ -66,7 +66,7 @@ rynge:
   file:
     - managed
     - source: salt://users/ssh.config
-    - user: ericafu
+    - user: rynge
     - group: users
     - mode: 644
 
@@ -106,7 +106,7 @@ tanaka:
   file:
     - managed
     - source: salt://users/ssh.config
-    - user: ericafu
+    - user: tanaka
     - group: users
     - mode: 644
 
