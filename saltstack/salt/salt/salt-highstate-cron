@@ -29,6 +29,9 @@ exlock_now || exit 1
 # Remember! Lock file is removed when one of the scripts exits and it is
 #           the only script holding the lock or lock is not acquired at all.
 
+# random sleep to help master
+sleep $[ ( $RANDOM % 30 )  + 5 ]s
+
 DATE=`date +'%Y-%m-%d_%H%M%S'`
 
 echo "Logging to salt-highstate.$DATE.log"
