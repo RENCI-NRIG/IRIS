@@ -5,9 +5,6 @@ set -e
 TOP_DIR=`pwd`
 
 export WORK_DIR=$HOME/workflows
-if ls /local-scratch/ >/dev/null 2>&1; then
-    export WORK_DIR=/local-scratch/$USER/workflows
-fi
 mkdir -p $WORK_DIR
 
 export RUN_ID=test-workflow-`date +'%s'`
@@ -17,10 +14,8 @@ SSH_PRIVATE_KEY_PATH=/home/$USER/.ssh/workflow
 ORIGIN_SHARED_SCRATCH_PATH=/home/$USER/public_html/
 
 # FILL IN <ip>
-ORIGIN_FILE_SERVER_GET_URL=http://<ip>/~$USER/  
-ORIGIN_FILE_SERVER_PUT_URL=scp://$USER@<ip>/home/$USER/public_html
-
-HTTP_PROXY_URL=UNL-ComputeC1:8000
+ORIGIN_FILE_SERVER_GET_URL=http://uc-staging/~$USER/  
+ORIGIN_FILE_SERVER_PUT_URL=scp://$USER@uc-staging/home/$USER/public_html
 
 cat > sites.xml << EOF
 <?xml version="1.0" encoding="UTF-8"?>
@@ -49,7 +44,6 @@ cat > sites.xml << EOF
     <site  handle="condorpool" arch="x86_64" os="LINUX">
         <profile namespace="pegasus" key="style" >condor</profile>
         <profile namespace="condor" key="universe" >vanilla</profile>
-        <profile namespace="env" key="http_proxy">$HTTP_PROXY_URL</profile>
     </site>
 </sitecatalog>
 EOF
@@ -57,7 +51,6 @@ EOF
 # generate the workflow
 PYTHONPATH=`pegasus-config --python`
 export PYTHONPATH=".:$PYTHONPATH"
-
 ./workflow_gen.py
 
 # pegasus properties 
@@ -69,7 +62,7 @@ dagman.retry = 0
 pegasus.transfer.arguments = -m 1
 EOF
 
-# plan and submit the  workflow
+# plan
 pegasus-plan \
     --conf pegasus.conf \
     --force \
@@ -79,5 +72,11 @@ pegasus-plan \
     --staging-site condorpool=origin \
     --output-site local \
     --dax workflow.xml \
-    --cluster horizontal \
-    --submit
+    --cluster horizontal
+
+# set http_proxy to be set only when job lands on compute site
+find $WORK_DIR/$RUN_ID -name "*.sh" -exec perl -pi -e 's/#!\/bin\/bash/#!\/bin\/bash\nhttp_proxy=http:\/\/`\/bin\/hostname`:8000/' {} \;
+
+# run
+pegasus-run $WORK_DIR/$RUN_ID
+
