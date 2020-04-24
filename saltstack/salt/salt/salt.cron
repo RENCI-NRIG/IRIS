@@ -4,6 +4,4 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
  */3 *  * * *  root /usr/sbin/salt-highstate-cron >/dev/null 2>&1
 
-# remove old keys
- */5 *  * * *  root rm -f /var/lib/salt/pki/master/minions_denied/* /var/lib/salt/pki/master/minions_rejected/* >/dev/null 2>&1
 

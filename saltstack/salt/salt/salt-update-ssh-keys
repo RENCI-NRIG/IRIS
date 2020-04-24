@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# only inlude users in the "users" group
+USERS=`cat /etc/group | grep '^users:' | sed 's/.*://' | sed 's/,/ /g'`
+
+# ensure everybody have generated keys
+for USER in $USERS; do
+    if [ ! -e /srv/salt/local-conf/ssh.$USER ]; then
+        cat /dev/zero | ssh-keygen -q -C IRIS-$USER -N "" -f /srv/salt/local-conf/ssh.$USER
+        chown salt: /srv/salt/local-conf/ssh.$USER*
+    fi
+done
+
+
