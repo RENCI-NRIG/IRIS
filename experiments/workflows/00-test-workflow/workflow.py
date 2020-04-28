@@ -82,13 +82,22 @@ tar_job = Job(tar)\
 wf = Workflow(str(BASE_DIR), infer_dependencies=True)\
         .add_jobs(wc_job, tar_job)\
         .add_replica_catalog(rc)\
-        .add_transformation_catalog(tc)\
-        .plan(
-                verbose=3,
-                output_site="local", 
-                dir=WORK_DIR, 
-                relative_dir=RUN_ID, 
-                sites=["condorpool"], 
-                staging_sites={"condorpool": "origin"}
-        )\
-        .wait()
+        .add_transformation_catalog(tc)
+
+# start driver experiment
+iris_experiment_driver = subprocess.Popen([str(BASE_DIR / "iris-experiment-driver")])
+
+# start workflow
+wf.plan(
+        verbose=3,
+        output_site="local", 
+        dir=WORK_DIR, 
+        relative_dir=RUN_ID, 
+        sites=["condorpool"], 
+        staging_sites={"condorpool": "origin"}
+)\
+.wait()
+
+# terminate driver 
+iris_experiment_driver.terminate()
+
