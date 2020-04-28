@@ -1,66 +1,93 @@
 #!/usr/bin/env python
-
 import os
-from Pegasus.DAX3 import *
+import logging
+import sys
 
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+from datetime import datetime
+from pathlib import Path
 
-# Create a abstract dag
-dax = ADAG("TEST-WORKFLOW", auto=False)
+################################################################################
+######### Add if using anything defined in IRIS/experiments/common #############
+sys.path.insert(0, str(Path(__file__).parent.parent.resolve() / "common"))
 
-# Add executable(s)
-wc = Executable(name="wc", installed=False, arch=Arch.X86_64, os=OS.LINUX)
-wc.addPFN(PFN(BASE_DIR + "/wc.sh", "local"))
-dax.addExecutable(wc)
+import util
+import props
+import sites
+################################################################################
 
-tar = Executable(name="tar", installed=True, arch=Arch.X86_64, os=OS.LINUX)
-tar.addPFN(PFN("/bin/tar", "condorpool"))
-dax.addExecutable(tar)
+from Pegasus.api import *
 
-# Add input files
+logging.basicConfig(level=logging.DEBUG)
+
+# --- Cleanup Caches -----------------------------------------------------------
+util.clear_caches("syr-compute-c2", "unl-compute-c1", "ucsd-compute-c3")
+
+# --- Work Directory Setup -----------------------------------------------------
+BASE_DIR = Path(__file__).parent.resolve()
+
+RUN_ID=BASE_DIR.name # cwd name
+WORK_DIR = os.getenv("EXPERIMENT_WORK_DIR")
+initiated_by_run_script = WORK_DIR
+
+if not initiated_by_run_script:
+    WORK_DIR = Path(os.getenv("HOME")) / "workflow-runs"
+    RUN_ID += "-" + datetime.now().strftime("%s")
+
+    try:
+        Path.mkdir(WORK_DIR)
+    except FileExistsError:
+        pass
+
+    WORK_DIR = str(WORK_DIR)
+
+# --- Properties ---------------------------------------------------------------
+props.write_basic_properties(str(BASE_DIR / "pegasus.properties"))
+
+# --- Sites --------------------------------------------------------------------
+sites.write_basic_site_catalog(str(BASE_DIR / "sites.yml"), WORK_DIR, RUN_ID)
+
+# --- Replicas -----------------------------------------------------------------
 if_1 = File("input_1.txt")
-if_1.addPFN(PFN(BASE_DIR + "/inputs/input_1.txt", "local"))
-dax.addFile(if_1)
-
 if_2 = File("input_2.txt")
-if_2.addPFN(PFN(BASE_DIR + "/inputs/input_2.txt", "local"))
-dax.addFile(if_2)
-
 if_3 = File("input_3.txt")
-if_3.addPFN(PFN(BASE_DIR + "/inputs/input_3.txt", "local"))
-dax.addFile(if_3)
-
 if_4 = File("input_4.txt")
-if_4.addPFN(PFN(BASE_DIR + "/inputs/input_4.txt", "local"))
-dax.addFile(if_4)
 
+rc = ReplicaCatalog()\
+        .add_replica("local", if_1, str(BASE_DIR / "inputs/input_1.txt"))\
+        .add_replica("local", if_2, str(BASE_DIR / "inputs/input_2.txt"))\
+        .add_replica("local", if_3, str(BASE_DIR / "inputs/input_3.txt"))\
+        .add_replica("local", if_4, str(BASE_DIR / "inputs/input_4.txt"))
 
-# Add jobs
+# --- Transformations ----------------------------------------------------------
+wc = Transformation("wc", site="local", pfn=str(BASE_DIR / "wc.sh"), is_stageable=True)
+tar = Transformation("tar", site="condorpool", pfn="/bin/tar", is_stageable=False)
+
+tc = TransformationCatalog()\
+        .add_transformations(wc, tar)
+
+# --- Workflow -----------------------------------------------------------------
 of = File("output.txt")
-wc_job = Job(wc)
-wc_job.addArguments(if_1, if_2, if_3, if_4, of)
-wc_job.uses(if_1, link=Link.INPUT, transfer=False)
-wc_job.uses(if_2, link=Link.INPUT, transfer=False)
-wc_job.uses(if_3, link=Link.INPUT, transfer=False)
-wc_job.uses(if_4, link=Link.INPUT, transfer=False)
-wc_job.uses(of, link=Link.OUTPUT, transfer=True)
-dax.addJob(wc_job)
+wc_job = Job(wc)\
+            .add_args(if_1, if_2, if_3, if_4, of)\
+            .add_inputs(if_1, if_2, if_3, if_4)\
+            .add_outputs(of)
 
 final_of = File("final_output.tar.gz")
-tar_job = Job(tar)
-tar_job.addArguments("cvzf", final_of, if_1, if_2, if_3, if_4, of)
-tar_job.uses(if_1, link=Link.INPUT, transfer=False)
-tar_job.uses(if_2, link=Link.INPUT, transfer=False)
-tar_job.uses(if_3, link=Link.INPUT, transfer=False)
-tar_job.uses(if_4, link=Link.INPUT, transfer=False)
-tar_job.uses(of, link=Link.INPUT, transfer=False)
-tar_job.uses(final_of, link=Link.OUTPUT, transfer=True)
-dax.addJob(tar_job)
+tar_job = Job(tar)\
+            .add_args("cvzf", final_of, if_1, if_2, if_3, if_4, of)\
+            .add_inputs(*wc_job.get_inputs())\
+            .add_outputs(final_of)
 
-# Add dependency
-dax.addDependency(Dependency(parent=wc_job, child=tar_job))
-
-
-# Write the DAX to a file
-with open("workflow.xml", "w") as f:
-    dax.writeXML(f)
+wf = Workflow(str(BASE_DIR), infer_dependencies=True)\
+        .add_jobs(wc_job, tar_job)\
+        .add_replica_catalog(rc)\
+        .add_transformation_catalog(tc)\
+        .plan(
+                verbose=3,
+                output_site="local", 
+                dir=WORK_DIR, 
+                relative_dir=RUN_ID, 
+                sites=["condorpool"], 
+                staging_sites={"condorpool": "origin"}
+        )\
+        .wait()
