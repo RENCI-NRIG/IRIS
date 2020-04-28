@@ -7,18 +7,19 @@ from datetime import datetime
 from pathlib import Path
 
 ################################################################################
-######### Add if using anything defined in IRIS/experiments/common #############
-sys.path.insert(0, str(Path(__file__).parent.parent.resolve() / "common"))
+######### using IRIS/experiments/common and pegasus-config setup ###############
+sys.path.append(str(Path(__file__).parent.parent.parent.resolve() / "common"))
 
 import util
 import props
 import sites
+
+sys.path.append(util.pegasus_config_python())
 ################################################################################
 
 from Pegasus.api import *
 
 logging.basicConfig(level=logging.DEBUG)
-
 # --- Cleanup Caches -----------------------------------------------------------
 util.clear_caches("syr-compute-c2", "unl-compute-c1", "ucsd-compute-c3")
 
