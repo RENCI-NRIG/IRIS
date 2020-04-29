@@ -1,14 +1,15 @@
 #!/usr/bin/env python
-import os
 import logging
+import os
 import sys
+import subprocess
 
 from datetime import datetime
 from pathlib import Path
 
 ################################################################################
 ######### using IRIS/experiments/common and pegasus-config setup ###############
-sys.path.append(str(Path(__file__).parent.parent.parent.resolve() / "common"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "common"))
 
 import util
 import props
@@ -20,6 +21,7 @@ sys.path.append(util.pegasus_config_python())
 from Pegasus.api import *
 
 logging.basicConfig(level=logging.DEBUG)
+
 # --- Cleanup Caches -----------------------------------------------------------
 util.clear_caches("syr-compute-c2", "unl-compute-c1", "ucsd-compute-c3")
 
@@ -76,10 +78,10 @@ wc_job = Job(wc)\
 final_of = File("final_output.tar.gz")
 tar_job = Job(tar)\
             .add_args("cvzf", final_of, if_1, if_2, if_3, if_4, of)\
-            .add_inputs(*wc_job.get_inputs())\
+            .add_inputs(*wc_job.get_inputs(), *wc_job.get_outputs())\
             .add_outputs(final_of)
 
-wf = Workflow(str(BASE_DIR), infer_dependencies=True)\
+wf = Workflow(BASE_DIR.name, infer_dependencies=True)\
         .add_jobs(wc_job, tar_job)\
         .add_replica_catalog(rc)\
         .add_transformation_catalog(tc)
@@ -88,15 +90,21 @@ wf = Workflow(str(BASE_DIR), infer_dependencies=True)\
 iris_experiment_driver = subprocess.Popen([str(BASE_DIR / "iris-experiment-driver")])
 
 # start workflow
-wf.plan(
-        verbose=3,
-        output_site="local", 
-        dir=WORK_DIR, 
-        relative_dir=RUN_ID, 
-        sites=["condorpool"], 
-        staging_sites={"condorpool": "origin"}
-)\
-.wait()
+try:
+    wf.plan(
+            force=True,
+            output_site="local", 
+            dir=WORK_DIR, 
+            relative_dir=RUN_ID, 
+            sites=["condorpool"], 
+            staging_sites={"condorpool": "origin"},
+            submit=True
+    )\
+    .wait()
+except Exception as e:
+    print(e)
+    print(e.args[1].stdout)
+    print(e.args[1].stderr)
 
 # terminate driver 
 iris_experiment_driver.terminate()

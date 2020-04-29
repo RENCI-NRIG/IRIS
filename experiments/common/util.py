@@ -7,7 +7,7 @@ def pegasus_config_python() -> str:
     if pegasus_config.returncode != 0:
         raise RuntimeError(pegasus_config.stderr)
 
-    return str(pegasus_config.stdout).strip()
+    return pegasus_config.stdout.decode().strip()
 
 def clear_caches(*hostnames) -> None:
     for host in hostnames:

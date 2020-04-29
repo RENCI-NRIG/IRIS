@@ -5,10 +5,14 @@ import hashlib
 import logging
 import os
 import subprocess
+import sys
+
+from datetime import datetime
+from pathlib import Path
 
 ################################################################################
 ######### using IRIS/experiments/common and pegasus-config setup ###############
-sys.path.append(str(Path(__file__).parent.parent.parent.resolve() / "common"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "common"))
 
 import util
 import props
@@ -53,7 +57,7 @@ stage = subprocess.run(["ssh", "uc-staging", "mkdir", "-p", "~/public_html/input
 if stage.returncode != 0:
     raise RuntimeError()
 
-scp = subprocess.run(["scp", str(BASE_DIR / "job-wrapper.sh", "inputs/*", "uc-staging:~/public_html/inputs/")])
+scp = subprocess.run(" ".join(["scp", str(BASE_DIR / "job-wrapper.sh"), str(BASE_DIR / "inputs/*"), "uc-staging:~/public_html/inputs/"]), shell=True)
 if scp.returncode != 0:
     raise RuntimeError()
 
@@ -70,11 +74,12 @@ props.write(str(BASE_DIR / "pegasus.properties"))
 # --- Sites --------------------------------------------------------------------
 sites.write_basic_site_catalog(str(BASE_DIR / "sites.yml"), WORK_DIR, RUN_ID)
 
+# --- Transformations - Replicas - Workflow ------------------------------------
 # used all over the place
 username = getpass.getuser()
 base_dir = os.getcwd()
 
-wf = Workflow('bypass-staging-1-cache-corrupt')
+wf = Workflow(BASE_DIR.name)
 
 # transformations
 tc = TransformationCatalog()
@@ -110,15 +115,20 @@ wf.add_replica_catalog(rc)
 iris_experiment_driver = subprocess.Popen([str(BASE_DIR / "iris-experiment-driver")])
 
 # start workflow
-wf.plan(
-        verbose=3,
-        output_site="local", 
-        dir=WORK_DIR, 
-        relative_dir=RUN_ID, 
-        sites=["condorpool"], 
-        staging_sites={"condorpool": "origin"}
-)\
-.wait()
+try: 
+    wf.plan(
+            output_site="local", 
+            dir=WORK_DIR, 
+            relative_dir=RUN_ID, 
+            sites=["condorpool"], 
+            staging_sites={"condorpool": "origin"},
+            submit=True
+    )\
+    .wait()
+
+except Exception as e:
+    print(e)
+    # print(e.args[1].stderr)
 
 # terminate driver 
 iris_experiment_driver.terminate()

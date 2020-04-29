@@ -29,8 +29,8 @@ def write_basic_site_catalog(path: str, work_dir: str, run_id: str) -> None:
                 .add_directories(
                     Directory(Directory.SHAREDSCRATCH, ORIGIN_SHARED_SCRATCH_PATH)
                         .add_file_servers(
-                            FileServer("file://" + ORIGIN_FILE_SERVER_GET_URL, Operation.GET),
-                            FileServer("file://" + ORIGIN_FILE_SERVER_PUT_URL, Operation.PUT)
+                            FileServer(ORIGIN_FILE_SERVER_GET_URL, Operation.GET),
+                            FileServer(ORIGIN_FILE_SERVER_PUT_URL, Operation.PUT)
                         )
                 )
     
