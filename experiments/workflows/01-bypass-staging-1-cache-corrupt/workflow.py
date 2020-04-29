@@ -67,7 +67,7 @@ props["pegasus.data.configuration"] = "nonsharedfs"
 props["pegasus.transfer.bypass.input.staging"] = "True"
 props["pegasus.monitord.encoding"] = "json"
 props["pegasus.catalog.workflow.amqp.url"] = "amqp://friend:donatedata@msgs.pegasus.isi.edu:5672/prod/workflows"
-props["dagman.retry"] = "0"
+props["dagman.retry"] = "2"
 props["pegasus.transfer.arguments"] = "-m 1"
 props.write(str(BASE_DIR / "pegasus.properties"))
 
@@ -85,7 +85,7 @@ wf = Workflow(BASE_DIR.name)
 tc = TransformationCatalog()
 script = Transformation('job.sh',
                         site='uc-staging',
-                        pfn='http://uc-staging/~{}/inputs/job-wrapper.sh'.format(username),
+                        pfn='http://uc-staging.date-plane/~{}/inputs/job-wrapper.sh'.format(username),
                         is_stageable=True)
 tc.add_transformations(script)
 
@@ -98,7 +98,7 @@ for entry in os.listdir('inputs/'):
     chksum = sha256('inputs/{}'.format(entry))
     rc.add_replica('uc-staging',
                    infile,
-                   'http://uc-staging/~{}/inputs/{}'.format(username, entry),
+                   'http://uc-staging.data-plane/~{}/inputs/{}'.format(username, entry),
                     checksum_type='sha256',
                     checksum_value=chksum)
 
