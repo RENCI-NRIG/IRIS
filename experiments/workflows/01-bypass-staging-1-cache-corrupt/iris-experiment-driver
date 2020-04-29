@@ -8,7 +8,7 @@ echo `date` "Corrupting the cache at syracuse..."
 ssh syr-compute-c2 "sudo /root/chaos-jungle/storage/cj_storage.py --revert -f /cache/uc-staging-~$USER-inputs-Visual_Signaling_By_Signal_Corps_United_States_Army.txt.cached --onetime" >/dev/null 2>&1
 ssh syr-compute-c2 "sudo /root/chaos-jungle/storage/cj_storage.py -f /cache/uc-staging-~$USER-inputs-Visual_Signaling_By_Signal_Corps_United_States_Army.txt.cached --onetime"
 
-sleep 5m 
+sleep 1m 
 
 echo
 echo `date` "Clearing the cache at syracuse..."
