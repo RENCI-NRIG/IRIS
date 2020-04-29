@@ -19,7 +19,7 @@ $HOME/workflow-batch-experiment-runs
     ├── 01-test-workflow 
     └── 02-bypass-staging-1-cache-corrupt
 '''
-EXPERIMENT_DIR = Path(os.getenv("HOME")) / "worklow-batch-experiment-runs"
+EXPERIMENT_DIR = Path(os.getenv("HOME")) / "workflow-batch-experiment-runs"
 
 try:
     Path.mkdir(EXPERIMENT_DIR)
