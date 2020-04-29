@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import os
 import subprocess
 import sys
@@ -7,7 +7,6 @@ from datetime import datetime
 from pathlib import Path
 
 def print_green(a, **kwargs): print("\033[91m{}\033[00m".format(a), **kwargs)
-
 '''
 Setup experiment directory. 
 
