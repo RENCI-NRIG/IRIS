@@ -27,8 +27,3 @@ common_packages:
       - vim
       - python3-elasticsearch
 
-install_pip_packages:
-  pip.installed:
-    - name: elasticsearch_dsl
-    - pip_bin: /usr/bin/pip3
-
