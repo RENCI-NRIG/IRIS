@@ -18,12 +18,13 @@ def write_basic_site_catalog(path: str, work_dir: str, run_id: str) -> None:
                     Directory(Directory.LOCALSTORAGE, LOCAL_LOCAL_STORAGE_PATH)
                         .add_file_servers(FileServer("file://" + LOCAL_LOCAL_STORAGE_PATH, Operation.ALL))
                 )\
-                .add_profiles(Namespace.PEGASUS, SSH_PRIVATE_KEY=SSH_PRIVATE_KEY_PATH)
+                .add_profiles(Namespace.PEGASUS, SSH_PRIVATE_KEY=SSH_PRIVATE_KEY_PATH)\
+                .add_env(LANG="C.UTF-8")
 
     # create origin (staging) site
     ORIGIN_SHARED_SCRATCH_PATH = os.getenv("HOME") + "/public_html/"
-    ORIGIN_FILE_SERVER_GET_URL = "http://uc-staging.date-plane/~" + os.getenv("USER") + "/"
-    ORIGIN_FILE_SERVER_PUT_URL = "scp://" + os.getenv("USER") + "@uc-staging.date-plane/home/" + os.getenv("USER") + "/public_html"
+    ORIGIN_FILE_SERVER_GET_URL = "http://uc-staging.data-plane/~" + os.getenv("USER") + "/"
+    ORIGIN_FILE_SERVER_PUT_URL = "scp://" + os.getenv("USER") + "@uc-staging.data-plane/home/" + os.getenv("USER") + "/public_html"
     
     origin = Site("origin", arch=Arch.X86_64, os_type=OS.LINUX)\
                 .add_directories(
@@ -32,12 +33,15 @@ def write_basic_site_catalog(path: str, work_dir: str, run_id: str) -> None:
                             FileServer(ORIGIN_FILE_SERVER_GET_URL, Operation.GET),
                             FileServer(ORIGIN_FILE_SERVER_PUT_URL, Operation.PUT)
                         )
-                )
+                )\
+                .add_env(LANG="C.UTF-8")
     
     # create condorpool site 
     condorpool = Site("condorpool", arch=Arch.X86_64, os_type=OS.LINUX)\
                     .add_pegasus_profile(style="condor")\
-                    .add_condor_profile(universe="vanilla")
+                    .add_condor_profile(universe="vanilla")\
+                    .add_env(LANG="C.UTF-8")
+
     
     # write catalog to path 
     sc = SiteCatalog()\
