@@ -85,7 +85,7 @@ wf = Workflow(BASE_DIR.name)
 tc = TransformationCatalog()
 script = Transformation('job.sh',
                         site='uc-staging',
-                        pfn='http://uc-staging.date-plane/~{}/inputs/job-wrapper.sh'.format(username),
+                        pfn='http://uc-staging.data-plane/~{}/inputs/job-wrapper.sh'.format(username),
                         is_stageable=True)
 tc.add_transformations(script)
 
