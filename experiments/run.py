@@ -6,7 +6,7 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-def print_green(a, **kwargs): print("\033[91m{}\033[00m".format(a), **kwargs)
+def print_green(a, **kwargs): print("\033[92m{}\033[00m".format(a), **kwargs)
 '''
 Setup experiment directory. 
 
