@@ -126,3 +126,45 @@ tanaka:
     - group: users
     - mode: 644
 
+#### vahi ####
+
+vahi:
+  user.present:
+    - fullname: Karan vahi
+    - shell: /bin/bash
+    - home: /home/vahi
+    - uid: 1006
+    - groups:
+      - users
+  ssh_auth.present:
+    - user: vahi
+    - names:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDD4iUwbgndUivz8ccR8/Lx/pe+i54xvOHXxn8Qmni+8Ga7tBqFE58ZCQiMCfOxXT+Q9pMZbK+FCSqgSz37gEuY2jb43Tu6+5gab3LCgIgyr25NAGQeaV5fWseifI4z2HqllG/gBJSHH9qHglgXOQ2Jgx4eus9ENrChBHulccFHA1YSYqJRCzDY4//dsfx3aYSwFJeLnN/wXuI7j/NJmKTgGRc9pQzBYxB0GD+vlnhQZes84ud5B5vO0xgL6idyjcL+G/phbcuev/fzbZuFobTh8dIQ+7VOgHqWB0KAdEOQGKDEx+Op80/X7sNLlLg+Ne3GSUdw8wUT2n3faggfEGQt 2016 RSA key
+    - source: salt://local-conf/ssh.vahi.pub
+
+/home/vahi/.ssh/config:
+  file:
+    - managed
+    - source: salt://users/ssh.config
+    - user: vahi
+    - group: users
+    - mode: 644
+
+/home/vahi/.ssh/id_rsa:
+  file:
+    - managed
+    - source: salt://local-conf/ssh.vahi
+    - user: vahi
+    - group: users
+    - mode: 600
+
+/home/vahi/.ssh/id_rsa.pub:
+  file:
+    - managed
+    - source: salt://local-conf/ssh.vahi.pub
+    - user: vahi
+    - group: users
+    - mode: 644
+
+
+
