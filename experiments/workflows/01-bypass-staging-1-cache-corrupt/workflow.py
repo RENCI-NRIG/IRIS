@@ -85,7 +85,7 @@ wf = Workflow(BASE_DIR.name)
 tc = TransformationCatalog()
 script = Transformation('job.sh',
                         site='uc-staging',
-                        pfn='http://uc-staging.data-plane/~{}/inputs/job-wrapper.sh'.format(username),
+                        pfn='http://uc-staging/~{}/inputs/job-wrapper.sh'.format(username),
                         is_stageable=True)
 tc.add_transformations(script)
 
@@ -98,11 +98,11 @@ for entry in os.listdir('inputs/'):
     chksum = sha256('inputs/{}'.format(entry))
     rc.add_replica('uc-staging',
                    infile,
-                   'http://uc-staging.data-plane/~{}/inputs/{}'.format(username, entry),
+                   'http://uc-staging/~{}/inputs/{}'.format(username, entry),
                     checksum_type='sha256',
                     checksum_value=chksum)
 
-for i in range(100):
+for i in range(30):
     j = Job(script)
     j.add_args(i)
     j.add_inputs(*inputs)
