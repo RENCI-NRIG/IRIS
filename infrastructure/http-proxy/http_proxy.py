@@ -16,6 +16,7 @@ import shutil
 import os
 import hashlib
 import signal
+import time
 
 from pathlib import Path
 from urllib.parse import urlparse
@@ -23,6 +24,8 @@ from urllib.parse import urlparse
 cache_base = "./cache/"
 httpd = None
 
+def print_green(a, **kwargs): print("\033[92m{}\033[00m".format(a), **kwargs)
+def print_yellow(a, **kwargs): print("\033[93m{}\033[00m".format(a), **kwargs)
 
 def exit_gracefully(sig, stack):
     print("received sig %d, quitting" % (sig))
@@ -32,6 +35,7 @@ def exit_gracefully(sig, stack):
 
 class CacheHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
+        get_start = time.time()
         # m = hashlib.md5()
         # m.update(self.path.encode("utf-8"))
         # cache_filename = cache_base + m.hexdigest() +".cached"
@@ -51,11 +55,9 @@ class CacheHandler(http.server.SimpleHTTPRequestHandler):
         cache_filename = cache_base + Path(url.path).name + ".cached"
         """
 
-        print("---------------------------------------------------------------")
-        print("cache_filename: {}".format(cache_filename))
-
+        print("-" * 60)
         if not os.path.exists(cache_filename):
-            print("cache miss " + self.path)
+            print_yellow("cache miss: " + self.path)
 
             with open(cache_filename + ".temp", "wb") as output:
                 req = urllib.request.Request(self.path)
@@ -66,16 +68,26 @@ class CacheHandler(http.server.SimpleHTTPRequestHandler):
                     if k not in ["Host"]:
                         req.add_header(k, self.headers[k])
 
+                print("[START] req: {}".format(self.path))
+                req_start = time.time()
                 resp = urllib.request.urlopen(req)
+                print("[COMPLETE] req: {0} | {1:.4f}s".format(self.path, time.time() - req_start))
+                print("[START] write: {}".format(output.name))
+                write_start = time.time()
                 shutil.copyfileobj(resp, output)
+                print("[COMPLETE] write: {0} | {1:.4f}s".format(output.name, time.time() - write_start))
                 os.rename(cache_filename + ".temp", cache_filename)
         else:
-            print("cache hit " + self.path)
+            print_green("cache hit: " + self.path)
 
+        print("[START] copy to self.wfile: {}".format(cache_filename))
+        copy_start = time.time()
         with open(cache_filename, "rb") as cached:
             self.send_response(200)
             self.end_headers()
             shutil.copyfileobj(cached, self.wfile)
+        print("[COMPLETE] copy: {0} | {1:.4f}s".format(cache_filename, time.time() - copy_start))
+        print("resp time: {0:.4f}".format(time.time() - get_start))
 
 
 signal.signal(signal.SIGINT, exit_gracefully)
