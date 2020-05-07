@@ -1,3 +1,11 @@
+Prior running workflows on ExoGENI using the instructions described below, you
+must be set up with a user account and an SSH key on the system. 
+
+Each workflow experiment is self contained (bypass staging, cache cleanup, etc. 
+is done by the workflow script). To run all workflows sequentially see 
+**Running Batch Experiments** below. To run an individual workflow, see
+**Running Individual Workflows**. 
+
 ### Running Batch Experiments
 1. Navigate to `IRIS/experiments/`
 2. Run `./run.py`
