@@ -23,6 +23,7 @@ ericafu:
   
 ericafu-internal:
   ssh_auth.present:
+    - user: ericafu
     - source: salt://local-conf/ssh.ericafu.pub
 
 /home/ericafu/.ssh/config:
@@ -66,6 +67,7 @@ rynge:
 
 rynge-internal:
   ssh_auth.present:
+    - user: rynge
     - source: salt://local-conf/ssh.rynge.pub
 
 /home/rynge/.ssh/config:
@@ -109,6 +111,7 @@ tanaka:
 
 tanaka-internal:
   ssh_auth.present:
+    - user: tanaka
     - source: salt://local-conf/ssh.tanaka.pub
 
 /home/tanaka/.ssh/config:
@@ -152,6 +155,7 @@ vahi:
 
 vahi-internal:
   ssh_auth.present:
+    - user: vahi
     - source: salt://local-conf/ssh.vahi.pub
 
 /home/vahi/.ssh/config:
