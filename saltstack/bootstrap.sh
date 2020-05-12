@@ -3,6 +3,8 @@
 # this script should be run as a post install on the ExoGENI nodes. Example:
 # curl https://raw.githubusercontent.com/RENCI-NRIG/IRIS/master/saltstack/bootstrap.sh | bash
 
+umask 022
+
 # this part should only run on the control node
 if (echo $HOSTNAME | grep control) >/dev/null 2>&1; then
 
@@ -29,6 +31,8 @@ systemctl restart salt-minion
 
 # also install a cron job to keep salt highstate
 curl -o /etc/cron.d/salt https://raw.githubusercontent.com/RENCI-NRIG/IRIS/master/saltstack/salt/salt/salt.cron
+chmod 644 /etc/cron.d/salt
+touch /etc/cron.d/salt
 curl -o /usr/sbin/salt-highstate-cron https://raw.githubusercontent.com/RENCI-NRIG/IRIS/master/saltstack/salt/salt/salt-highstate-cron
 chmod 755 /usr/sbin/salt-highstate-cron
 
