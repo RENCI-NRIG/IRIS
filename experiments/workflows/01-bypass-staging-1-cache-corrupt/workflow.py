@@ -49,6 +49,7 @@ if not initiated_by_run_script:
     WORK_DIR = str(WORK_DIR)
 
 # --- Cleanup Caches -----------------------------------------------------------
+util.restart_caches("syr-compute-c2", "unl-compute-c1", "ucsd-compute-c3")
 util.clear_caches("syr-compute-c2", "unl-compute-c1", "ucsd-compute-c3")
 
 # --- Place Data at Staging Site -----------------------------------------------

@@ -23,6 +23,7 @@ from Pegasus.api import *
 logging.basicConfig(level=logging.DEBUG)
 
 # --- Cleanup Caches -----------------------------------------------------------
+util.restart_caches("syr-compute-c2", "unl-compute-c1", "ucsd-compute-c3")
 util.clear_caches("syr-compute-c2", "unl-compute-c1", "ucsd-compute-c3")
 
 # --- Work Directory Setup -----------------------------------------------------
