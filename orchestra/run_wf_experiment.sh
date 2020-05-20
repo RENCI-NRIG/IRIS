@@ -38,7 +38,7 @@ do
   echo "Corrupting" $v_node
 
   # Running Workflow, and get the timestamp and corruption log
-  ssh -n $SSH_OPTION ${WORKFLOW_USER}@uc-submit python3 /home/ericafu/IRIS_modified/experiments/run.py ${currenttime} run${run} ${v_node}
+  ssh -n $SSH_OPTION ${WORKFLOW_USER}@uc-submit python3 /home/${WORKFLOW_USER}/IRIS/experiments/run.py ${currenttime} run${run} 01-bypass ${v_node}
   scp $SSH_OPTION ${WORKFLOW_USER}@uc-submit:/tmp/iris_corrupt.log ${RESULT_DIR}/${v_node}_run${run}_corrupt.log
   scp $SSH_OPTION ${WORKFLOW_USER}@uc-submit:/tmp/iris_timestamps ${RESULT_DIR}/run${run}_timestamps
 done
