@@ -13,6 +13,7 @@ IRIS/
 ├── experiments
 ├── infrastructure
 ├── saltstack
+├── orchestra
 └── analysis
 ```
 - `IRIS/doc` contains IRIS papers/documents.
@@ -36,5 +37,7 @@ IRIS/
 
 - `IRIS/saltstack` contains configuration management scripts for our 
     infrastructure (apache, http-proxy, HTCondor, etc. setup)
+
+- `IRIS/orchestra` contains the scripts to run on control node to orchestrate the experiment.
 
 - `IRIS/analysis` contains the scripts for data analysis  
