@@ -13,7 +13,7 @@ IRIS/
 ├── experiments
 ├── infrastructure
 ├── saltstack
-└── workflow
+└── analysis
 ```
 - `IRIS/doc` contains IRIS papers/documents.
 
@@ -37,4 +37,4 @@ IRIS/
 - `IRIS/saltstack` contains configuration management scripts for our 
     infrastructure (apache, http-proxy, HTCondor, etc. setup)
 
-- `IRIS/workflow` ?
+- `IRIS/analysis` contains the scripts for data analysis  
