@@ -2,7 +2,7 @@
 
 # modify according to your experiment
 export USER="root"
-export SSH_OPTION="-i <private key>"
+export SSH_OPTION="-i <root private key> -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 export OUTPUT_DIR=/root/iris_results
 export WORKFLOW_USER="ericafu"
 export ES_USERNAME=""
