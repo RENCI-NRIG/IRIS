@@ -53,12 +53,12 @@ util.restart_caches("syr-compute-c2", "unl-compute-c1", "ucsd-compute-c3")
 util.clear_caches("syr-compute-c2", "unl-compute-c1", "ucsd-compute-c3")
 
 # --- Place Data at Staging Site -----------------------------------------------
-stage = subprocess.run(["ssh", "uc-staging", "mkdir", "-p", "~/public_html/inputs"])
+stage = subprocess.run(["ssh", "uc-staging.data-plane", "mkdir", "-p", "~/public_html/inputs"])
 
 if stage.returncode != 0:
     raise RuntimeError()
 
-scp = subprocess.run(" ".join(["scp", str(BASE_DIR / "job-wrapper.sh"), str(BASE_DIR / "inputs/*"), "uc-staging:~/public_html/inputs/"]), shell=True)
+scp = subprocess.run(" ".join(["scp", str(BASE_DIR / "job-wrapper.sh"), str(BASE_DIR / "inputs/*"), "uc-staging.data-plane:~/public_html/inputs/"]), shell=True)
 if scp.returncode != 0:
     raise RuntimeError()
 
@@ -86,7 +86,7 @@ wf = Workflow(BASE_DIR.name)
 tc = TransformationCatalog()
 script = Transformation('job.sh',
                         site='uc-staging',
-                        pfn='http://uc-staging/~{}/inputs/job-wrapper.sh'.format(username),
+                        pfn='http://uc-staging.data-plane/~{}/inputs/job-wrapper.sh'.format(username),
                         is_stageable=True)
 tc.add_transformations(script)
 
@@ -99,7 +99,7 @@ for entry in os.listdir('inputs/'):
     chksum = sha256('inputs/{}'.format(entry))
     rc.add_replica('uc-staging',
                    infile,
-                   'http://uc-staging/~{}/inputs/{}'.format(username, entry),
+                   'http://uc-staging.data-plane/~{}/inputs/{}'.format(username, entry),
                     checksum_type='sha256',
                     checksum_value=chksum)
 
