@@ -108,7 +108,7 @@ for entry in os.listdir('inputs/'):
                     checksum_type='sha256',
                     checksum_value=chksum)
 
-for i in range(30):
+for i in range(100):
     j = Job(script)
     j.add_args(i)
     j.add_inputs(*inputs)
