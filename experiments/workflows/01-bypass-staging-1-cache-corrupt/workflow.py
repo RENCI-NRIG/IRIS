@@ -33,6 +33,11 @@ def sha256(fname):
 # --- Work Directory Setup -----------------------------------------------------
 BASE_DIR = Path(__file__).parent.resolve()
 
+corrupt_site = None
+if len(sys.argv) > 2:
+    corrupt_site = sys.argv[1]
+    run_id = sys.argv[2]
+
 RUN_ID=BASE_DIR.name # cwd name
 WORK_DIR = os.getenv("EXPERIMENT_WORK_DIR")
 initiated_by_run_script = WORK_DIR
@@ -113,15 +118,16 @@ wf.add_transformation_catalog(tc)
 wf.add_replica_catalog(rc)
 
 # start driver experiment
-iris_experiment_driver = subprocess.Popen([str(BASE_DIR / "iris-experiment-driver")])
+if corrupt_site:
+    iris_experiment_driver = subprocess.Popen([str(BASE_DIR / "iris-experiment-driver"), corrupt_site, WORK_DIR, run_id])
 
 # start workflow
-try: 
+try:
     wf.plan(
-            output_site="local", 
-            dir=WORK_DIR, 
-            relative_dir=RUN_ID, 
-            sites=["condorpool"], 
+            output_site="local",
+            dir=WORK_DIR,
+            relative_dir=RUN_ID,
+            sites=["condorpool"],
             staging_sites={"condorpool": "origin"},
             submit=True
     )\
@@ -131,5 +137,6 @@ except Exception as e:
     print(e)
     # print(e.args[1].stderr)
 
-# terminate driver 
-iris_experiment_driver.terminate()
+# terminate driver
+if corrupt_site:
+    iris_experiment_driver.terminate()
