@@ -12,10 +12,10 @@ def write_basic_site_catalog(path: str, work_dir: str, run_id: str) -> None:
 
     local = Site("local", arch=Arch.X86_64, os_type=OS.LINUX)\
                 .add_directories(
-                    Directory(Directory.SHAREDSCRATCH, LOCAL_SHARED_SCRATCH_PATH)
+                    Directory(Directory.SHARED_SCRATCH, LOCAL_SHARED_SCRATCH_PATH)
                         .add_file_servers(FileServer("file://" + LOCAL_SHARED_SCRATCH_PATH, Operation.ALL)),
                     
-                    Directory(Directory.LOCALSTORAGE, LOCAL_LOCAL_STORAGE_PATH)
+                    Directory(Directory.LOCAL_STORAGE, LOCAL_LOCAL_STORAGE_PATH)
                         .add_file_servers(FileServer("file://" + LOCAL_LOCAL_STORAGE_PATH, Operation.ALL))
                 )\
                 .add_profiles(Namespace.PEGASUS, SSH_PRIVATE_KEY=SSH_PRIVATE_KEY_PATH)\
@@ -28,7 +28,7 @@ def write_basic_site_catalog(path: str, work_dir: str, run_id: str) -> None:
     
     origin = Site("origin", arch=Arch.X86_64, os_type=OS.LINUX)\
                 .add_directories(
-                    Directory(Directory.SHAREDSCRATCH, ORIGIN_SHARED_SCRATCH_PATH)
+                    Directory(Directory.SHARED_SCRATCH, ORIGIN_SHARED_SCRATCH_PATH)
                         .add_file_servers(
                             FileServer(ORIGIN_FILE_SERVER_GET_URL, Operation.GET),
                             FileServer(ORIGIN_FILE_SERVER_PUT_URL, Operation.PUT)
