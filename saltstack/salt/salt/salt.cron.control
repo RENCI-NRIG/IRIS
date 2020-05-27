@@ -10,3 +10,7 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin
 # remove old minion
  */5 *  * * *  root rm -f /var/lib/salt/pki/master/minions_denied/* /var/lib/salt/pki/master/minions_rejected/* >/dev/null 2>&1
 
+# fix for hung masters
+  7 */3 * * *  root systemctl restart salt-master >/dev/null 2>&1
+
+
