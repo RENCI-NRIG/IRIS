@@ -23,8 +23,8 @@ def write_basic_site_catalog(path: str, work_dir: str, run_id: str) -> None:
 
     # create origin (staging) site
     ORIGIN_SHARED_SCRATCH_PATH = os.getenv("HOME") + "/public_html/"
-    ORIGIN_FILE_SERVER_GET_URL = "http://uc-staging/~" + os.getenv("USER") + "/"
-    ORIGIN_FILE_SERVER_PUT_URL = "scp://" + os.getenv("USER") + "@uc-staging/home/" + os.getenv("USER") + "/public_html"
+    ORIGIN_FILE_SERVER_GET_URL = "http://uc-staging.data-plane/~" + os.getenv("USER") + "/"
+    ORIGIN_FILE_SERVER_PUT_URL = "scp://" + os.getenv("USER") + "@uc-staging.data-plane/home/" + os.getenv("USER") + "/public_html"
     
     origin = Site("origin", arch=Arch.X86_64, os_type=OS.LINUX)\
                 .add_directories(

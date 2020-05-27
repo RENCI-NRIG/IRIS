@@ -5,7 +5,7 @@ In order to simulate different types of sources of integrity errors, we added a 
 One of our main design objectives is to automate the experiment creation, configuration, and data collection at any given scale. This not only guarantees repeatable experiments at different scales, but also makes data manipulation for ML model training for RCA much more efficient.    
 
 \subsection{Network creation and configuration}
-An arbitrary topology can be created on ExoGENI with nodes in the form of virtual machines (VM) running customized images. In our experimental topology, we use a set of end hosts to emulate the OSG data sources and sinks, a virtual network consisting of core routers emulating the backbone network service providers (Internet2, ESNet, etc) and access routers emulating the access network service providers (regional research and education networks and campus networks). All nodes are connected with virtual layer-2 links with certain throughput guarantee as the private data plane. An extra management plane interface is also available on every node, which provides remote access. The end hosts run an Ubuntu image with our Chaos Jungle fault injection tools. The routers run an Ubuntu image with the Zebra software router and our Chaos Jungle fault injection tools.
+An arbitrary topology can be created on ExoGENI with nodes in the form of virtual machines (VM) running customized images. In our experimental topology, we use a set of end hosts to emulate the OSG data sources and sinks, a virtual network consisting of core routers emulating the backbone network service providers (Internet2, ESNet, etc.) and access routers emulating the access network service providers (regional research and education networks and campus networks). All nodes are connected with virtual layer-2 links with certain throughput guarantee as the private data plane. An extra management plane interface is also available on every node, which provides remote access. The end hosts run an Ubuntu image with our Chaos Jungle fault injection tools. The routers run an Ubuntu image with the Zebra software router and our Chaos Jungle fault injection tools.
 
 ExoGENI provides an API to launch any given experimental topology. On a successful execution, our experimental topology will be up and running with routing configured and network reachability established among all end hosts by leveraging the postboot template scripting capability provided by ExoGENI. Specifically, at the virtual node booting, following steps are automatically executed: (1) detecting all the interfaces and their IP addresses, and all the neighboring nodes and the links; (2) creating the configuration files for Zebra and OSPF daemons and starting the routing control plane at the router nodes; (3) adding the default routes at the end hosts.    
 
@@ -20,15 +20,15 @@ Then the experiment software can be started to inject the fault, transfer the da
 At the last step, all the raw data will be processed and stored in final result database files with predefined feature columns. Each database entry represents one data transfer with features of file name, file size, origin, sink, access router, integrity error or not, etc. However, the forwarding path is unknown as it is controlled by the routing control plane process. The final result is exported to a Jupyter notebook environment where machine learning based data analysis is performed.
 
 The experimental topology used in this paper is shown in Fig.~\ref{fig:topology}, the screenshot from the ExoGENI GUI.
-
 \begin{figure}[!ht]
 \begin{center}
-\includegraphics[width=0.48\textwidth]{./figure/ChaosJungle}
+\includegraphics[width=0.45\textwidth]{./figure/ChaosJungle}
 \end{center}
+\vspace{-0.05in}
 \caption{Network Emulation and Integrity Error Injection in ExoGENI}
+\vspace{-0.05in}
 \label{fig:topology}
 \end{figure}
-
 %\begin{figure}[!ht]
 %\begin{center}
 %\includegraphics[width=0.48\textwidth]{./figure/experiment-large}

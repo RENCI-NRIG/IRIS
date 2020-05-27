@@ -33,6 +33,11 @@ def sha256(fname):
 # --- Work Directory Setup -----------------------------------------------------
 BASE_DIR = Path(__file__).parent.resolve()
 
+corrupt_site = None
+if len(sys.argv) > 2:
+    corrupt_site = sys.argv[1]
+    run_id = sys.argv[2]
+
 RUN_ID=BASE_DIR.name # cwd name
 WORK_DIR = os.getenv("EXPERIMENT_WORK_DIR")
 initiated_by_run_script = WORK_DIR
@@ -49,15 +54,16 @@ if not initiated_by_run_script:
     WORK_DIR = str(WORK_DIR)
 
 # --- Cleanup Caches -----------------------------------------------------------
+util.restart_caches("syr-compute-c2", "unl-compute-c1", "ucsd-compute-c3")
 util.clear_caches("syr-compute-c2", "unl-compute-c1", "ucsd-compute-c3")
 
 # --- Place Data at Staging Site -----------------------------------------------
-stage = subprocess.run(["ssh", "uc-staging", "mkdir", "-p", "~/public_html/inputs"])
+stage = subprocess.run(["ssh", "uc-staging.data-plane", "mkdir", "-p", "~/public_html/inputs"])
 
 if stage.returncode != 0:
     raise RuntimeError()
 
-scp = subprocess.run(" ".join(["scp", str(BASE_DIR / "job-wrapper.sh"), str(BASE_DIR / "inputs/*"), "uc-staging:~/public_html/inputs/"]), shell=True)
+scp = subprocess.run(" ".join(["scp", str(BASE_DIR / "job-wrapper.sh"), str(BASE_DIR / "inputs/*"), "uc-staging.data-plane:~/public_html/inputs/"]), shell=True)
 if scp.returncode != 0:
     raise RuntimeError()
 
@@ -85,7 +91,7 @@ wf = Workflow(BASE_DIR.name)
 tc = TransformationCatalog()
 script = Transformation('job.sh',
                         site='uc-staging',
-                        pfn='http://uc-staging/~{}/inputs/job-wrapper.sh'.format(username),
+                        pfn='http://uc-staging.data-plane/~{}/inputs/job-wrapper.sh'.format(username),
                         is_stageable=True)
 tc.add_transformations(script)
 
@@ -98,11 +104,11 @@ for entry in os.listdir('inputs/'):
     chksum = sha256('inputs/{}'.format(entry))
     rc.add_replica('uc-staging',
                    infile,
-                   'http://uc-staging/~{}/inputs/{}'.format(username, entry),
+                   'http://uc-staging.data-plane/~{}/inputs/{}'.format(username, entry),
                     checksum_type='sha256',
                     checksum_value=chksum)
 
-for i in range(30):
+for i in range(100):
     j = Job(script)
     j.add_args(i)
     j.add_inputs(*inputs)
@@ -112,15 +118,16 @@ wf.add_transformation_catalog(tc)
 wf.add_replica_catalog(rc)
 
 # start driver experiment
-iris_experiment_driver = subprocess.Popen([str(BASE_DIR / "iris-experiment-driver")])
+if corrupt_site:
+    iris_experiment_driver = subprocess.Popen([str(BASE_DIR / "iris-experiment-driver"), corrupt_site, WORK_DIR, run_id])
 
 # start workflow
-try: 
+try:
     wf.plan(
-            output_site="local", 
-            dir=WORK_DIR, 
-            relative_dir=RUN_ID, 
-            sites=["condorpool"], 
+            output_site="local",
+            dir=WORK_DIR,
+            relative_dir=RUN_ID,
+            sites=["condorpool"],
             staging_sites={"condorpool": "origin"},
             submit=True
     )\
@@ -130,5 +137,6 @@ except Exception as e:
     print(e)
     # print(e.args[1].stderr)
 
-# terminate driver 
-iris_experiment_driver.terminate()
+# terminate driver
+if corrupt_site:
+    iris_experiment_driver.terminate()
