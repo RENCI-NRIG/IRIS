@@ -1,8 +1,5 @@
 #!/bin/bash
 
-
-echo maxtransfer=$maxtransfer
-
 _get_all_nodes () {
     ALL_NODES=""
     while IFS= read line || [ -n "$line" ]
@@ -113,6 +110,19 @@ _get_virtualIP () {
     done < ${ALL_EDGES_FILE}
 }
 
+
+_get_linkIP () {
+    while IFS= read line || [ -n "$line" ]
+    do
+        edge=$(cut -d' ' -f2 <<< $line | cut -d= -f1)
+        if [ $edge == $1 ]; then
+            RETURN_IP=$(cut -d= -f2 <<< $line)
+            break
+        fi
+    done < ${ALL_EDGES_FILE}
+}
+
+
 _get_hostname_by_virtualIP () {
     while IFS= read line || [ -n "$line" ]
     do
@@ -148,7 +158,7 @@ _get_network_probablity () {
       x_link=$(cut -d' ' -f2 <<< $line | cut -d= -f1)
         if [ $x_link == $1 ]; then
           P=$(cut -d' ' -f3 <<< $line)
-          echo "P=$P"
+          echo "P=${P}"
           if [ ! -z $P ]; then
             NETWORK_PROB=$P
           fi
@@ -178,34 +188,10 @@ _generate_node_router_file () {
   cat ${OUTPUT_DIR}/${NODE_ROUTER_FILE}
 }
 
-
-_transfer_files () {
-  # kick off pegasus workflow
-  echo "run${run} done"
-}
-
-_get_log_files () {
-  for d_nodeip in $DEST_NODES; do
-      ssh -n $SSH_OPTION root@${d_nodeip} "rm ~/*diff_done"
-      scp $SSH_OPTION root@${d_nodeip}:\*_wget_\*.log ${RESULT_DIR}
-      scp $SSH_OPTION root@${d_nodeip}:\*_diff_\*.log ${RESULT_DIR}
-      ssh -n $SSH_OPTION root@${d_nodeip} "rm ~/*_diff_*.log"
-      ssh -n $SSH_OPTION root@${d_nodeip} "rm ~/*_wget_*.log"
-  done
-}
-
-_delete_log_files () {
-  for d_nodeip in $DEST_NODES; do
-      ssh -n $SSH_OPTION root@${d_nodeip} "rm ~/*_transfer_diff_done"
-      ssh -n $SSH_OPTION root@${d_nodeip} "rm ~/*_diff_*.log"
-      ssh -n $SSH_OPTION root@${d_nodeip} "rm ~/*_wget_*.log"
-  done
-}
-
 _get_end_nodes
 _get_all_nodes
 _get_all_edges
-echo END_NODES = $END_NODES
-echo ALL_NODES = $ALL_NODES
-echo ALL_EDGES = $ALL_EDGES
+#echo END_NODES = $END_NODES
+#echo ALL_NODES = $ALL_NODES
+#echo ALL_EDGES = $ALL_EDGES
 
