@@ -2,7 +2,6 @@
 
 import getpass
 import hashlib
-import logging
 import os
 import subprocess
 import sys
@@ -22,8 +21,6 @@ sys.path.append(util.pegasus_config_python())
 ################################################################################
 
 from Pegasus.api import *
-
-logging.basicConfig(level=logging.DEBUG)
 
 def sha256(fname):
     with open(fname,"rb") as f:
@@ -140,3 +137,7 @@ except Exception as e:
 # terminate driver
 if corrupt_site:
     iris_experiment_driver.terminate()
+
+
+# ensure pegasus-dagman is down
+util.wait_on_pegasus_dagman()
