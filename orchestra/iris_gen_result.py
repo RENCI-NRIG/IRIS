@@ -33,9 +33,12 @@ def main():
         writer = csv.DictWriter(outcsv, fieldnames=headers + ['corrupt_label'] + ['corrupt_rate'])
         writer.writeheader()
         for row in reader:
+            if row['lfn'] == 'job_sh':
+                continue
             row_start = int(row['start_time'])
             row_end = int(row['end_time'])
             corrupt_label = ''
+            corrupt_rate = ''
             for key, ts in dict_label_ts.items():
                 # ts[0] = corrupt start time, ts[1] = corrupt end time
                 if ((row_start < ts[0] < row_end)
