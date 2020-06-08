@@ -64,7 +64,7 @@ do
 
     # parse link and packet-corrupt-rate P
     link=$(cut -d' ' -f2 <<< $line | cut -d= -f1)
-    corrupt_rate=0.002
+    corrupt_rate=0.006
     P=$(cut -d' ' -f3 <<< $line)
     if [ ! -z $P ]; then
         corrupt_rate=$P
