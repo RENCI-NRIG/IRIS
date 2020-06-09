@@ -56,7 +56,7 @@ if len(sys.argv) > 3:
 if len(sys.argv) > 4:
     corrupt_site = sys.argv[4]
 
-if len(sys.argv) > 3
+if len(sys.argv) > 3:
     log.info("test name: {}, run id: {}, workflow: {}, batch run dir: {}, timestamps file: {}, corrupt site: {}".format(
         testname,
         runid,
