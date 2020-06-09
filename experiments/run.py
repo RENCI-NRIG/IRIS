@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import logging
 import os
 import subprocess
 import sys
@@ -6,6 +7,9 @@ import sys
 from datetime import datetime
 from pathlib import Path
 from shutil import copyfile
+
+log = logging.getLogger(__file__)
+
 
 def print_green(a, **kwargs): print("\033[92m{}\033[00m".format(a), **kwargs)
 '''
@@ -20,12 +24,17 @@ $HOME/workflow-batch-experiment-runs
     └── 02-bypass-staging-1-cache-corrupt
 '''
 EXPERIMENT_DIR = Path(os.getenv("HOME")) / "workflow-batch-experiment-runs"
+fh = logging.FileHandler(str(EXPERIMENT_DIR / "experiment.log"))
+fh.setLevel(logging.DEBUG)
+fh.setFormatter(logging.Formatter("%(levelname)s:%(name)s:%(message)s"))
+log.addHandler(fh)
 
 try:
     Path.mkdir(EXPERIMENT_DIR)
 except FileExistsError:
     pass
 
+log.info("Experiment directory set: {}".format(str(EXPERIMENT_DIR)))
 BATCH_RUN_DIR = EXPERIMENT_DIR / Path(datetime.now().strftime("%s"))
 
 # Expected argv:
@@ -43,8 +52,19 @@ if len(sys.argv) > 3:
     workflow = sys.argv[3]
     BATCH_RUN_DIR = EXPERIMENT_DIR / Path(testname + "-" + runid + "-" + datetime.now().strftime("%s"))
     timestamps_file = str(BATCH_RUN_DIR) + '/' + runid + '_timestamps'
+
 if len(sys.argv) > 4:
     corrupt_site = sys.argv[4]
+
+if len(sys.argv) > 3
+    log.info("test name: {}, run id: {}, workflow: {}, batch run dir: {}, timestamps file: {}, corrupt site: {}".format(
+        testname,
+        runid,
+        workflow,
+        BATCH_RUN_DIR,
+        timestamps_file,
+        corrupt_site
+    ))
 
 print(BATCH_RUN_DIR)
 Path.mkdir(BATCH_RUN_DIR)
@@ -77,12 +97,13 @@ for wf in workflows:
     # blocking call to run wf
     if corrupt_site:
         print_green("[Run {}]: Running Workflow: {} and corrupt {}".format(runid, wf.name, corrupt_site))
-        wf_run = subprocess.run(["python3", str(wf.resolve() / "workflow.py"), corrupt_site, runid], cwd=wf)
+        wf_run = subprocess.run(["python3", str(wf.resolve() / "workflow.py"), corrupt_site, runid], cwd=wf, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     else:
-        wf_run = subprocess.run(["python3", str(wf.resolve() / "workflow.py")], cwd=wf)
+        wf_run = subprocess.run(["python3", str(wf.resolve() / "workflow.py")], cwd=wf, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     if wf_run.returncode != 0:
-        raise RuntimeError()
+        log.critical(wf_run.stdout.decode() + "\n" + wf_run.stderr.decode())
+        sys.exit(1)
 
     # wf complete, kill iris-experiment-driver
     #iris_experiment_driver.terminate()
