@@ -17,9 +17,9 @@ ssh ${corruptsite} "sudo /root/chaos-jungle/storage/cj_storage.py -f /cache/uc-s
 
 sleep 1m
 
-echo $(date +%s) CORRUPT_END ${corruptsite} >> ${logfile}
-cp  ${logfile} ${tmplogfile}
 echo
 echo `date` "Clearing the cache at ${corruptsite}..."
 ssh ${corruptsite} "sudo rm -f /cache/uc-staging.data-plane-~$USER*"
+echo $(date +%s) CORRUPT_END ${corruptsite} >> ${logfile}
+cp  ${logfile} ${tmplogfile}
 

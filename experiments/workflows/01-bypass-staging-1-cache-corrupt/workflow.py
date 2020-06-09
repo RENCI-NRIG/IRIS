@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import logging
 import getpass
 import hashlib
 import os
@@ -21,6 +22,9 @@ sys.path.append(util.pegasus_config_python())
 ################################################################################
 
 from Pegasus.api import *
+
+log = logging.getLogger("01-bypass-workflow")
+log.setLevel(logging.DEBUG)
 
 def sha256(fname):
     with open(fname,"rb") as f:
@@ -55,14 +59,26 @@ util.restart_caches("syr-compute-c2", "unl-compute-c1", "ucsd-compute-c3")
 util.clear_caches("syr-compute-c2", "unl-compute-c1", "ucsd-compute-c3")
 
 # --- Place Data at Staging Site -----------------------------------------------
-stage = subprocess.run(["ssh", "uc-staging.data-plane", "mkdir", "-p", "~/public_html/inputs"])
+stage_cmd = ["ssh", "uc-staging.data-plane", "mkdir", "-p", "~/public_html/inputs"]
+stage = subprocess.run(stage_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
 if stage.returncode != 0:
-    raise RuntimeError()
+    log.critical("Could not execute: {},\n{}\n{}".format(
+            " ".join(stage_cmd),
+            stage.stdout.decode(),
+            stage.stderr.decode()
+        ))
+    sys.exit(1)
 
-scp = subprocess.run(" ".join(["scp", str(BASE_DIR / "job-wrapper.sh"), str(BASE_DIR / "inputs/*"), "uc-staging.data-plane:~/public_html/inputs/"]), shell=True)
+scp_cmd = " ".join(["scp", str(BASE_DIR / "job-wrapper.sh"), str(BASE_DIR / "inputs/*"), "uc-staging.data-plane:~/public_html/inputs/"])
+scp = subprocess.run(scp_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 if scp.returncode != 0:
-    raise RuntimeError()
+    log.critical("Could not execute: {},\n{}\n{}".format(
+            scp_cmd,
+            scp.stdout.decode(),
+            scp.stderr.decode()
+        ))
+    sys.exit(1)
 
 # --- Properties ---------------------------------------------------------------
 props = Properties()
@@ -130,9 +146,8 @@ try:
     )\
     .wait()
 
-except Exception as e:
-    print(e)
-    # print(e.args[1].stderr)
+except PegasusClientError as e:
+    print(e.output)
 
 # terminate driver
 if corrupt_site:

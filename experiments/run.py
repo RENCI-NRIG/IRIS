@@ -8,7 +8,7 @@ from datetime import datetime
 from pathlib import Path
 from shutil import copyfile
 
-log = logging.getLogger(__file__)
+log = logging.getLogger()
 
 
 def print_green(a, **kwargs): print("\033[92m{}\033[00m".format(a), **kwargs)
@@ -24,10 +24,6 @@ $HOME/workflow-batch-experiment-runs
     └── 02-bypass-staging-1-cache-corrupt
 '''
 EXPERIMENT_DIR = Path(os.getenv("HOME")) / "workflow-batch-experiment-runs"
-fh = logging.FileHandler(str(EXPERIMENT_DIR / "experiment.log"))
-fh.setLevel(logging.DEBUG)
-fh.setFormatter(logging.Formatter("%(levelname)s:%(name)s:%(message)s"))
-log.addHandler(fh)
 
 try:
     Path.mkdir(EXPERIMENT_DIR)
@@ -56,6 +52,15 @@ if len(sys.argv) > 3:
 if len(sys.argv) > 4:
     corrupt_site = sys.argv[4]
 
+
+print(BATCH_RUN_DIR)
+Path.mkdir(BATCH_RUN_DIR)
+
+fh = logging.FileHandler(str(BATCH_RUN_DIR / "experiment.log"))
+fh.setLevel(logging.DEBUG)
+fh.setFormatter(logging.Formatter("%(levelname)s:%(name)s:%(message)s"))
+log.addHandler(fh)
+
 if len(sys.argv) > 3:
     log.info("test name: {}, run id: {}, workflow: {}, batch run dir: {}, timestamps file: {}, corrupt site: {}".format(
         testname,
@@ -65,9 +70,6 @@ if len(sys.argv) > 3:
         timestamps_file,
         corrupt_site
     ))
-
-print(BATCH_RUN_DIR)
-Path.mkdir(BATCH_RUN_DIR)
 
 # child processes will run from this dir when run as batch experiments
 os.environ["EXPERIMENT_WORK_DIR"] = str(BATCH_RUN_DIR)
