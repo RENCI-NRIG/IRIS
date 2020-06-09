@@ -21,8 +21,8 @@ def restart_caches(*hostnames) -> None:
 
 def clear_caches(*hostnames) -> None:
     for host in hostnames:
-        print("starting cache cleanup at: {} for user: {}...".format(host, os.getenv("USER")))
-        p = subprocess.run(["ssh", host, "sudo", "rm", "-f", "/cache/uc-staging.data-plane-~$USER*"])
+        print("starting cache cleanup at: {}".format(host))
+        p = subprocess.run(["ssh", host, "sudo", "rm", "-f", "/cache/*"])
         assert p.returncode == 0
         print("cache cleanup complete")
 
