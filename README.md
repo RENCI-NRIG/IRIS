@@ -7,17 +7,27 @@ Introspection for Scientific Workflows (IRIS) project.
 ```
 IRIS/
 ├── README.md
+├── analysis
 ├── doc
 ├── emulation
 ├── es
+├── exogeni-rdf
 ├── experiments
 ├── infrastructure
-├── saltstack
-└── workflow
+├── orchestra
+└── saltstack
+
 ```
+- `IRIS/analysis` contains the scripts for data analysis.
+
 - `IRIS/doc` contains IRIS papers/documents.
 
 - `IRIS/emulation` contains emulation scripts.
+
+- `IRIS/es` contains the script used to pull data from Elasticsearch. See
+    [usage instructions](es/README.md).
+
+- `IRIS/exogeni-rdf` contains Exogeni recipe files
 
 - `IRIS/experiments` contains a `run.py` script that will sequentially execute 
     each workflow in `IRIS/experiments/workflows`. All workflows used for
@@ -31,10 +41,8 @@ IRIS/
     the ExoGENI slice. 
   - [http proxy](infrastructure/http-proxy/README.md)
 
-- `IRIS/es` contains the script used to pull data from Elasticsearch. See
-    [usage instructions](es/README.md). 
+- `IRIS/orchestra` contains the scripts to run on control node to orchestrate the experiment.
 
 - `IRIS/saltstack` contains configuration management scripts for our 
     infrastructure (apache, http-proxy, HTCondor, etc. setup)
 
-- `IRIS/workflow` ?

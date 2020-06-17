@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import logging
 import os
 import sys
 import subprocess
@@ -19,8 +18,6 @@ sys.path.append(util.pegasus_config_python())
 ################################################################################
 
 from Pegasus.api import *
-
-logging.basicConfig(level=logging.DEBUG)
 
 # --- Cleanup Caches -----------------------------------------------------------
 util.restart_caches("syr-compute-c2", "unl-compute-c1", "ucsd-compute-c3")
@@ -94,7 +91,7 @@ iris_experiment_driver = subprocess.Popen([str(BASE_DIR / "iris-experiment-drive
 try:
     wf.plan(
             force=True,
-            output_site="local", 
+            output_sites=["local"], 
             dir=WORK_DIR, 
             relative_dir=RUN_ID, 
             sites=["condorpool"], 
@@ -102,11 +99,12 @@ try:
             submit=True
     )\
     .wait()
-except Exception as e:
-    print(e)
-    print(e.args[1].stdout)
-    print(e.args[1].stderr)
+except PegasusClientError as e:
+    print(e.output)
 
 # terminate driver 
 iris_experiment_driver.terminate()
+
+# ensure pegasus-dagman is down
+util.wait_on_pegasus_dagman()
 
