@@ -11,6 +11,7 @@ result_dir = ''
 matrix = []  # output of parsing
 # dictionary: key = (run+':'+relative_path+':'+src_node+':'+dest_node), value = flow_id
 flow_idTable = {}
+debug = 0
 
 
 class Field(IntEnum):
@@ -39,8 +40,8 @@ class Field(IntEnum):
 
 
 def debug_print(debug_string):
-    # print(debug_string)
-    return
+    if debug is 1:
+        print(debug_string)
 
 
 def add_new_row_in_matrix():
@@ -213,9 +214,10 @@ def parse_logs(single_run):
                         debug_print(run)
                         debug_print(relative_path)
                         for key in flow_idTable.keys():
-                            if key.startswith(run+':'+relative_path):
+                            if key.startswith(run+':'+relative_path+':'):
                                 flow_id = flow_idTable[key]
-                                matrix[flow_id][Field.LABEL] = src_node
+                                if matrix[flow_id][Field.SRCNODE] == src_node:
+                                    matrix[flow_id][Field.LABEL] = src_node
                 print('Parsed file {}, {} corruptions'.format(matched_file, corrupt_count))
                 print('----------------------------')
                 print('<RUN>\t<NODE_STORAGE_CORRUPT/COUNT>')
@@ -279,12 +281,19 @@ def main():
         writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_NONE)
         writer.writerow(headers)
 
+    filepath = os.path.join(result_dir, "storage_runs")
+    if os.path.isfile(filepath):
+        with open(filepath, "r") as f:
+            for line in f:
+                run = line.split()[0]
+    run_number = int(run[3:])
+
     filepath = os.path.join(result_dir, os.environ['RUN_LINKLABEL_FILE'])
     if os.path.isfile(filepath):
         with open(filepath, "r") as f:
             for line in f:
                 (run, _) = line.split()
-    run_number = int(run[3:])
+                run_number = int(run[3:])
     print('total runs = {}'.format(run_number))
 
     for x in range(run_number):

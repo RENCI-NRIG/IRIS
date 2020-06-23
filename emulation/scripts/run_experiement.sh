@@ -66,8 +66,17 @@ do
 
   echo "Corrupting" $v_node $v_nodeip; echo $v_nodeip > ${OUTPUT_DIR}/CORRUPTING_NODE
 
+  CORRUPT_TIMES=1 # set default
+  _get_storage_corrupt_times $v_nodeip
   _get_storage_probablity $v_nodeip
-  ssh -n $SSH_OPTION ${USER}@${v_nodeip} sudo python3 $CJ_DIR/storage/cj_storage.py -d ${RUN_DIR} -f \"*\" -p $STORAGE_PROB -r --onetime
+
+  ssh -n $SSH_OPTION ${USER}@${v_nodeip} sudo python3 $CJ_DIR/storage/cj_storage.py --revert
+  ssh -n $SSH_OPTION ${USER}@${v_nodeip} sudo rm /var/log/cj.log
+
+  for (( j=1; j<=$CORRUPT_TIMES; j++ ))
+  do
+    ssh -n $SSH_OPTION ${USER}@${v_nodeip} sudo python3 $CJ_DIR/storage/cj_storage.py -d ${RUN_DIR} -f \"*\" -p $STORAGE_PROB -r --onetime
+  done
   scp $SSH_OPTION ${USER}@${v_nodeip}:/var/log/cj.log ${RESULT_DIR}/${v_node}_run${run}_cj.log
 
   _transfer_files
@@ -78,6 +87,8 @@ do
   rm ${OUTPUT_DIR}/CORRUPTING_NODE
   #_get_log_files
 done
+
+echo "run$run" >> ${RESULT_DIR}/storage_runs
 
 # corrupt network in CORRUPT_EDGES
 echo $CORRUPT_EDGES
