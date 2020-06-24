@@ -1,0 +1,25 @@
+#!/bin/bash
+
+corruptsite=$1
+workdir=$2
+runid=$3
+
+logfile=${workdir}/${corruptsite}_${runid}_corrupt.log
+tmplogfile=/tmp/iris_corrupt.log  # so control machine can grap it easily
+
+sleep 2m
+echo
+echo `date` "Corrupting the cache at ${corruptsite}..."
+echo $(date +%s) CORRUPT_START ${corruptsite} > ${logfile}
+# cj_storage.py might be confused about the state, so "revert" first
+ssh ${corruptsite} "sudo /root/chaos-jungle/storage/cj_storage.py --revert -f /cache/uc-staging.data-plane-~$USER-inputs-Visual_Signaling_By_Signal_Corps_United_States_Army.txt.cached --onetime" >/dev/null 2>&1
+ssh ${corruptsite} "sudo /root/chaos-jungle/storage/cj_storage.py -f /cache/uc-staging.data-plane-~$USER-inputs-Visual_Signaling_By_Signal_Corps_United_States_Army.txt.cached --onetime"
+
+sleep 1m
+
+echo
+echo `date` "Clearing the cache at ${corruptsite}..."
+ssh ${corruptsite} "sudo rm -f /cache/uc-staging.data-plane-~$USER*"
+echo $(date +%s) CORRUPT_END ${corruptsite} >> ${logfile}
+cp  ${logfile} ${tmplogfile}
+
