@@ -4,7 +4,21 @@ import subprocess
 import datetime
 import time
 
+def wget(url: str, http_proxy: str = None) -> None:
+    cmd = ""
+    if http_proxy:
+        cmd.append("http_proxy={} ".format(http_proxy))
+    
+    cmd.append("wget {}".format(url))
 
+    wget_proc = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    print(wget_proc.stdout.decode())
+    if wget_proc.returncode != 0:
+        print("failed command: {}".format(cmd))
+        print(wget_proc.stderr.decode())
+        sys.exit(1)
+   
 def pegasus_config_python() -> str:
     pegasus_config = subprocess.run(["pegasus-config", "--python"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if pegasus_config.returncode != 0:
