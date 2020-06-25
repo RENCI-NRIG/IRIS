@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 import argparse
-import logging
 import getpass
 import hashlib
 import os
 import subprocess
 import sys
+import logging as log
 
 from datetime import datetime
 from pathlib import Path
@@ -23,8 +23,7 @@ sys.path.append(util.pegasus_config_python())
 
 from Pegasus.api import *
 
-log = logging.getLogger("01-bypass-workflow")
-log.setLevel(logging.DEBUG)
+log.basicConfig(level=log.DEBUG)
 
 def parse_args(args=sys.argv[1:]):
     parser = argparse.ArgumentParser(
@@ -56,6 +55,7 @@ def parse_args(args=sys.argv[1:]):
                 "-c",
                 "--corrupt",
                 action="append",
+                default=[],
                 metavar="HOSTNAME",
                 help="Host to corrupt. Multiple hosts can be given by specifying"
                 " -c <hostname1> -c <hostname2> .."
@@ -97,6 +97,8 @@ if __name__=="__main__":
     log.info("caches cleared and restarted")
 
     # --- Bypass Data Staging --------------------------------------------------
+    stage_cmd = ["ssh", "uc-staging.data-plane", "mkdir", "-p", "~/public_html/inputs"]
+    stage = subprocess.run(stage_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)   
     if stage.returncode != 0:
         log.critical("Could not execute: {},\n{}\n{}".format(
                 " ".join(stage_cmd),
@@ -146,10 +148,13 @@ if __name__=="__main__":
 
     # transformations
     tc = TransformationCatalog()
-    script = Transformation('job.sh',
+    script = Transformation(
+                            'job.sh',
                             site='uc-staging',
                             pfn='http://uc-staging.data-plane/~{}/inputs/job-wrapper.sh'.format(username),
-                            is_stageable=True)
+                            is_stageable=True,
+                            checksum={"sha256":sha256("job-wrapper.sh")}
+                        )
     tc.add_transformations(script)
 
     # a list of common inputs for all jobs
@@ -195,9 +200,9 @@ if __name__=="__main__":
             subprocess.Popen(
                 [
                     str(BASE_DIR / "iris-experiment-driver"), 
-                    corrupt_site, 
+                    site, 
                     str(WORK_DIR), 
-                    run_id
+                    args.run_id
                 ]
             )
         )
