@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
+import logging as log
+import sys
 import subprocess
+
+from pathlib import Path
 
 ################################################################################
 ######### using IRIS/experiments/common and pegasus-config setup ###############
@@ -11,6 +15,10 @@ import sites
 
 sys.path.append(util.pegasus_config_python())
 ################################################################################
+
+log.basicConfig(level=log.DEBUG)
+
+BASE_DIR = Path(__file__).parent.resolve()
 
 # --- Cleanup Caches -------------------------------------------------------
 util.restart_caches("syr-compute-c2", "unl-compute-c1", "ucsd-compute-c3")
