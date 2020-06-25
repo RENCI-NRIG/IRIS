@@ -37,7 +37,7 @@ and will be placed in `dir`.
 for test runs, and 100 for an actual experiment run.
 
 `-c HOSTNAME`: Which host to corrupt using the `iris-experiment-driver` script defined here. The log
-file that is created by this script will be written to `/tmp/iris_corrupt_<HOSTNAME>_<run_id>.log.
+file that is created by this script will be written to `/tmp/iris_corrupt_<HOSTNAME>_<run_id>.log`.
 You may specify multiple hosts to corrupt. For example using `-c unl-compute-c1 -c syr-compute-c2`
 would cause `iris-experiment-driver` to be executed for both of thoses hosts. Similarly, you will end up
 with two log files `/tmp/iris_corrupt_unl-compute-c1_<run_id>.log` and 
