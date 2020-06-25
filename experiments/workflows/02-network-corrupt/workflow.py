@@ -10,6 +10,17 @@ import logging as log
 from datetime import datetime
 from pathlib import Path
 
+################################################################################
+######### using IRIS/experiments/common and pegasus-config setup ###############
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "common"))
+
+import util
+import props
+import sites
+
+sys.path.append(util.pegasus_config_python())
+################################################################################
+
 from Pegasus.api import *
 
 log.basicConfig(level=log.DEBUG)
