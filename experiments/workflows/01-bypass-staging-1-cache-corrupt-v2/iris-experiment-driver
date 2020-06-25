@@ -5,7 +5,7 @@ workdir=$2
 runid=$3
 
 logfile=${workdir}/${corruptsite}_${runid}_corrupt.log
-tmplogfile=/tmp/iris_corrupt.log  # so control machine can grap it easily
+tmplogfile=/tmp/iris_corrupt_${corruptsite}_${runid}.log  # so control machine can grap it easily
 
 sleep 2m
 echo
