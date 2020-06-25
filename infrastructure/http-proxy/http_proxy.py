@@ -5,8 +5,7 @@
 # - tcp socket reuse to avoid the tcp socket already in use if popped often
 # - a cache directory to avoid a lot of files just being in the middle
 #
-# use it by getting 'http://localhost:8000/www.kernel.org' to get http://www.kernel.org
-# duplicate the class+tcpserver and listen on another port for your https needs (alter line 40 in the duplicate);
+# duplicate the class+tcpserver and listen on another port for your https needs;
 # it will share the cache
 
 import http.server
