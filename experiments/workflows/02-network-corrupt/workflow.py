@@ -28,6 +28,8 @@ log.basicConfig(level=log.DEBUG)
 def parse_args(args=sys.argv[1:]):
     parser = argparse.ArgumentParser(
                 description="Run a workflow with N independent jobs."
+                " Prior to running this workflow, run pre_setup.py to"
+                " clear and restart the caches, and to do bypass staging."
             )
 
     parser.add_argument(
