@@ -4,19 +4,37 @@ import subprocess
 import datetime
 import time
 
+from pathlib import Path
+
 def wget(url: str, http_proxy: str = None) -> None:
+
+    # send these files to /tmp so they don't clutter
+    # current working dir
+    dst = Path("/tmp/wget_files")
+    try:
+        Path.mkdir(dst)
+    except FileExistsError:
+        pass
+
     cmd = ""
     if http_proxy:
-        cmd.append("http_proxy={} ".format(http_proxy))
+        cmd += "http_proxy={} ".format(http_proxy)
     
-    cmd.append("wget {}".format(url))
+    cmd += "wget {}".format(url)
 
-    wget_proc = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    wget_proc = subprocess.run(
+            cmd, 
+            shell=True, 
+            stdout=subprocess.PIPE, 
+            stderr=subprocess.PIPE,
+            cwd=str(dst)
+        )
 
     print(wget_proc.stdout.decode())
+    print(wget_proc.stderr.decode())
+
     if wget_proc.returncode != 0:
         print("failed command: {}".format(cmd))
-        print(wget_proc.stderr.decode())
         sys.exit(1)
    
 def pegasus_config_python() -> str:
