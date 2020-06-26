@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import logging as log
 import sys
+import os
 import subprocess
 
 from pathlib import Path
@@ -19,6 +20,7 @@ sys.path.append(util.pegasus_config_python())
 log.basicConfig(level=log.DEBUG)
 
 BASE_DIR = Path(__file__).parent.resolve()
+os.chdir(BASE_DIR)
 
 # --- Cleanup Caches -------------------------------------------------------
 util.restart_caches("syr-compute-c2", "unl-compute-c1", "ucsd-compute-c3")

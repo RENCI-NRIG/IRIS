@@ -79,6 +79,7 @@ if __name__=="__main__":
     args = parse_args()
     
     BASE_DIR = Path(__file__).parent.resolve()
+    os.chdir(BASE_DIR)
 
     # create DIR (1 or more test runs)
     WORK_DIR = Path(args.dir)
