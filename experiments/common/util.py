@@ -3,18 +3,11 @@ import os
 import subprocess
 import datetime
 import time
+import sys
 
 from pathlib import Path
 
 def wget(url: str, http_proxy: str = None) -> None:
-
-    # send these files to /tmp so they don't clutter
-    # current working dir
-    dst = Path("/tmp/wget_files")
-    try:
-        Path.mkdir(dst)
-    except FileExistsError:
-        pass
 
     cmd = ""
     if http_proxy:
@@ -27,7 +20,7 @@ def wget(url: str, http_proxy: str = None) -> None:
             shell=True, 
             stdout=subprocess.PIPE, 
             stderr=subprocess.PIPE,
-            cwd=str(dst)
+            cwd="/tmp"
         )
 
     print(wget_proc.stdout.decode())
