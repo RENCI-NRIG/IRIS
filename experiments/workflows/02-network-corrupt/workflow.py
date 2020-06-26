@@ -111,7 +111,7 @@ if __name__=="__main__":
                             site='uc-staging',
                             pfn='http://uc-staging.data-plane/~{}/inputs/job-wrapper.sh'.format(username),
                             is_stageable=True,
-                            checksum={"sha256":sha256("job-wrapper.sh")}
+                            checksum={"sha256":sha256(str(Path(BASE_DIR / "job-wrapper.sh")))}
                         )
     tc.add_transformations(script)
 
@@ -119,10 +119,10 @@ if __name__=="__main__":
     inputs = []
     urls = []
     rc = ReplicaCatalog()
-    for entry in os.listdir('inputs/'):
+    for entry in os.listdir(str(Path(BASE_DIR / 'inputs/'))):
         infile = File(entry)
         inputs.append(infile)
-        chksum = sha256('inputs/{}'.format(entry))
+        chksum = sha256(str(PATH(BASE_DIR / 'inputs/{}'.format(entry))))
         pfn = 'http://uc-staging.data-plane/~{}/inputs/{}'.format(username, entry)
         urls.append(pfn)
         rc.add_replica(
