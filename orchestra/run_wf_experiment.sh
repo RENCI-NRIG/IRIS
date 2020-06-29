@@ -17,6 +17,7 @@ fi
 
 currenttime=$(date +"%Y%m%d_%H%M%p")
 RESULT_DIR=${OUTPUT_DIR}/output_${currenttime}
+WORKFLOW_RESULT_DIR=${WORKFLOW_RESULT_BASE}/${currenttime}
 mkdir $RESULT_DIR
 cp ${OUTPUT_DIR}/${NODE_ROUTER_FILE} ${RESULT_DIR}/${NODE_ROUTER_FILE}
 
@@ -44,12 +45,13 @@ do
   echo "run$run $v_node" >> ${RESULT_DIR}/${RUN_LINKLABEL_FILE}
 
   # Running Workflow, and get the timestamp and corruption log
-  ssh -n $SSH_OPTION ${WORKFLOW_USER}@uc-submit python3 /home/${WORKFLOW_USER}/IRIS/experiments/run.py ${currenttime} run${run} 01-bypass ${v_node}
-  scp $SSH_OPTION ${WORKFLOW_USER}@uc-submit:/tmp/iris_corrupt.log ${RESULT_DIR}/${v_node}_run${run}_corrupt.log
-  scp $SSH_OPTION ${WORKFLOW_USER}@uc-submit:/tmp/iris_timestamps ${RESULT_DIR}/run${run}_timestamps
-  ssh -n $SSH_OPTION ${WORKFLOW_USER}@uc-submit rm /tmp/iris_corrupt.log
-  ssh -n $SSH_OPTION ${WORKFLOW_USER}@uc-submit rm /tmp/iris_timestamps
+  command="python3 ${WORKFLOW_BASE_DIR}/${STORAGE_WORKFLOW_ID}/workflow.py ${WORKFLOW_RESULT_DIR} run${run} ${JOB_NUMBER} -c ${v_node} -t ${WORKFLOW_RESULT_DIR}/run${run}_timestamps"
+  echo ${command}
+  ssh -n $SSH_OPTION ${WORKFLOW_USER}@uc-submit ${command}
+  scp $SSH_OPTION ${WORKFLOW_USER}@uc-submit:${WORKFLOW_RESULT_DIR}/run${run}_timestamps ${RESULT_DIR}/run${run}_timestamps
+  scp $SSH_OPTION ${WORKFLOW_USER}@uc-submit:${WORKFLOW_RESULT_DIR}/${v_node}_run${run}_corrupt.log ${RESULT_DIR}/${v_node}_run${run}_corrupt.log
 done
+
 
 # corrupt network in CORRUPT_EDGES
 while IFS= read line || [ -n "$line" ]
@@ -64,7 +66,7 @@ do
 
     # parse link and packet-corrupt-rate P
     link=$(cut -d' ' -f2 <<< $line | cut -d= -f1)
-    corrupt_rate=0.006
+    corrupt_rate=$NW_CORRUPT_RATE
     P=$(cut -d' ' -f3 <<< $line)
     if [ ! -z $P ]; then
         corrupt_rate=$P
@@ -75,6 +77,9 @@ do
 
     run=$((run+1))
     echo; echo "### New Run" run${run}
+
+    ssh -n $SSH_OPTION ${WORKFLOW_USER}@uc-submit python3 ${WORKFLOW_BASE_DIR}/${NETWORK_WORKFLOW_ID}/pre_setup.py
+
     echo "Corrupting" $link
     node="$(cut -d'_' -f 1 <<< $link)"
     _get_linkIP $link; linkip=$RETURN_IP
@@ -112,8 +117,13 @@ EOF
     fi
 
     # Running Workflow, and get the timestamp and corruption log
-    ssh -n $SSH_OPTION ${WORKFLOW_USER}@uc-submit python3 /home/${WORKFLOW_USER}/IRIS/experiments/run.py ${currenttime} run${run} 01-bypass
-    scp $SSH_OPTION ${WORKFLOW_USER}@uc-submit:/tmp/iris_timestamps ${RESULT_DIR}/run${run}_timestamps
+    command="python3 ${WORKFLOW_BASE_DIR}/${NETWORK_WORKFLOW_ID}/workflow.py ${WORKFLOW_RESULT_DIR} run${run} ${JOB_NUMBER} -t ${WORKFLOW_RESULT_DIR}/run${run}_timestamps"
+    echo ${command}
+    ssh -n $SSH_OPTION ${WORKFLOW_USER}@uc-submit ${command}
+    scp $SSH_OPTION ${WORKFLOW_USER}@uc-submit:${WORKFLOW_RESULT_DIR}/run${run}_timestamps ${RESULT_DIR}/run${run}_timestamps
+ 
+    #ssh -n $SSH_OPTION ${WORKFLOW_USER}@uc-submit python3 /home/${WORKFLOW_USER}/IRIS/experiments/run.py ${currenttime} run${run} 01-bypass
+    #scp $SSH_OPTION ${WORKFLOW_USER}@uc-submit:/tmp/iris_timestamps ${RESULT_DIR}/run${run}_timestamps
 
     # kill the cj network corrupter process and log the time
     if [ $param_I != "0" ]; then
