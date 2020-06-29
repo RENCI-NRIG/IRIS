@@ -30,7 +30,7 @@ def main():
     with open(incsv_file) as incsv, open(outcsv_file, 'w', newline='') as outcsv:
         reader = csv.DictReader(incsv)
         headers = reader.fieldnames
-        writer = csv.DictWriter(outcsv, fieldnames=headers + ['corrupt_label'] + ['corrupt_rate'])
+        writer = csv.DictWriter(outcsv, fieldnames=headers + ['corrupt_label'] + ['corrupt_start'] + ['corrupt_end'] + ['corrupt_rate'])
         writer.writeheader()
         for row in reader:
             if row['lfn'] == 'job_sh':
@@ -38,15 +38,21 @@ def main():
             row_start = int(row['start_time'])
             row_end = int(row['end_time'])
             corrupt_label = ''
+            corrupt_start = ''
+            corrupt_end = ''
             corrupt_rate = ''
             for key, ts in dict_label_ts.items():
                 # ts[0] = corrupt start time, ts[1] = corrupt end time
-                if ((row_start < ts[0] < row_end)
-                        or (row_start < ts[1] < row_end)
+                if ((row_start <= ts[0] <= row_end)
+                        or (row_start <= ts[1] <= row_end)
                         or (ts[0] < row_start and row_end < ts[1])):
                     corrupt_label += key[0] + ' '   # append in case overlap which should not happen
+                    corrupt_start = ts[0]
+                    corrupt_end = ts[1]
                     corrupt_rate = key[1]
             row.update({'corrupt_label': corrupt_label})
+            row.update({'corrupt_start': corrupt_start})
+            row.update({'corrupt_end': corrupt_end})
             row.update({'corrupt_rate': corrupt_rate})
             writer.writerow(row)
     print('csv generated:\n{}'.format(outcsv_file))
