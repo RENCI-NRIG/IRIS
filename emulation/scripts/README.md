@@ -33,12 +33,14 @@ $ ./init_experiment.sh
 #### a) If needed, modify `CORRUPT_NODES` and `CORRUPT_EDGES` files to indicate which nodes and edges to corrupt. 
 &nbsp;&nbsp;&nbsp;&nbsp;Default all end nodes and all edges will be included. 
 
-&nbsp;&nbsp;&nbsp;&nbsp;in `CORRUPT_NODES` file:
+&nbsp;&nbsp;&nbsp;&nbsp;in `CORRUPT_NODES` file: <br />
+&nbsp;&nbsp;&nbsp;&nbsp; each line specifies the corruption parameter for each run: <br />
+&nbsp;&nbsp;&nbsp;&nbsp; **[node_ip]** **[node_hostname]** **[corrupt_times]** **[probability]**
 
 ```
-141.217.114.192 Node5      # prob default is 1, 1 file will be corrupted
-141.217.114.138 Node3 0.8  # prob is set to 0.8, there is 0.8 chance a file will be corrupted.
-141.217.114.173 Node4 0.5  # prob is set to 0.5, there is 0.5 chance a file will be corrupted.
+141.217.114.192 Node5        # prob default is 1, 1 files will be corrupt
+141.217.114.138 Node3 4      # prob default is 1, 4 files will be corrupt
+141.217.114.173 Node4 4 0.5  # prob is set to 0.5, we will try to corrupt 4 times, the expected value is 2 corrupted files
 ```
 
 &nbsp;&nbsp;&nbsp;&nbsp;in `CORRUPT_EDGES` file:
