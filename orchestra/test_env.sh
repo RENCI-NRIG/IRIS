@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # modify according to your experiment
-export NW_CORRUPT_RATE=0.006 # default corruption rate for network interface
+export NW_CORRUPT_RATE=0.02 # default corruption rate for network interface
 export JOB_NUMBER=100
 export STORAGE_WORKFLOW_ID=01-bypass-staging-1-cache-corrupt-v2
 export NETWORK_WORKFLOW_ID=02-network-corrupt
