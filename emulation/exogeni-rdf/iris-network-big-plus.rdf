@@ -957,6 +957,7 @@ echo "done" &gt;&gt; /root/tmp
     <request-schema:postBootScript rdf:datatype="http://www.w3.org/2001/XMLSchema#string">#!/bin/bash
 
 cd /root
+git clone https://github.com/RENCI-NRIG/IRIS.git
 git clone -b storage https://github.com/RENCI-NRIG/chaos-jungle.git</request-schema:postBootScript>
     <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
     <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOMedium"/>

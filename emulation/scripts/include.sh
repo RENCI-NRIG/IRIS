@@ -130,11 +130,27 @@ _get_storage_probablity () {
     do
       x_ip=$(cut -d' ' -f1 <<< $line)
         if [ $x_ip == $1 ]; then
-          P=$(cut -d' ' -f3 <<< $line)
+          P=$(cut -d' ' -f4 <<< $line)
           echo "P=$P"
           if [ ! -z $P ]; then
             STORAGE_PROB=$P
             echo "STORAGE_PROB=$STORAGE_PROB"
+          fi
+        break
+      fi
+    done < ${CORRUPT_NODES_FILE}
+}
+
+_get_storage_corrupt_times () {
+    CORRUPT_TIMES=1
+    while IFS= read line || [ -n "$line" ]
+    do
+      x_ip=$(cut -d' ' -f1 <<< $line)
+        if [ $x_ip == $1 ]; then
+          P=$(cut -d' ' -f3 <<< $line)
+          if [ ! -z $P ]; then
+            CORRUPT_TIMES=$P
+            echo "CORRUPT_TIMES=$CORRUPT_TIMES"
           fi
         break
       fi
