@@ -255,15 +255,6 @@ echo "done" &gt;&gt; /root/tmp
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#Interface"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#CENIC">
-    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
-    <topology:hasGUID>f458477e-42a1-43fe-a84b-5b7e084b85a8</topology:hasGUID>
-    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link9-CENIC"/>
-    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link1-CENIC"/>
-    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOLarge"/>
-    <domain:hasResourceType rdf:resource="http://geni-orca.renci.org/owl/compute.owl#VM"/>
-    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link12-CENIC"/>
-    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link5-CENIC"/>
-    <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
     <request-schema:postBootScript rdf:datatype="http://www.w3.org/2001/XMLSchema#string">#!/bin/bash
 
 echo ! &gt; /root/tmp
@@ -278,7 +269,7 @@ echo "Internet is ready" &gt;&gt; /root/tmp
 until apt-get update -y
 do
         echo "updating Ubunut...." &gt;&gt; /root/tmp
-        sleep 2
+        sleep 4
 done
 until apt-get install -y quagga
 do
@@ -404,6 +395,15 @@ python3 /root/chaos-jungle/storage/cj_storage.py --revert &gt;&gt; /root/tmp
 echo "done" &gt;&gt; /root/tmp
 
 </request-schema:postBootScript>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
+    <topology:hasGUID>f458477e-42a1-43fe-a84b-5b7e084b85a8</topology:hasGUID>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link9-CENIC"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link1-CENIC"/>
+    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOLarge"/>
+    <domain:hasResourceType rdf:resource="http://geni-orca.renci.org/owl/compute.owl#VM"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link12-CENIC"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link5-CENIC"/>
+    <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link0-CENIC"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#">
@@ -438,8 +438,8 @@ echo "done" &gt;&gt; /root/tmp
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link16"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#OriginUNL"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#OriginUC"/>
-    <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link17"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link2"/>
+    <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link17"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link5"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#OriginFNAL"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link20"/>
@@ -483,7 +483,7 @@ echo "Internet is ready" &gt;&gt; /root/tmp
 until apt-get update -y
 do
         echo "updating Ubunut...." &gt;&gt; /root/tmp
-        sleep 2
+        sleep 4
 done
 until apt-get install -y quagga
 do
@@ -628,8 +628,8 @@ echo "done" &gt;&gt; /root/tmp
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#Interface"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#OriginUNLRouter">
-    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link14-OriginUNLRouter"/>
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link16-OriginUNLRouter"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link14-OriginUNLRouter"/>
     <request-schema:dependOn rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#I2"/>
     <topology:hasGUID>1f8f869b-97c8-4553-a182-8fcdc3464123</topology:hasGUID>
     <request-schema:postBootScript rdf:datatype="http://www.w3.org/2001/XMLSchema#string">#!/bin/bash
@@ -646,7 +646,7 @@ echo "Internet is ready" &gt;&gt; /root/tmp
 until apt-get update -y
 do
         echo "updating Ubunut...." &gt;&gt; /root/tmp
-        sleep 2
+        sleep 4
 done
 until apt-get install -y quagga
 do
@@ -808,7 +808,7 @@ echo "Internet is ready" &gt;&gt; /root/tmp
 until apt-get update -y
 do
         echo "updating Ubunut...." &gt;&gt; /root/tmp
-        sleep 2
+        sleep 4
 done
 until apt-get install -y quagga
 do
@@ -1005,8 +1005,8 @@ git clone -b storage https://github.com/RENCI-NRIG/chaos-jungle.git</request-sch
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/ip4.owl#IPAddress"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#CacheUNLRouter">
-    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link20-CacheUNLRouter"/>
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link3-CacheUNLRouter"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link20-CacheUNLRouter"/>
     <request-schema:dependOn rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#I2"/>
     <topology:hasGUID>5f9ce95f-afbc-4a3b-8190-caf8278349b9</topology:hasGUID>
     <request-schema:postBootScript rdf:datatype="http://www.w3.org/2001/XMLSchema#string">#!/bin/bash
@@ -1023,7 +1023,7 @@ echo "Internet is ready" &gt;&gt; /root/tmp
 until apt-get update -y
 do
         echo "updating Ubunut...." &gt;&gt; /root/tmp
-        sleep 2
+        sleep 4
 done
 until apt-get install -y quagga
 do
@@ -1209,11 +1209,6 @@ echo "done" &gt;&gt; /root/tmp
     <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
     <domain:hasResourceType rdf:resource="http://geni-orca.renci.org/owl/compute.owl#VM"/>
     <topology:hasGUID>32eb38f5-294b-4599-8de2-69a485881f7c</topology:hasGUID>
-    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link7-ESNET"/>
-    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link2-ESNET"/>
-    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link4-ESNET"/>
-    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link1-ESNET"/>
-    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
     <request-schema:postBootScript rdf:datatype="http://www.w3.org/2001/XMLSchema#string">#!/bin/bash
 
 echo ! &gt; /root/tmp
@@ -1228,7 +1223,7 @@ echo "Internet is ready" &gt;&gt; /root/tmp
 until apt-get update -y
 do
         echo "updating Ubunut...." &gt;&gt; /root/tmp
-        sleep 2
+        sleep 4
 done
 until apt-get install -y quagga
 do
@@ -1354,6 +1349,11 @@ python3 /root/chaos-jungle/storage/cj_storage.py --revert &gt;&gt; /root/tmp
 echo "done" &gt;&gt; /root/tmp
 
 </request-schema:postBootScript>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link7-ESNET"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link2-ESNET"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link4-ESNET"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link1-ESNET"/>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link22-ESNET"/>
     <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOLarge"/>
   </rdf:Description>
@@ -1641,6 +1641,14 @@ echo "done" &gt;&gt; /root/tmp
   </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#CacheCENICRouter">
     <domain:hasResourceType rdf:resource="http://geni-orca.renci.org/owl/compute.owl#VM"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link12-CacheCENICRouter"/>
+    <topology:hasGUID>1c2295a6-6013-487f-b0d3-590697acb8b2</topology:hasGUID>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link18-CacheCENICRouter"/>
+    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOLarge"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link19-CacheCENICRouter"/>
+    <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
+    <request-schema:dependOn rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#ESNET"/>
     <request-schema:postBootScript rdf:datatype="http://www.w3.org/2001/XMLSchema#string">#!/bin/bash
 
 echo ! &gt; /root/tmp
@@ -1655,7 +1663,7 @@ echo "Internet is ready" &gt;&gt; /root/tmp
 until apt-get update -y
 do
         echo "updating Ubunut...." &gt;&gt; /root/tmp
-        sleep 2
+        sleep 4
 done
 until apt-get install -y quagga
 do
@@ -1781,14 +1789,6 @@ python3 /root/chaos-jungle/storage/cj_storage.py --revert &gt;&gt; /root/tmp
 echo "done" &gt;&gt; /root/tmp
 
 </request-schema:postBootScript>
-    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link12-CacheCENICRouter"/>
-    <topology:hasGUID>1c2295a6-6013-487f-b0d3-590697acb8b2</topology:hasGUID>
-    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link18-CacheCENICRouter"/>
-    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOLarge"/>
-    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link19-CacheCENICRouter"/>
-    <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
-    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
-    <request-schema:dependOn rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#ESNET"/>
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link4-CacheCENICRouter"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link9">
@@ -1982,6 +1982,14 @@ echo "done" &gt;&gt; /root/tmp
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#I2">
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link3-I2"/>
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link27-I2"/>
+    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOLarge"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link0-I2"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link13-I2"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link2-I2"/>
+    <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
+    <domain:hasResourceType rdf:resource="http://geni-orca.renci.org/owl/compute.owl#VM"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link14-I2"/>
     <request-schema:postBootScript rdf:datatype="http://www.w3.org/2001/XMLSchema#string">#!/bin/bash
 
 echo ! &gt; /root/tmp
@@ -1996,7 +2004,7 @@ echo "Internet is ready" &gt;&gt; /root/tmp
 until apt-get update -y
 do
         echo "updating Ubunut...." &gt;&gt; /root/tmp
-        sleep 2
+        sleep 4
 done
 until apt-get install -y quagga
 do
@@ -2123,14 +2131,6 @@ echo "done" &gt;&gt; /root/tmp
 
 
 </request-schema:postBootScript>
-    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOLarge"/>
-    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link0-I2"/>
-    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link13-I2"/>
-    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link2-I2"/>
-    <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
-    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
-    <domain:hasResourceType rdf:resource="http://geni-orca.renci.org/owl/compute.owl#VM"/>
-    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link14-I2"/>
     <topology:hasGUID>db50f928-5e59-4bb0-bf70-a82f85c4a4c6</topology:hasGUID>
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link6-I2"/>
   </rdf:Description>
@@ -2301,8 +2301,12 @@ echo "done" &gt;&gt; /root/tmp
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link9-StarLight"/>
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link7-StarLight"/>
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link6-StarLight"/>
-    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
     <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOLarge"/>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link10-StarLight"/>
+    <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link24-StarLight"/>
+    <topology:hasGUID>4cf9a77e-76eb-4e04-84ba-878acaabb046</topology:hasGUID>
     <request-schema:postBootScript rdf:datatype="http://www.w3.org/2001/XMLSchema#string">#!/bin/bash
 
 echo ! &gt; /root/tmp
@@ -2317,7 +2321,7 @@ echo "Internet is ready" &gt;&gt; /root/tmp
 until apt-get update -y
 do
         echo "updating Ubunut...." &gt;&gt; /root/tmp
-        sleep 2
+        sleep 4
 done
 until apt-get install -y quagga
 do
@@ -2443,10 +2447,6 @@ python3 /root/chaos-jungle/storage/cj_storage.py --revert &gt;&gt; /root/tmp
 echo "done" &gt;&gt; /root/tmp
 
 </request-schema:postBootScript>
-    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link10-StarLight"/>
-    <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
-    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link24-StarLight"/>
-    <topology:hasGUID>4cf9a77e-76eb-4e04-84ba-878acaabb046</topology:hasGUID>
   </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link21-OriginStarLightRouter-ip-192-168-21-2">
     <ip4:netmask>255.255.255.0</ip4:netmask>
@@ -2607,7 +2607,7 @@ echo "Internet is ready" &gt;&gt; /root/tmp
 until apt-get update -y
 do
         echo "updating Ubunut...." &gt;&gt; /root/tmp
-        sleep 2
+        sleep 4
 done
 until apt-get install -y quagga
 do
@@ -2758,7 +2758,7 @@ echo "Internet is ready" &gt;&gt; /root/tmp
 until apt-get update -y
 do
         echo "updating Ubunut...." &gt;&gt; /root/tmp
-        sleep 2
+        sleep 4
 done
 until apt-get install -y quagga
 do
@@ -2956,7 +2956,7 @@ echo "Internet is ready" &gt;&gt; /root/tmp
 until apt-get update -y
 do
         echo "updating Ubunut...." &gt;&gt; /root/tmp
-        sleep 2
+        sleep 4
 done
 until apt-get install -y quagga
 do
@@ -3126,8 +3126,8 @@ echo "done" &gt;&gt; /root/tmp
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#Interface"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#CacheNYRouter">
-    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link27-CacheNYRouter"/>
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link28-CacheNYRouter"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link27-CacheNYRouter"/>
     <topology:hasGUID>a65a4433-9d65-4147-8cfc-8cd7ce416a01</topology:hasGUID>
     <request-schema:postBootScript rdf:datatype="http://www.w3.org/2001/XMLSchema#string">#!/bin/bash
 
@@ -3143,7 +3143,7 @@ echo "Internet is ready" &gt;&gt; /root/tmp
 until apt-get update -y
 do
         echo "updating Ubunut...." &gt;&gt; /root/tmp
-        sleep 2
+        sleep 4
 done
 until apt-get install -y quagga
 do
