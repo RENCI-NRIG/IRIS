@@ -42,4 +42,4 @@ condor:
 install_pegasus:
   pkg.installed:
     - sources:
-      - pegasus: https://download.pegasus.isi.edu/pegasus/5.0.0dev/pegasus_5.0.0~dev-1+ubuntu18_amd64.deb
+      - pegasus: https://download.pegasus.isi.edu/iris/pegasus_5.0.0~dev-1+ubuntu18_amd64.deb
