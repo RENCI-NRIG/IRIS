@@ -48,6 +48,10 @@ do
 
   _get_storage_corrupt_times $v_nodeip
   _get_storage_probablity $v_nodeip
+  
+  # backup and clear cj.log so later we get a clean one
+  ssh $SSH_OPTION root@${v_node} "cp /var/log/cj.log /var/log/cj_${currenttime}.log"
+  ssh $SSH_OPTION root@${v_node} "rm /var/log/cj.log"
 
   # Running Workflow, and get the timestamp and corruption log
   command="python3 ${WORKFLOW_BASE_DIR}/${STORAGE_WORKFLOW_ID}/workflow.py ${WORKFLOW_RESULT_DIR} run${run} ${JOB_NUMBER} -c ${v_node} -t ${WORKFLOW_RESULT_DIR}/run${run}_timestamps -m ${CORRUPT_TIMES} -p ${STORAGE_PROB}"
