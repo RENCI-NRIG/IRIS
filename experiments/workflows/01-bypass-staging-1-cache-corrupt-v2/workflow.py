@@ -60,11 +60,23 @@ def parse_args(args=sys.argv[1:]):
                 help="Host to corrupt. Multiple hosts can be given by specifying"
                 " -c <hostname1> -c <hostname2> .."
             )
-    
+
     parser.add_argument(
                 "-t",
                 "--timestamps-file",
                 help="Path to write timestamp file to."
+            )
+
+    parser.add_argument(
+                "-m",
+                "--corrupt_times",
+                help="This is the count that corruption command will be issued, for multiple files corruption"
+            )
+
+    parser.add_argument(
+                "-p",
+                "--corrupt_prob",
+                help="The probability of corruption (arg for chaos-jungle)"
             )
 
     return parser.parse_args()
@@ -77,7 +89,7 @@ def sha256(fname):
 ### Workflow Setup #############################################################
 if __name__=="__main__":
     args = parse_args()
-    
+
     BASE_DIR = Path(__file__).parent.resolve()
     os.chdir(BASE_DIR)
 
@@ -99,7 +111,7 @@ if __name__=="__main__":
 
     # --- Bypass Data Staging --------------------------------------------------
     stage_cmd = ["ssh", "uc-staging.data-plane", "mkdir", "-p", "~/public_html/inputs"]
-    stage = subprocess.run(stage_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)   
+    stage = subprocess.run(stage_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if stage.returncode != 0:
         log.critical("Could not execute: {},\n{}\n{}".format(
                 " ".join(stage_cmd),
@@ -110,7 +122,7 @@ if __name__=="__main__":
 
     scp_cmd = " ".join(
         [
-            "scp", str(BASE_DIR / "job-wrapper.sh"), str(BASE_DIR / "inputs/*"), 
+            "scp", str(BASE_DIR / "job-wrapper.sh"), str(BASE_DIR / "inputs/*"),
             "uc-staging.data-plane:~/public_html/inputs/"
         ]
     )
@@ -133,11 +145,11 @@ if __name__=="__main__":
     props["dagman.retry"] = "2"
     props["pegasus.transfer.arguments"] = "-m 1"
     props.write(str(BASE_DIR / "pegasus.properties"))
-    
+
     # --- Sites ----------------------------------------------------------------
     sites.write_basic_site_catalog(
-        str(BASE_DIR / "sites.yml"), 
-        str(WORK_DIR), 
+        str(BASE_DIR / "sites.yml"),
+        str(WORK_DIR),
         args.run_id
     )
 
@@ -175,13 +187,12 @@ if __name__=="__main__":
                     checksum={"sha256": chksum}
                 )
 
-    # pre populate the caches 
+    # pre populate the caches
     for site in ["unl-compute-c1", "syr-compute-c2", "ucsd-compute-c3"]:
         proxy = "http://{}:8000".format(site)
         log.info("populating cache at {}".format(site))
         for url in urls:
             util.wget(url, http_proxy=proxy)
-        
 
     for i in range(args.num_jobs):
         j = Job(script).add_args(i).add_inputs(*inputs)
@@ -194,16 +205,21 @@ if __name__=="__main__":
         with open(args.timestamps_file, "w") as f:
             f.write(datetime.now().strftime('%Y-%m-%dT%H:%M:%S') + " START")
 
+    corrupt_times = '1' if not args.corrupt_times else args.corrupt_times
+    corrupt_prob = '1' if not args.corrupt_prob else args.corrupt_prob
+
     # start driver experiment(s) for the given site(s)
     iris_experiment_drivers = list()
     for site in args.corrupt:
         iris_experiment_drivers.append(
             subprocess.Popen(
                 [
-                    str(BASE_DIR / "iris-experiment-driver"), 
-                    site, 
-                    str(WORK_DIR), 
-                    args.run_id
+                    str(BASE_DIR / "iris-experiment-driver"),
+                    site,
+                    str(WORK_DIR),
+                    args.run_id,
+                    corrupt_times,
+                    corrupt_prob
                 ]
             )
         )
