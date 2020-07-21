@@ -31,6 +31,8 @@ then
   touch ${RESULT_DIR}/${RUN_LINKLABEL_FILE}
 fi
 
+ssh -n $SSH_OPTION ${WORKFLOW_USER}@uc-submit "mkdir -p ${WORKFLOW_RESULT_BASE}"
+
 ##### experiment starts ######
 echo $(date +%Y-%m-%dT%H:%M:%S) > ${RESULT_DIR}/ts_start
 
@@ -44,12 +46,16 @@ do
   echo "Corrupting" $v_node
   echo "run$run $v_node" >> ${RESULT_DIR}/${RUN_LINKLABEL_FILE}
 
+  _get_storage_corrupt_times $v_nodeip
+  _get_storage_probablity $v_nodeip
+
   # Running Workflow, and get the timestamp and corruption log
-  command="python3 ${WORKFLOW_BASE_DIR}/${STORAGE_WORKFLOW_ID}/workflow.py ${WORKFLOW_RESULT_DIR} run${run} ${JOB_NUMBER} -c ${v_node} -t ${WORKFLOW_RESULT_DIR}/run${run}_timestamps"
+  command="python3 ${WORKFLOW_BASE_DIR}/${STORAGE_WORKFLOW_ID}/workflow.py ${WORKFLOW_RESULT_DIR} run${run} ${JOB_NUMBER} -c ${v_node} -t ${WORKFLOW_RESULT_DIR}/run${run}_timestamps -m ${CORRUPT_TIMES} -p ${STORAGE_PROB}"
   echo ${command}
   ssh -n $SSH_OPTION ${WORKFLOW_USER}@uc-submit ${command}
   scp $SSH_OPTION ${WORKFLOW_USER}@uc-submit:${WORKFLOW_RESULT_DIR}/run${run}_timestamps ${RESULT_DIR}/run${run}_timestamps
   scp $SSH_OPTION ${WORKFLOW_USER}@uc-submit:${WORKFLOW_RESULT_DIR}/${v_node}_run${run}_corrupt.log ${RESULT_DIR}/${v_node}_run${run}_corrupt.log
+  scp $SSH_OPTION root@${v_node}:/var/log/cj.log ${RESULT_DIR}/${v_node}_run${run}_cj.log
 done
 
 
