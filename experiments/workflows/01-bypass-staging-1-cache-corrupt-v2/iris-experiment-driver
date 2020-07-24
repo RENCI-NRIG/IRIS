@@ -3,6 +3,8 @@
 corruptsite=$1
 workdir=$2
 runid=$3
+CORRUPT_TIMES=$4
+CORRUPT_PROB=$5
 
 logfile=${workdir}/${corruptsite}_${runid}_corrupt.log
 tmplogfile=/tmp/iris_corrupt_${corruptsite}_${runid}.log  # so control machine can grap it easily
@@ -12,13 +14,16 @@ echo
 echo `date` "Corrupting the cache at ${corruptsite}..."
 echo $(date +%s) CORRUPT_START ${corruptsite} > ${logfile}
 # cj_storage.py might be confused about the state, so "revert" first
-ssh ${corruptsite} "sudo /root/chaos-jungle/storage/cj_storage.py --revert -f /cache/uc-staging.data-plane-~$USER-inputs-Visual_Signaling_By_Signal_Corps_United_States_Army.txt.cached --onetime" >/dev/null 2>&1
-ssh ${corruptsite} "sudo /root/chaos-jungle/storage/cj_storage.py -f /cache/uc-staging.data-plane-~$USER-inputs-Visual_Signaling_By_Signal_Corps_United_States_Army.txt.cached --onetime"
-
+ssh ${corruptsite} "sudo /root/chaos-jungle/storage/cj_storage.py --revert" >/dev/null 2>&1
+for (( j=1; j<=${CORRUPT_TIMES}; j++ ))
+do
+ssh ${corruptsite} "sudo /root/chaos-jungle/storage/cj_storage.py -d /cache/ -f \"uc-staging.data-plane-~$USER*\" -p ${CORRUPT_PROB} -r --onetime"
+done
 sleep 1m
 
 echo
 echo `date` "Clearing the cache at ${corruptsite}..."
+ssh ${corruptsite} "sudo /root/chaos-jungle/storage/cj_storage.py --revert" >/dev/null 2>&1
 ssh ${corruptsite} "sudo rm -f /cache/uc-staging.data-plane-~$USER*"
 echo $(date +%s) CORRUPT_END ${corruptsite} >> ${logfile}
 cp  ${logfile} ${tmplogfile}
