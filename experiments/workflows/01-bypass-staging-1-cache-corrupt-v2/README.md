@@ -2,7 +2,8 @@
 
 ## Usage
 ```
-usage: workflow.py [-h] [-c HOSTNAME] [-t TIMESTAMPS_FILE]
+usage: workflow.py [-h] [-c HOSTNAME] [-t TIMESTAMPS_FILE] [-m CORRUPT_TIMES]
+                   [-p CORRUPT_PROB]
                    dir run_id [1, 1000]
 
 Run a workflow with N independent jobs. Multiple compute hosts may be
@@ -23,6 +24,11 @@ optional arguments:
                         specifying -c <hostname1> -c <hostname2> ..
   -t TIMESTAMPS_FILE, --timestamps-file TIMESTAMPS_FILE
                         Path to write timestamp file to.
+  -m CORRUPT_TIMES, --corrupt_times CORRUPT_TIMES
+                        This is the count that corruption command will be
+                        issued, for multiple files corruption
+  -p CORRUPT_PROB, --corrupt_prob CORRUPT_PROB
+                        The probability of corruption (arg for chaos-jungle)
 ```
 
 ### Args Explained
@@ -45,6 +51,11 @@ with two log files `/tmp/iris_corrupt_unl-compute-c1_<run_id>.log` and
 
 `-t TIMESTAMPS_FILE`: An absolute path to the timestamps file that will be created for this workflow.
 For example,  `-t /tmp/timestamps_test1_run1.txt` could be used. 
+
+`-m CORRUPT_TIMES`: The number of times that the corruption command will be executed in `iris-experiment-driver`
+
+`-p CORRUPT_PROB`: The probability of corruption which is passed to `iris-experiment-driver`
+as an argument for `chaos-jungle`.
 
 ### Example Usage
 

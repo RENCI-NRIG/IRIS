@@ -70,12 +70,16 @@ def parse_args(args=sys.argv[1:]):
     parser.add_argument(
                 "-m",
                 "--corrupt_times",
+                default="1",
+                type=str,
                 help="This is the count that corruption command will be issued, for multiple files corruption"
             )
 
     parser.add_argument(
                 "-p",
                 "--corrupt_prob",
+                default="1",
+                type=str,
                 help="The probability of corruption (arg for chaos-jungle)"
             )
 
@@ -205,9 +209,6 @@ if __name__=="__main__":
         with open(args.timestamps_file, "w") as f:
             f.write(datetime.now().strftime('%Y-%m-%dT%H:%M:%S') + " START")
 
-    corrupt_times = '1' if not args.corrupt_times else args.corrupt_times
-    corrupt_prob = '1' if not args.corrupt_prob else args.corrupt_prob
-
     # start driver experiment(s) for the given site(s)
     iris_experiment_drivers = list()
     for site in args.corrupt:
@@ -218,8 +219,8 @@ if __name__=="__main__":
                     site,
                     str(WORK_DIR),
                     args.run_id,
-                    corrupt_times,
-                    corrupt_prob
+                    args.corrupt_times,
+                    args.corrupt_prob
                 ]
             )
         )
