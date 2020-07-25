@@ -235,7 +235,8 @@ if __name__=="__main__":
                 relative_dir=args.run_id,
                 sites=["condorpool"],
                 staging_sites={"condorpool": "origin"},
-                submit=True
+                submit=True,
+                force=True
         )\
         .wait()
 
