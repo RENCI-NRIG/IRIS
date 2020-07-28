@@ -6,6 +6,8 @@ export JOB_NUMBER=100
 export STORAGE_WORKFLOW_ID=01-bypass-staging-1-cache-corrupt-v2
 export NETWORK_WORKFLOW_ID=02-network-corrupt
 
+export RESULT_PREFIX=01v2_02 #just to identify the workflow we use in output filename
+
 # modify according to your environment
 export ES_USERNAME=""
 export ES_PASSWORD=""

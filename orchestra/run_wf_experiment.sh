@@ -16,8 +16,8 @@ if [ -f ${OUTPUT_DIR}/revert_previous.sh ]; then
 fi
 
 currenttime=$(date +"%Y%m%d_%H%M%p")
-RESULT_DIR=${OUTPUT_DIR}/output_${currenttime}
-WORKFLOW_RESULT_DIR=${WORKFLOW_RESULT_BASE}/${currenttime}
+RESULT_DIR=${OUTPUT_DIR}/${RESULT_PREFIX}_${currenttime}   # in control node
+WORKFLOW_RESULT_DIR=${WORKFLOW_RESULT_BASE}/${currenttime} # in submit node
 mkdir $RESULT_DIR
 cp ${OUTPUT_DIR}/${NODE_ROUTER_FILE} ${RESULT_DIR}/${NODE_ROUTER_FILE}
 
@@ -44,10 +44,11 @@ do
   _get_hostname $v_nodeip
   v_node=$RETURN_HOSTNAME
   echo "Corrupting" $v_node
-  echo "run$run $v_node" >> ${RESULT_DIR}/${RUN_LINKLABEL_FILE}
 
   _get_storage_corrupt_times $v_nodeip
   _get_storage_probablity $v_nodeip
+
+  echo "run$run $v_node ${CORRUPT_TIMES} ${STORAGE_PROB}" >> ${RESULT_DIR}/${RUN_LINKLABEL_FILE}
   
   # backup and clear cj.log so later we get a clean one
   ssh $SSH_OPTION root@${v_node} "cp /var/log/cj.log /var/log/cj_${currenttime}.log"
@@ -149,3 +150,9 @@ echo $(date +%Y-%m-%dT%H:%M:%S) > ${RESULT_DIR}/ts_end
 python3 /root/IRIS/es/iris-es-to-ml.py -s $(cat ${RESULT_DIR}/ts_start) -e $(cat ${RESULT_DIR}/ts_end)
 mv transfer-events.csv ${RESULT_DIR}/transfer-events.csv
 python3 iris_gen_result.py $RESULT_DIR
+
+cd $RESULT_DIR
+tar -czvf ${OUTPUT_DIR}/${RESULT_PREFIX}_${currenttime}.tar.gz *${currenttime}.csv ${RUN_LINKLABEL_FILE}
+
+echo "Data parsed and zipped: "
+echo ${OUTPUT_DIR}/${RESULT_PREFIX}_${currenttime}.tar.gz
