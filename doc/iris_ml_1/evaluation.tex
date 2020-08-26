@@ -47,6 +47,7 @@ When comparing between above three models, the random forest performs the best, 
 
 When $k=3$, the maximal achieved accuracy is slightly above $80\%$, which is very promising for our specific network RCA problem. We tried larger values of $k$. The accuracy doesn't change much until $k$ reaches 20, when it will jump to above $90\%$. We believe the accuracy stall may be mainly due to the particular topology and more importantly the set of the end hosts for data transfers that do not include all the router nodes, which violates the necessary condition to cover all the possible failure causes in a network~\cite{netbouncer:nsdi18}.  
 
+%\begin{comment}
 We next look into the training time of the above three models. From Table.~\ref{tab:time}, it is clear that SVM takes significantly longer time than the other two. Actually the SVC with the default RBF kernel takes much longer time than the linear SVC whose running time is shown in the table. Between the other two, the decision tree model takes the shortest time. Another observation is that the training with the {\it Complete} data set finishes much faster than that with {\it Partial} data set. This makes sense because more complete training data helps the model training converge faster. 
 
 To make the evaluation complete, we also present the F-Score for the single label classification {\it Complete} case in the same table. The SVM model gets the best F-score. As we stated before, we believe the accuracy is the more meaningful metric for the RCA problem, though we will continue to explore better metrics.     
@@ -70,3 +71,4 @@ To make the evaluation complete, we also present the F-Score for the single labe
 \vspace{-0.1in}
 \end{table}
 Combining both training accuracy and training time, the random forest model appears to be a clear winner for the studied RCA problem.
+%\end{comment}
