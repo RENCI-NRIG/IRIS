@@ -87,8 +87,8 @@ if __name__=="__main__":
     props["pegasus.data.configuration"] = "nonsharedfs"
     props["pegasus.monitord.encoding"] = "json"
     props["pegasus.catalog.workflow.amqp.url"] = "amqp://friend:donatedata@msgs.pegasus.isi.edu:5672/prod/workflows"
-    props["dagman.retry"] = "1"
-    props["pegasus.transfer.arguments"] = "-m 1"
+    props["dagman.retry"] = "3"
+    props["pegasus.transfer.arguments"] = "-m 5"
     props.write(str(BASE_DIR / "pegasus.properties"))
     
     # --- Sites ----------------------------------------------------------------
