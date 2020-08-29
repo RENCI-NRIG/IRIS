@@ -85,19 +85,59 @@ if __name__=="__main__":
     # --- Properties ------------------------------------------------------------
     props = Properties()
     props["pegasus.data.configuration"] = "nonsharedfs"
-    props["pegasus.transfer.bypass.input.staging"] = "True"
     props["pegasus.monitord.encoding"] = "json"
     props["pegasus.catalog.workflow.amqp.url"] = "amqp://friend:donatedata@msgs.pegasus.isi.edu:5672/prod/workflows"
-    props["dagman.retry"] = "2"
-    props["pegasus.transfer.arguments"] = "-m 1"
+    props["dagman.retry"] = "3"
+    props["pegasus.transfer.arguments"] = "-m 5"
     props.write(str(BASE_DIR / "pegasus.properties"))
     
     # --- Sites ----------------------------------------------------------------
-    sites.write_basic_site_catalog(
-        str(BASE_DIR / "sites.yml"), 
-        str(WORK_DIR), 
-        args.run_id
-    )
+    path = str(BASE_DIR / "sites.yml")
+    work_dir = str(WORK_DIR)
+    run_id = args.run_id
+
+    SSH_PRIVATE_KEY_PATH = os.getenv("HOME") + "/.ssh/id_rsa"
+    LOCAL_SHARED_SCRATCH_PATH = work_dir + "/" + run_id
+    LOCAL_LOCAL_STORAGE_PATH = work_dir + "/outputs/" + run_id
+
+    local = Site("local", arch=Arch.X86_64, os_type=OS.LINUX)\
+                .add_directories(
+                    Directory(Directory.SHARED_SCRATCH, LOCAL_SHARED_SCRATCH_PATH)
+                        .add_file_servers(FileServer("file://" + LOCAL_SHARED_SCRATCH_PATH, Operation.ALL)),
+                    
+                    Directory(Directory.LOCAL_STORAGE, LOCAL_LOCAL_STORAGE_PATH)
+                        .add_file_servers(FileServer("file://" + LOCAL_LOCAL_STORAGE_PATH, Operation.ALL))
+                )\
+                .add_profiles(Namespace.PEGASUS, SSH_PRIVATE_KEY=SSH_PRIVATE_KEY_PATH)\
+                .add_env(LANG="C.UTF-8")
+
+    # create origin (staging) site
+    ORIGIN_SHARED_SCRATCH_PATH = os.getenv("HOME") + "/public_html/"
+    ORIGIN_FILE_SERVER_GET_URL = "http://uc-staging.data-plane/~" + os.getenv("USER") + "/"
+    ORIGIN_FILE_SERVER_PUT_URL = "scp://" + os.getenv("USER") + "@uc-staging.data-plane/home/" + os.getenv("USER") + "/public_html"
+    
+    origin = Site("origin", arch=Arch.X86_64, os_type=OS.LINUX)\
+                .add_directories(
+                    Directory(Directory.SHARED_SCRATCH, ORIGIN_SHARED_SCRATCH_PATH)
+                        .add_file_servers(
+                            FileServer(ORIGIN_FILE_SERVER_GET_URL, Operation.GET),
+                            FileServer(ORIGIN_FILE_SERVER_PUT_URL, Operation.PUT)
+                        )
+                )\
+                .add_env(LANG="C.UTF-8")
+    
+    # create condorpool site 
+    condorpool = Site("condorpool", arch=Arch.X86_64, os_type=OS.LINUX)\
+                    .add_pegasus_profile(style="condor")\
+                    .add_condor_profile(universe="vanilla")\
+                    .add_env(LANG="C.UTF-8")\
+                    .add_env(http_proxy="DISABLED")
+
+    
+    # write catalog to path 
+    sc = SiteCatalog()\
+            .add_sites(local, origin, condorpool)\
+            .write(path)
 
     # --- Transformations - Replicas - Workflow ---------------------------------
     username = getpass.getuser()
