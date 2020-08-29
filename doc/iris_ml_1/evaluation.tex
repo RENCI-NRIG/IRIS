@@ -1,19 +1,28 @@
 We created the topology shown in Figure~\ref{fig:topology} in ExoGENI to conduct our experiments. Among the $23$ nodes in this topology, we specify $6$ data origins and $6$ data sinks as the end hosts to transfer a batch of data files ($886$ files) of different sizes that we randomly acquired from OSG. There are $49$ links in total with which we try to emulate a topology following the power law, i.e., $4$ routing nodes in the middle to emulate the backbone domain and the rest emulate the access domains in between the backbone nodes and the end hosts. 
 
-We ran two sets of experiments to collect two sets of training data. In the first one, called {\it Partial},
-data transfers only happen between the origins and sinks. In the second one, called {\it Complete}, 
-data transfers happen between all the end host pairs. Each origin node sends all the $886$ files to all the receiving nodes, where the file integrity is being checked.
+We ran two sets of experiments to collect two sets of raw training data. In the first one, called {\it Partial},
+data transfers only happen between the origins and sinks, where every origin node sends all the $886$ files 
+to all the receiving nodes in parallel. In the second one, called {\it Complete}, data transfers happen between all the end host pairs. 
+The file integrity is being checked at the receiving end host and each file transfer accounts for one data flow and a
+ data sample in the raw training data set.
 
-For each experiment, probabilistic integrity error or network impairment via the Chaos Jungle tool is injected to the links and end hosts in sequence with the given probability setting. For each fault injection scenario, the entire set of {\it Partial} or {\it Complete} data transfers are conducted. The receiving node checks if the receiving file is identical to the original copy and marks the data transfer as failure if files are not identical. A file could also be missed which is treated as failure. We treat retransmission as a separate feature. Each link or node component with fault injected is a label and each file transfer becomes a data point in the training set. We further parallelized the data transfer process to reduce the emulation time down to about twenty four hours for this particular network. 
+For each experiment, probabilistic integrity error or network impairment via the Chaos Jungle tool is injected to the $66$ link interfaces and $12$ end hosts in sequence with the given probability setting. Therefore resulted data set carries $66$ labels or classes in total. As a very basic benchmark, we note the accuracy of random classification is merely $\frac{1}{66}$.
 
-Following figures show the accuracy results. The figures from Decision Tree and Bayes models have two parts: the left part shows the results for the {\it Partial} data set and the right part shows the results for the {\it Complete} data set. Each part depicts four levels of accuracy: flow, top-1, top-2, and top-3. The results from the SVM show two different types of models: linear SVM and general SVM with RBF kernel.
-We inject integrity errors in $67$ network components including the interfaces and end host nodes, which represents $67$ labels. As a very basic benchmark, the accuracy of random classification is merely $\frac{1}{67}$.
+For each fault injection scenario, the entire set of {\it Partial} or {\it Complete} data transfers are conducted. Each link or node component with fault injected is a label and each file transfer becomes a data sample in the raw training data set. The receiving node checks if a received file is identical to its original copy via checksum and marks this data transfer as a failure data sample if checksums do not match. A file could also be missed at the destination due to ultimate transfer failure which is also treated as a failure. If the checksum match, this data transfer becomes a success data sample in the training data set. We treat retransmission as a separate feature for the data samples. We further parallelized the data transfer process to reduce the emulation time down to about twenty four hours for this particular network. 
+
+As explained on Equation~\ref{eq:prob}, for a data sample, the feature set consists of both categorical features in the potential network elements on its path and the numerical features 
+in the file transfer characteristics including the file size and transfer throughput, etc. We use One Hot Encoding for all the categorical features. 
+We note, in our study, only the end hosts are used in the categorical features because we assume the other network elements are unknown on the routes. 
+We want to quantify the impact of the file characteristics on the model prediction performance. 
+
+Following figures show the overall performance results when using the three models. The figures from Decision Tree and Bayes models have two parts: the left part shows the results for the {\it Partial} data set and the right part shows the results for the {\it Complete} data set. The results from the SVM show two different types of models: linear SVM and general SVM with RBF kernel. Each part depicts three types of prediction performance metrics: Per Flow Accuracy, Per Flow F!-Score, and $Top-k$ Aggregate Flow Accuracy with $k=1,2,3$.
+
 \begin{figure}[!ht]
 \begin{center}
-\includegraphics[width=0.45\textwidth]{./figure/dt-result}
+\includegraphics[width=0.45\textwidth]{./figure/rf-accuracy}
 \end{center}
 \vspace{-0.05in}
-\caption{Classification Accuracy with Decision Tree Model}
+\caption{Classification Accuracy with Random Forest Model}
 \vspace{-0.05in}
 \label{fig:dt}
 \end{figure}
@@ -22,7 +31,7 @@ Fig.~\ref{fig:dt} presents the results using the random forest model. The single
 
 \begin{figure}[!ht]
 \begin{center}
-\includegraphics[width=0.45\textwidth]{./figure/svm-result}
+\includegraphics[width=0.45\textwidth]{./figure/svc-accuracy}
 \end{center}
 \vspace{-0.05in}
 \caption{Classification Accuracy with SVM Model}
@@ -33,7 +42,7 @@ Fig.~\ref{fig:dt} presents the results using the random forest model. The single
 Fig.~\ref{fig:svm} depicts the results using two different models: linear and general SVM with RBF kernel. It shows the same trends with regards to $k$. It also clearly shows that Linear SVM performs better than the general SVM.
 \begin{figure}[!ht]
 \begin{center}
-\includegraphics[width=0.45\textwidth]{./figure/bn-result}
+\includegraphics[width=0.45\textwidth]{./figure/nb-accuracy}
 \end{center}
 \vspace{-0.05in}
 \caption{Classification Accuracy with Multinomial Naive Bayes}
@@ -52,9 +61,9 @@ We next look into the training time of the above three models. From Table.~\ref{
 
 To make the evaluation complete, we also present the F-Score for the single label classification {\it Complete} case in the same table. The SVM model gets the best F-score. As we stated before, we believe the accuracy is the more meaningful metric for the RCA problem, though we will continue to explore better metrics.     
 \begin{table}[!ht]
-\caption{Training Time and F\-Score
-\label{tab:time}}
-\vspace{-0.1in}
+\caption{Training Time and F\-Score}
+\label{tab:time}
+%\vspace{-0.1in}
 \begin{center}
 \begin{tabular}{ |c|c|c|c| } 
  \hline
@@ -68,7 +77,48 @@ To make the evaluation complete, we also present the F-Score for the single labe
  \hline
 \end{tabular}
 \end{center}
-\vspace{-0.1in}
+%\vspace{-0.1in}
 \end{table}
-Combining both training accuracy and training time, the random forest model appears to be a clear winner for the studied RCA problem.
+Combining both training accuracy and training time, the random forest model appears to be a clear winner for the studied RCA problem. Therefore, in the following analysis, we focus on this model.
 %\end{comment}
+
+In order to gain more insight into the classification accuracy performance, we observed that the majority mislabeled data in the prediction are those with labels of end host faults.  This is because the raw training data set is highly imbalanced due to the different impacts of the injected failures on the data files being transferred~\ref{sub:ml:imbalance}. There are significantly less integrity errors caused by the faulty end hosts, \ie, significantly less labeled data in these classes.
+
+The details are shown in Table~\ref{tab:class}. We first categorize all the labeled data into two groups: those with faulty link interfaces and those with faulty end hosts, {\it Max} and {\it Min} represent the maximum and minimum number of samples in a class in each category, and the $Top-k$ up to $k=3$ accuracy under each category is calculated separately. We can see that there are hundred times more samples in a few link failure classes than those in all the end host failure classes, and samples from some link failures classes are about ten times less than those from some other link failure classes. As a result, all the end host failures are misclassified in all the cases, while most link failure cases are correctly classified and the accuracy reaches $1$ when $k=3$.
+
+\begin{table}[!ht]
+\caption{Classification Accuracy Differentiation}
+\label{tab:class}
+%\vspace{-0.1in}
+\begin{center}
+\begin{tabular}{ |c|c|c|c|c| } 
+ \hline
+  \multicolumn{5}{|c|}{Link Faults} \\
+ \hline
+ Max & Min & $Top-1$ & $Top-2$ & $Top-3$\\ 
+ \hline
+ 1443 & 121  & 0.0.74 &  0.79 & 0.98 \\
+ \hline
+\end{tabular}
+
+\begin{tabular}{ |c|c|c|c|c|} 
+ \hline
+\multicolumn{5}{|c|}{Host Faults} \\
+ \hline
+ Max & Min & $Top-1$ & $Top-2$ & $Top-3$ \\ 
+ \hline
+11 & 11  & 0 &  0 & 0\\
+  \hline
+\end{tabular}
+\end{center}
+%\vspace{-0.1in}
+\end{table}
+
+The main techniques to solve the dataset imbalance problem are to rebalance the data via oversampling or downsampling data from different classes. Since the labeled data subsets from the end host failure classes are rather small, the downsampling techniques will not improve on the model performance. We therefore focus on studying three representative oversampling techniques: random, SMOTE, and ADASYN.
+
+The random oversampling approach is straightforward in which new samples are randomly generated by copying the existing samples from the undersampled classes. In our case, the resulted augmented data set will have 1443 labeled data for each of the 66 classes. 
+
+The SMOTE(Synthetic Minority Oversampling Technique ) ~\cite{smote:2002} and the ADASYN (Adaptive synthetic sampling approach for imbalanced learning)~cite{ADASYN:2008} methods are two popular oversampling techniques that 
+generate new samples by interpolation rather than duplication of existing samples using variants of k-Nearest Neighbors classifier method.
+
+
