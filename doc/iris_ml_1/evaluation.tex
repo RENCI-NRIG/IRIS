@@ -5,7 +5,7 @@ nodes in the middle to emulate the backbone domains and the rest emulate the acc
 We ran two sets of experiments to collect two sets of raw training data. In the first one, called {\it Partial},
 data transfers only happen between the origins and sinks, where every origin node sends all the $886$ files 
 to all the receiving nodes in parallel. In the second one, called {\it Complete}, data transfers happen between all the end host pairs. 
-We further parallelized the data transfer process to reduce the emulation time down to about twenty four hours for this particular network.  
+We further parallelized the data transfer process to reduce the emulation time down to about twenty-four hours for this particular network.  
 
 The file integrity is being checked at the receiving end host and each file transfer accounts for one data flow and therefore a
  data sample in a training data set.
@@ -24,7 +24,7 @@ and transfer status (retransmission, etc.) are all indispensable, (3) handling o
 We compared different variants out of the three categories presented in Section~\ref{sec:ml} and presented the best model from each one: Random Forest, Linear SVC with the RBF kernel., and Multinomial Naive Bayes.
 We use One Hot Encoding for all the categorical features. 
 
-Each figure shows five different performance metrics under four scenarios. The five metrics are F1 score with per flow inference, the accuracy with per-flow inference, and the $Top-1$, $Top-2$, and $Top-3$ accuracy with
+Each figure shows five different performance metrics under four scenarios. The five metrics are F1 score with per-flow inference, the accuracy with per-flow inference, and the $Top-1$, $Top-2$, and $Top-3$ accuracy with
 aggregated flow inference. The four scenarios are {\it Partial} and the {\it Complete} data sets with {\it All} features (file and network) or only network ({\it No File}) features.
 
 \begin{figure}[!ht]
@@ -37,8 +37,17 @@ aggregated flow inference. The four scenarios are {\it Partial} and the {\it Com
 \label{fig:dt}
 \end{figure}
 
-Fig.~\ref{fig:dt} presents the results from training random forest models with different data sets. Two prominent observations stand out. First,   
-The single flow level accuracy is very poor and the accuracy increases dramatically with bigger $k$. It also clearly shows that the model with {\it Complete} data performs much better than the {\it Partial} case. However, the gap becomes small when $k=3$. 
+Fig.~\ref{fig:dt} presents the results from training random forest models with different data sets. Two prominent observations stand out. 
+First, it clearly shows that the model with {\it Complete} data performs significantly better than the {\it Partial} case. This illustrates the importance of sufficient 
+coverage of the network path information in the training data set. It also shows that, even without the full coverage of network path between the network routers, 
+the flows between end hosts along can guarantee very high RCA inference accuracy.   
+Secondly, training with {\it All Features} outperforms its {\it No File Features} counterpart by a large margin. This means the file transfer statistics can boost the inference performance.  
+
+When we zoom into more details, we can see that the combined {\it Complete-All Features} data set presents satisfactory performance even with the single flow-base testing data samples with 
+both F1 score and accuracy above $0.90$. When the aggregated flow data samples are used for inference, the accuracy scores perfect $1$. The next best scenario is when {\it All Features} presented with 
+{\it Partial} data transfer, while the single flow-based inference only achieved under $0.5$ accuracy, the aggregated flow-based inference doubles the accuracy and quickly narrows down the root cause to the 
+top $2$ elements. However, without more path coverage, it doesn't achieve perfect accuracy until $Top-10$. For the next two scenarios, the aggregated flow inference helps achieve better performance 
+and {\it Complete} path coverage appears more important than the inclusion of file transfer features. However, the best it can achieve is a mere $80\%$ $Top-3$ accuracy.  
 
 \begin{figure}[!ht]
 \begin{center}
@@ -63,12 +72,15 @@ Fig.~\ref{fig:svm} depicts the results using two different models: linear and ge
 
 Fig.~\ref{fig:bn} shows the results using the Multinomial Naive Bayes approach. Again, the accuracy increases with $k$.
 
-When comparing between above three models, the random forest performs the best, linear SVM the next best, and the Bayes model performs the worst. 
+When comparing the above three models, the random forest performs the best, linear SVM the next best, and the Bayes model performs the worst. 
 
 When $k=3$, the maximal achieved accuracy is slightly above $80\%$, which is very promising for our specific network RCA problem. We tried larger values of $k$. The accuracy doesn't change much until $k$ reaches 20, when it will jump to above $90\%$. We believe the accuracy stall may be mainly due to the particular topology and more importantly the set of the end hosts for data transfers that do not include all the router nodes, which violates the necessary condition to cover all the possible failure causes in a network~\cite{netbouncer:nsdi18}.  
 
+The single flow level accuracy is very poor and the accuracy increases dramatically with bigger $k$. However, the gap becomes small when $k=3$. 
+
+
 %\begin{comment}
-We next look into the training time of the above three models. From Table.~\ref{tab:time}, it is clear that SVM takes significantly longer time than the other two. Actually the SVC with the default RBF kernel takes much longer time than the linear SVC whose running time is shown in the table. Between the other two, the decision tree model takes the shortest time. Another observation is that the training with the {\it Complete} data set finishes much faster than that with {\it Partial} data set. This makes sense because more complete training data helps the model training converge faster. 
+We next look into the training time of the above three models. From Table.~\ref{tab:time}, it is clear that SVM takes a significantly longer time than the other two. The SVC with the default RBF kernel takes a much longer time than the linear SVC whose running time is shown in the table. Between the other two, the decision tree model takes the shortest time. Another observation is that the training with the {\it Complete} data set finishes much faster than that with {\it Partial} data set. This makes sense because more complete training data helps the model training converge faster. 
 
 To make the evaluation complete, we also present the F-Score for the single label classification {\it Complete} case in the same table. The SVM model gets the best F-score. As we stated before, we believe the accuracy is the more meaningful metric for the RCA problem, though we will continue to explore better metrics.     
 \begin{table}[!ht]
@@ -93,9 +105,9 @@ To make the evaluation complete, we also present the F-Score for the single labe
 Combining both training accuracy and training time, the random forest model appears to be a clear winner for the studied RCA problem. Therefore, in the following analysis, we focus on this model.
 %\end{comment}
 
-In order to gain more insight into the classification accuracy performance, we observed that the majority mislabeled data in the prediction are those with labels of end host faults.  This is because the raw training data set is highly imbalanced due to the different impacts of the injected failures on the data files being transferred~\ref{sub:ml:imbalance}. There are significantly less integrity errors caused by the faulty end hosts, \ie, significantly less labeled data in these classes.
+In order to gain more insight into the classification accuracy performance, we observed that the majority of mislabeled data in the prediction are those with labels of end host faults.  This is because the raw training data set is highly imbalanced due to the different impacts of the injected failures on the data files being transferred~\ref{sub:ml:imbalance}. There are significantly fewer integrity errors caused by the faulty end hosts, \ie, significantly less labeled data in these classes.
 
-The details are shown in Table~\ref{tab:class}. We first categorize all the labeled data into two groups: those with faulty link interfaces and those with faulty end hosts, {\it Max} and {\it Min} represent the maximum and minimum number of samples in a class in each category, and the $Top-k$ up to $k=3$ accuracy under each category is calculated separately. We can see that there are hundred times more samples in a few link failure classes than those in all the end host failure classes, and samples from some link failures classes are about ten times less than those from some other link failure classes. As a result, all the end host failures are misclassified in all the cases, while most link failure cases are correctly classified and the accuracy reaches $1$ when $k=3$.
+The details are shown in Table~\ref{tab:class}. We first categorize all the labeled data into two groups: those with faulty link interfaces and those with faulty end hosts, {\it Max} and {\it Min} represent the maximum and the minimum number of samples in a class in each category and the $Top-k$ up to $k=3$ accuracy under each category is calculated separately. We can see that there are a hundred times more samples in a few link failure classes than those in all the end host failure classes, and samples from some link failures classes are about ten times less than those from some other link failure classes. As a result, all the end host failures are misclassified in all the cases, while most link failure cases are correctly classified and the accuracy reaches $1$ when $k=3$.
 
 \begin{table}[!ht]
 \caption{Classification Accuracy Differentiation}
@@ -127,7 +139,7 @@ The details are shown in Table~\ref{tab:class}. We first categorize all the labe
 
 The main techniques to solve the dataset imbalance problem are to rebalance the data via oversampling or downsampling data from different classes. Since the labeled data subsets from the end host failure classes are rather small, the downsampling techniques will not improve on the model performance. We therefore focus on studying three representative oversampling techniques: random, SMOTE, and ADASYN.
 
-The random oversampling approach is straightforward in which new samples are randomly generated by copying the existing samples from the undersampled classes. In our case, the resulted augmented data set will have 1443 labeled data for each of the 66 classes. 
+The random oversampling approach is straightforward in which new samples are randomly generated by copying the existing samples from the undersampled classes. In our case, the augmented data set will have 1443 labeled data for each of the 66 classes. 
 
 The SMOTE(Synthetic Minority Oversampling Technique ) ~\cite{smote:2002} and the ADASYN (Adaptive synthetic sampling approach for imbalanced learning)~cite{ADASYN:2008} methods are two popular oversampling techniques that 
 generate new samples by interpolation rather than duplication of existing samples using variants of k-Nearest Neighbors classifier method.
