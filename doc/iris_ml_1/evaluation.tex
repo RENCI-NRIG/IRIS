@@ -17,15 +17,15 @@ We treat retransmission as a separate feature for the data samples.  A file coul
 If the checksum matches, this data transfer becomes a success data sample in the training data set. Otherwise, it is labeled by the corresponding faulty element, one of the total $66$ labels in this study. 
 As a very basic benchmark, we note the accuracy of random classification would be merely $\frac{1}{66}$. 
 
-Through extensive training data analysis, we hope to achieve three import goals in our RCA study:  (1) performance comparison in terms of accuracy and training time performance of different models, 
+Through extensive training data analysis, we hope to achieve three major goals in our RCA study: (1) performance comparison in terms of accuracy and training time performance of different models, 
 (2) impact quantification of different types of features on the model performance, esp. the file size and the transfer throughput, because the other features like data transfer source and destination, integrity error, 
 and transfer status (retransmission, etc.) are all indispensable, (3) handling of the inherited data imbalance in the training data set.  
 
-We compared different variants out of the three categories presented in Section~\ref{sec:ml} and presented the best model from each one: Random Forest, Linear SVC, and Multinomial Naive Bayes.
+We compared different variants out of the three ML model families presented in Section~\ref{sec:ml} and presented the best model from each one: Random Forest, Linear SVC, and Multinomial Naive Bayes.
 We use One Hot Encoding for all the categorical features. 
 
-Each figure shows five different performance metrics under four scenarios. The five metrics are F1 score with per-flow inference, the accuracy with per-flow inference, and the $Top-1$, $Top-2$, and $Top-3$ accuracy with
-aggregated flow inference. The four scenarios are {\it Partial} and the {\it Complete} data sets with {\it All} features (file and network) or only network ({\it No File}) features.
+Each figure shows five different performance metrics under four scenarios. The five metrics are F1 score with per-flow inference, the accuracy with per-flow ({\it Flow} inference, and the $Top-1$, $Top-2$, and $Top-3$ accuracy with
+the {\it Aggregated Flow} inference. The four scenarios are {\it Partial} and the {\it Complete} data sets with {\it All Features} or only {\it No File features}.
 
 \begin{figure}[!ht]
 \begin{center}
@@ -40,9 +40,9 @@ First, it clearly shows that the model with {\it Complete} data performs signifi
 coverage of the network path information in the training data set. It also shows that, even without the full coverage of network path between the network routers, 
 the flows between end hosts along can guarantee very high RCA inference accuracy.   
 Secondly, training with {\it All Features} outperforms its {\it No File Features} counterpart by a large margin. This means the file transfer statistics can boost the inference performance.  
-We also learnt that the file transfer throughput has bigger impact than the file size, though the result is not shown here due to page limit. 
+We also learned that the file transfer throughput has a bigger impact than the file size, though the result is not shown here. 
 
-When we zoom into more details, we can see that the combined {\it Complete-All Features} data set presents satisfactory performance even with the single flow-base testing data samples with 
+When we zoom into more details, we can see that the combined {\it Complete-All Features} data set presents satisfactory performance even with the single flow-based testing data samples with 
 both F1 score and accuracy reaching above $0.90$. When the aggregated flow data samples are used for inference, the accuracy scores perfect $1$. The next best scenario is when {\it All Features} presented with 
 {\it Partial} data transfer, while the single flow-based inference only achieved under $0.5$ accuracy, the aggregated flow-based inference doubles the accuracy and quickly narrows down the root cause to the 
 top $2$ elements. However, without more path coverage, it doesn't achieve perfect accuracy until $Top-10$. For the next two scenarios, the aggregated flow inference helps achieve better performance 
@@ -69,9 +69,9 @@ Overall, comparing to the rain forest model, it scores much worse in every perfo
 \end{figure}
 
 Fig.~\ref{fig:bn} shows the results with the Multinomial Naive Bayes model. Again, the accuracy increases with $k$. The single flow level accuracy is very poor and the accuracy increases dramatically with bigger $k$. 
-It in general follows the pattern of the SVM model except it performs better in all the metrics. For example, its $Top-3$ accuracy is above $0.8$. Another difference is that, in the {\it Partial} scenario, it performs better with the {\it All-Features} than that with only {\it No File Features (NF) } for the F1-score, flow-based accuracy and the $Top-1$ accuracy.
+It in general follows the pattern of the SVM model except it performs better in all the metrics. For example, its $Top-3$ accuracy is above $0.8$. Another difference is that, in the {\it Partial} scenario, it performs better with the {\it All-Features} than that with only {\it No File Features (NF) } for the F1-score, flow-based accuracy, and the $Top-1$ accuracy.
 
-We next look into the training time of the above three models when using a Macbook Pro laptop with the Quad-Core i7 CPU and 16GB RAM. We note this only helps with the relative compute time performance comparison among the models since we can always use more powerful servers with larger training data set. From Table.~\ref{tab:time}, it is clear that the linear SVC model takes a substantially longer time than the other two to converge in all four cases. The SVC with the default RBF kernel takes a longer time and fails to converge after several hours even for the {\it Partial} data set which is not shown here. Between the other two, the BN model takes the shortest time (in sub-seconds) though all the Random Forest model trainings converge in a few seconds. The next observation is that the training with the {\it Complete} data set finishes much faster than it counterpart with {\it Partial} data set. This makes sense because more complete training data helps the model training converge faster. Due to the same reason, the data set with the {\it All Features (AF)} converges faster sometimes, though not substantially.
+We next look into the training time of the above three models when using a Macbook Pro laptop with the Quad-Core i7 CPU and 16GB RAM. We note this only helps with the relative compute time performance comparison among the models since we can always use more powerful servers with larger training data set. From Table.~\ref{tab:time}, it is clear that the linear SVC model takes a substantially longer time than the other two to converge in all four cases. The SVC with the default RBF kernel takes a longer time and fails to converge after several hours even for the {\it Partial} data set which is not shown here. Between the other two, the BN model takes the shortest time (in sub-seconds) but all the training of the random forest models converge in a few seconds. The next observation is that the training with the {\it Complete} data set finishes much faster than its counterpart with {\it Partial} data set. This makes sense because more complete training data helps the model training converge faster. Due to the same reason, the data set with the {\it All Features (AF)} converges faster sometimes, though not substantially.
 
 \begin{table}[!ht]
 \caption{Training Time }
@@ -94,7 +94,7 @@ We next look into the training time of the above three models when using a Macbo
 \end{table}
 Combining both training accuracy and training time, the random forest model appears to be a clear winner for the RCA problem under our study since its trained model achieves excellent accuracy performance with rather short training time. BN models deserve further exploration due to its fast convergency and relative benign performance, especially networks of larger scale.
 
-In order to gain more insight into the classification accuracy performance, we observed that the majority of mislabeled data in the classification inference are those with labels of end host faults in all the scenarios whose accuracy is less than $1$.  This is because the raw training data set is highly imbalanced due to the different impacts of the injected failures on the data files being transferred~\ref{sub:ml:imbalance}. There are significantly fewer integrity errors caused by the faulty end hosts, \ie, significantly less labeled data in these classes. 
+In order to gain more insight into the classification accuracy performance, we observed that the majority of mislabeled data in the classification inference are those with labels of end host faults in all the scenarios whose accuracy is less than $1$.  This is because the raw training data set is highly imbalanced due to the different impacts of the injected failures on the data files being transferred (Section~\ref{sub:ml:imbalance}). There are significantly fewer integrity errors caused by the faulty end hosts, \ie, significantly less labeled data in these classes. 
 
 We take the {\it Complete-No File Features} data set with the Random Forest model as an example. The details are shown in Table~\ref{tab:class}. We first categorize all the labeled data into two groups: those with faulty link interfaces and those with faulty end hosts, {\it Max} and {\it Min} represent the maximum and the minimum number of samples in a class in each category and the $Top-k$ up to $k=3$ accuracy under each category is calculated separately. We can see that there are a hundred times more samples in a few link failure classes than those in all the end host failure classes, and samples from some link failures classes are about ten times less than those from some other link failure classes. As a result, all the end host failures are misclassified in all the cases, while most link failure cases are correctly classified and the accuracy reaches $1$ when $k=3$.
 
@@ -126,14 +126,14 @@ We take the {\it Complete-No File Features} data set with the Random Forest mode
 %\vspace{-0.1in}
 \end{table}
 
-The main techniques to solve the dataset imbalance problem are to rebalance the data via oversampling or downsampling data from different classes. Since the labeled data subsets from the end host failure classes are rather small, the pure downsampling techniques will not improve on the model performance. We therefore focus on two representative oversampling techniques: random and SMOTE as well as two methods that combine oversampling and downsampling.
+The main techniques to solve the dataset imbalance problem are to rebalance the data via oversampling or downsampling data from different classes. Since the labeled data subsets from the end host failure classes are rather small, the pure downsampling techniques will not improve on the model performance. We focus on two representative oversampling techniques: random and SMOTE as well as two methods that combine oversampling and downsampling.
 These methods have been implemented in the {\it imbalanced-learn} library~\cite{imbalance-learn:web}.
 
-The random oversampling approach is straightforward in which new samples are randomly generated by copying the existing samples from the underrepresented classes. The SMOTE(Synthetic Minority Oversampling Technique ) ~\cite{smote:2002} method and its variants are among the most popular oversampling techniques. SMOTE generates new samples by interpolation rather than duplication of existing samples using variants of k-Nearest Neighbors classifier method. At the end of the oversampling with above example, the augmented data set will have 1443 labeled data for each of the 66 classes. 
+The random oversampling approach is straightforward in which new samples are randomly generated by copying the existing samples from the underrepresented classes. The SMOTE(Synthetic Minority Oversampling Technique ) ~\cite{smote:2002} method and its variants are among the most popular oversampling techniques. SMOTE generates new samples by interpolation rather than duplication of existing samples using variants of k-Nearest Neighbors classifier method. At the end of the oversampling with the above example, the augmented data set will have 1443 labeled data for each of the 66 classes. 
 
 SMOTETomek is a combined method that uses SMOTE for Oversampling and removes Tomek links for downsampling. Tomek links identify two samples that are too close to each other. SMOTEENN is another popular method that combines over- and under-sampling using SMOTE and Edited Nearest Neighbors.
 
-For the  {\it Complete-All Features} data set, our analysis indicated that both Random and combined SMOTE methods resulted similar perfect $Top-k$ performance but reduced flow-based F1 Score and accuracy slightly. SMOTE actually deteriorated all the metrics. The observations on the  {\it Complete-No File Features} data set are similar. Since the performance of the original model is already perfect for the former case, we only present the results on the two {\it Partial} data sets.
+For the  {\it Complete-All Features} data set, our analysis indicated that both Random and combined SMOTE methods resulted in similar perfect $Top-k$ performance but slightly reduced flow-based F1 Score and accuracy. SMOTE actually deteriorated all the metrics. The observations on the  {\it Complete-No File Features} data set are similar. Since the performance of the original model is already perfect for the former case, we only present the results on the two {\it Partial} data sets.
 
 
 \begin{figure}[!ht]
@@ -152,4 +152,4 @@ For the  {\it Complete-All Features} data set, our analysis indicated that both 
 \label{fig:dt}
 \end{figure}
 
-The results show that the SMOTEENN method doesn't help the performance. The other three all improve the performance to some extent though at different scale, especially on the $Top--k$ accuracy measurement. The basic Random oversampling demonstrates the best performance improvement in most cases.  The main takeaway is that multiple sampling methods have to be evaluated in order to find the best one.
+The results show that the SMOTEENN method doesn't help the performance. The other three all improve the performance to some extent though at different scales, especially on the $Top-k$ accuracy measurement. The basic random oversampling demonstrates the best performance improvement in most cases.  The main takeaway is that multiple sampling methods have to be evaluated in order to find the best one.
