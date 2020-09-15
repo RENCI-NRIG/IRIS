@@ -1,5 +1,14 @@
 # 01 Bypass Staging Cache Corrupt 
 
+## Description
+
+This will run a workflow with `N` independent jobs. One or more compute hosts
+may be corrupted at given times based on a given probability. Data staging is
+bypassed in this experiment (prior to running the workflow, data is manually
+staged into `uc-staging`. Additionally, before the workflow is started, the
+http caches on the compute sites are prepopulated with all the files needed
+by the workflow jobs. 
+
 ## Usage
 ```
 usage: workflow.py [-h] [-c HOSTNAME] [-t TIMESTAMPS_FILE] [-m CORRUPT_TIMES]
@@ -31,7 +40,7 @@ optional arguments:
                         The probability of corruption (arg for chaos-jungle)
 ```
 
-### Args Explained
+## Args Explained
 
 `dir`: An absolute path to a directory where workflow runs (`run_id`) will be placed. 
 It will be created if one does not already exist. For example, this could be `/home/tanaka/test1`.
@@ -57,7 +66,7 @@ For example,  `-t /tmp/timestamps_test1_run1.txt` could be used.
 `-p CORRUPT_PROB`: The probability of corruption which is passed to `iris-experiment-driver`
 as an argument for `chaos-jungle`.
 
-### Example Usage
+## Example Usage
 
 `./workflow.py /home/tanaka/test_batch0 run1 30`
 
