@@ -1,5 +1,13 @@
 # 02 Network Corrupt
 
+## Description
+
+This will run a workflow with `N` independent jobs. For this workflow, use of
+the http caches are disabled and file transfers will take place between the
+compute sites and the staging site whenever a job is run. The goal is to have
+data flow through as many network links as possible (links will be corrupted based
+on the experiment run). 
+
 ## Usage
 ```
 usage: workflow.py [-h] [-t TIMESTAMPS_FILE] dir run_id [1, 1000]
@@ -20,7 +28,7 @@ optional arguments:
                         Path to write timestamp file to.
 ```
 
-### Args Explained
+## Args Explained
 
 `dir`: An absolute path to a directory where workflow runs (`run_id`) will be placed. 
 It will be created if one does not already exist. For example, this could be `/home/tanaka/test1`.
@@ -34,7 +42,7 @@ for test runs, and 100 for an actual experiment run.
 `-t TIMESTAMPS_FILE`: An absolute path to the timestamps file that will be created for this workflow.
 For example,  `-t /tmp/timestamps_test1_run1.txt` could be used. 
 
-### Example Usage
+## Example Usage
 Running a simple test.
 ```
 ./pre_setup.py
