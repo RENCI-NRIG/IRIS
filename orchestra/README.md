@@ -26,7 +26,7 @@ $ ./init.sh
 
 ### [Start Experiment]
  
-#### 1. If needed, modify `CORRUPT_NODES` and `CORRUPT_EDGES` files in the $OUTPUT_DIR to indicate which nodes and edges to corrupt. 
+#### 1. Review and modify `CORRUPT_NODES` and `CORRUPT_EDGES` files in the $OUTPUT_DIR to indicate which nodes and edges to corrupt.
 &nbsp;&nbsp;&nbsp;&nbsp;Default all end nodes and all edges will be included. 
 
 &nbsp;&nbsp;&nbsp;&nbsp;in `CORRUPT_NODES` file:
@@ -48,9 +48,9 @@ export uc-staging_Link19=192.168.19.3
 Every line in these files will become one run of workflow experiment
 
 
-#### 2. Start the experiment by `run_wf_experiment.sh`, a result folder will be created under `OUTPUT_DIR`. The log files and result `matrix.csv` will be inside the folder.
+#### 2. Start the experiment by `run_wf_experiment.sh`, a result folder will be created under `OUTPUT_DIR`.
 ```
-$ ./run_wf_experiment.sh
+$ ./run_wf_experiment.sh > ~/run_wf_experiment.log 2>&1
 ```
 
 #### 3. Check the latest folder under $OUTPUT_DIR (default:~/iris_results) for the result

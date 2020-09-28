@@ -143,16 +143,20 @@ EOF
       echo $(date +%s) CORRUPT_END "${link//_/.}" >> ${link_corrupt_log}
     fi
 done < ${CORRUPT_EDGES_FILE}
-sleep 60
+
+if [ $run != 0 ]; then
+  sleep 60
+fi
 
 # get elastic search csv file
 echo $(date +%Y-%m-%dT%H:%M:%S) > ${RESULT_DIR}/ts_end
+echo "python3 /root/IRIS/es/iris-es-to-ml.py -s $(cat ${RESULT_DIR}/ts_start) -e $(cat ${RESULT_DIR}/ts_end)"
 python3 /root/IRIS/es/iris-es-to-ml.py -s $(cat ${RESULT_DIR}/ts_start) -e $(cat ${RESULT_DIR}/ts_end)
 mv transfer-events.csv ${RESULT_DIR}/transfer-events.csv
 python3 iris_gen_result.py $RESULT_DIR
 
-cd $RESULT_DIR
-tar -czvf ${OUTPUT_DIR}/${RESULT_PREFIX}_${currenttime}.tar.gz *${currenttime}.csv ${RUN_LINKLABEL_FILE}
+cp /root/run_wf_experiment.log ${RESULT_DIR}/
+tar -czvf ${OUTPUT_DIR}/${RESULT_PREFIX}_${currenttime}.tar.gz $RESULT_DIR
 
 echo "Data parsed and zipped: "
 echo ${OUTPUT_DIR}/${RESULT_PREFIX}_${currenttime}.tar.gz

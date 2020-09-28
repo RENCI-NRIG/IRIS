@@ -4,7 +4,7 @@ source ./test_env.sh
 export POSTBOOT_DIR=/root/postboot
 
 set -u
-apt install python3-pip
+apt install -y python3-pip
 pip3 install elasticsearch_dsl
 mkdir -p ${OUTPUT_DIR}
 cd ${OUTPUT_DIR}; rm *; cd -
