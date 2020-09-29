@@ -1,4 +1,5 @@
 #!/bin/bash
+
 if [ "x$http_proxy" = "xDISABLED" ]; then
     unset http_proxy
 else

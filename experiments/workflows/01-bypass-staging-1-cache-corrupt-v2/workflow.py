@@ -109,8 +109,8 @@ if __name__=="__main__":
     log.info("test directory set to: {}".format(WORK_DIR))
 
     # --- Cleanup Caches -------------------------------------------------------
-    util.restart_caches("syr-compute-c2", "unl-compute-c1", "ucsd-compute-c3")
-    util.clear_caches("syr-compute-c2", "unl-compute-c1", "ucsd-compute-c3")
+    util.restart_caches("syr-staging", "unl-staging", "ucsd-staging", "uc-staging")
+    util.clear_caches("syr-staging", "unl-staging", "ucsd-staging", "uc-staging")
     log.info("caches cleared and restarted")
 
     # --- Bypass Data Staging --------------------------------------------------
@@ -192,7 +192,7 @@ if __name__=="__main__":
                 )
 
     # pre populate the caches
-    for site in ["unl-compute-c1", "syr-compute-c2", "ucsd-compute-c3"]:
+    for site in ["syr-staging", "unl-staging", "ucsd-staging", "uc-staging"]:
         proxy = "http://{}:8000".format(site)
         log.info("populating cache at {}".format(site))
         for url in urls:
