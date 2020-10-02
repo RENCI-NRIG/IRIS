@@ -16,7 +16,7 @@ def custom_grains():
     hostname = os.uname()[1]
 
     # http cache is site specific
-    grains['site_http_proxy'] = re.sub(r'-.*', '-staging', hostname)
+    grains['site_http_proxy'] = re.sub(r'-.*', '-cache', hostname)
 
     if re.search('control', hostname, re.IGNORECASE):
         grains['roles'].append('control')
@@ -26,7 +26,7 @@ def custom_grains():
         grains['roles'].append('compute')
     elif re.search('staging', hostname, re.IGNORECASE):
         grains['roles'].append('staging')
-        # staging is also a http_cache for now
+    elif re.search('cache', hostname, re.IGNORECASE):
         grains['roles'].append('http_cache')
 
     return grains
