@@ -197,6 +197,10 @@ echo "done" &gt;&gt; /root/tmp
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link14-internet2"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
   </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link29-unl-cache">
+    <ip4:localIPAddress rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link29-unl-cache-ip-192-168-12-3"/>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#Interface"/>
+  </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link21">
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link21-syr-router-n2"/>
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link21-syr-staging"/>
@@ -224,6 +228,7 @@ echo "done" &gt;&gt; /root/tmp
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link25-syr-router-n2"/>
     <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOMedium"/>
     <domain:hasResourceType rdf:resource="http://geni-orca.renci.org/owl/compute.owl#VM"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link28-syr-router-n2"/>
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link26-syr-router-n2"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
     <topology:hasGUID>948c8a82-78e6-4108-986c-79a141f0def1</topology:hasGUID>
@@ -373,6 +378,14 @@ echo "done" &gt;&gt; /root/tmp
     <ip4:localIPAddress rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link2-esnet-ip-10-100-2-2"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#Interface"/>
   </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link29">
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link29-unl-router-n1"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link29-unl-cache"/>
+    <layer:atLayer rdf:resource="http://geni-orca.renci.org/owl/ethernet.owl#EthernetNetworkElement"/>
+    <layer:bandwidth rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">10000000</layer:bandwidth>
+    <topology:hasGUID>3362ff35-f8ac-4b2c-9059-dabbe54f56d8</topology:hasGUID>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#NetworkConnection"/>
+  </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link17">
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link17-ucsd-submit"/>
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link17-ucsd-router-n3"/>
@@ -385,8 +398,8 @@ echo "done" &gt;&gt; /root/tmp
     <domain:hasResourceType rdf:resource="http://geni-orca.renci.org/owl/compute.owl#VM"/>
     <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOMedium"/>
     <request-schema:dependOn rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#esnet"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link5-ucsd-router-n3"/>
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link17-ucsd-router-n3"/>
-    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link22-ucsd-router-n3"/>
     <request-schema:postBootScript rdf:datatype="http://www.w3.org/2001/XMLSchema#string">#!/bin/bash
 
 echo ! &gt; /root/tmp
@@ -526,6 +539,7 @@ echo "done" &gt;&gt; /root/tmp
 
 
 </request-schema:postBootScript>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link22-ucsd-router-n3"/>
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link15-ucsd-router-n3"/>
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link13-ucsd-router-n3"/>
     <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
@@ -540,6 +554,71 @@ echo "done" &gt;&gt; /root/tmp
     <layer:bandwidth rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">10000000</layer:bandwidth>
     <topology:hasGUID>2117c3d3-af4a-41b2-aaed-2cc950f73e6c</topology:hasGUID>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#NetworkConnection"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#uc-cache">
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link27-uc-cache"/>
+    <request-schema:dependOn rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#uc-router-n0"/>
+    <topology:hasGUID>ea336952-4e50-416d-9eaf-6e264483841a</topology:hasGUID>
+    <request-schema:postBootScript rdf:datatype="http://www.w3.org/2001/XMLSchema#string">#!/bin/bash
+  
+#set ( $linkset = $self.Links()  )
+#set ( $linksetstr = $self.AllLinks()  )
+#set ( $num = $linkset.size() )
+#set ( $numIntf = $num + 2 )
+echo $linkset &gt;&gt; /root/tmp
+echo $linksetstr &gt;&gt; /root/tmp
+
+#set ( $link = $linkset[0] )
+echo $link &gt; /root/tmp
+#set ( $gw = $uc-router-n0.IP($link) )
+echo $gw &gt; /root/tmp
+
+while ! ping -c 1 -n -w 1 $gw &amp;&gt; /dev/null
+do
+    echo "ping gw...." &gt;&gt; /root/tmp
+    sleep 2
+done
+echo "\n%s\n"  "Server is back online" &gt;&gt; /root/tmp
+
+ip route add 10.100.0.0/16 via $gw dev ens6
+ip route add 172.16.0.0/16 via $gw dev ens6
+ip route add 192.168.0.0/16 via $gw dev ens6
+
+#set ( $hostname = $self.Name() )
+echo $hostname:$gw &gt; /root/tmp_gw
+#foreach ( $link2 in $linkset )
+  #set ( $IP=$self.IP($link2) )
+  echo export $self.Name()_$link2="$IP" &gt;&gt; /root/tmp_links.sh
+#end
+
+echo "Installing CJ and apache2" &gt;&gt; /root/tmp
+cd /root
+git clone --branch storage https://github.com/RENCI-NRIG/chaos-jungle.git
+git clone https://github.com/RENCI-NRIG/IRIS.git
+date &gt;&gt; /root/tmp
+until apt-get -y install apache2
+do
+        echo "installing apache2" &gt;&gt; /root/tmp
+        sleep 2
+done
+date &gt;&gt; /root/tmp
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4052245BD4284CDD
+echo "deb https://repo.iovisor.org/apt/$(lsb_release -cs) $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/iovisor.list
+apt-get -y update
+apt-get -y install bcc-tools libbcc-examples linux-headers-$(uname -r)
+apt-get -y install python3-bcc
+apt-get -y install python3-pyroute2 python-pyroute2 iperf3
+apt install -y python3-pip python3-setuptools
+pip3 install python-crontab  
+date &gt;&gt; /root/tmp
+python3 /root/chaos-jungle/storage/cj_storage.py --revert &gt;&gt; /root/tmp
+echo "start saltstack" &gt;&gt; /root/tmp
+curl https://raw.githubusercontent.com/RENCI-NRIG/IRIS/master/saltstack/bootstrap.sh | bash
+echo "done" &gt;&gt; /root/tmp</request-schema:postBootScript>
+    <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
+    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOLarge"/>
+    <domain:hasResourceType rdf:resource="http://geni-orca.renci.org/owl/compute.owl#VM"/>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link12-uc-router-n0-ip-172-16-12-3">
     <ip4:netmask>255.255.255.0</ip4:netmask>
@@ -568,6 +647,71 @@ echo "done" &gt;&gt; /root/tmp
     <layer:label_ID>192.168.22.2</layer:label_ID>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/ip4.owl#IPAddress"/>
   </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#unl-cache">
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link29-unl-cache"/>
+    <request-schema:dependOn rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#unl-router-n1"/>
+    <topology:hasGUID>c1de4a59-88e5-41ec-90d7-13d4884a583b</topology:hasGUID>
+    <request-schema:postBootScript rdf:datatype="http://www.w3.org/2001/XMLSchema#string">#!/bin/bash
+  
+#set ( $linkset = $self.Links()  )
+#set ( $linksetstr = $self.AllLinks()  )
+#set ( $num = $linkset.size() )
+#set ( $numIntf = $num + 2 )
+echo $linkset &gt;&gt; /root/tmp
+echo $linksetstr &gt;&gt; /root/tmp
+
+#set ( $link = $linkset[0] )
+echo $link &gt; /root/tmp
+#set ( $gw = $unl-router-n1.IP($link) )
+echo $gw &gt; /root/tmp
+
+while ! ping -c 1 -n -w 1 $gw &amp;&gt; /dev/null
+do
+    echo "ping gw...." &gt;&gt; /root/tmp
+    sleep 2
+done
+echo "\n%s\n"  "Server is back online" &gt;&gt; /root/tmp
+
+ip route add 10.100.0.0/16 via $gw dev ens6
+ip route add 172.16.0.0/16 via $gw dev ens6
+ip route add 192.168.0.0/16 via $gw dev ens6
+
+#set ( $hostname = $self.Name() )
+echo $hostname:$gw &gt; /root/tmp_gw
+#foreach ( $link2 in $linkset )
+  #set ( $IP=$self.IP($link2) )
+  echo export $self.Name()_$link2="$IP" &gt;&gt; /root/tmp_links.sh
+#end
+
+echo "Installing CJ and apache2" &gt;&gt; /root/tmp
+cd /root
+git clone --branch storage https://github.com/RENCI-NRIG/chaos-jungle.git
+git clone https://github.com/RENCI-NRIG/IRIS.git
+date &gt;&gt; /root/tmp
+until apt-get -y install apache2
+do
+        echo "installing apache2" &gt;&gt; /root/tmp
+        sleep 2
+done
+date &gt;&gt; /root/tmp
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4052245BD4284CDD
+echo "deb https://repo.iovisor.org/apt/$(lsb_release -cs) $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/iovisor.list
+apt-get -y update
+apt-get -y install bcc-tools libbcc-examples linux-headers-$(uname -r)
+apt-get -y install python3-bcc
+apt-get -y install python3-pyroute2 python-pyroute2 iperf3
+apt install -y python3-pip python3-setuptools
+pip3 install python-crontab  
+date &gt;&gt; /root/tmp
+python3 /root/chaos-jungle/storage/cj_storage.py --revert &gt;&gt; /root/tmp
+echo "start saltstack" &gt;&gt; /root/tmp
+curl https://raw.githubusercontent.com/RENCI-NRIG/IRIS/master/saltstack/bootstrap.sh | bash
+echo "done" &gt;&gt; /root/tmp</request-schema:postBootScript>
+    <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
+    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOLarge"/>
+    <domain:hasResourceType rdf:resource="http://geni-orca.renci.org/owl/compute.owl#VM"/>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
+  </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link22-esnet-ip-172-16-22-2">
     <ip4:netmask>255.255.255.0</ip4:netmask>
     <layer:label_ID>172.16.22.2</layer:label_ID>
@@ -580,12 +724,13 @@ echo "done" &gt;&gt; /root/tmp
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#">
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link14"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#syr-submit"/>
+    <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#unl-cache"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link12"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#unl-router-n1"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#ucsd-submit"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#syr-staging"/>
-    <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#control"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link8"/>
+    <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#control"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link3"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link18"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link6"/>
@@ -598,6 +743,7 @@ echo "done" &gt;&gt; /root/tmp
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#ucsd-compute-c1"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link25"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#uc-compute-c1"/>
+    <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#uc-cache"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link13"/>
     <request-schema:hasTerm rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Term"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link9"/>
@@ -608,10 +754,13 @@ echo "done" &gt;&gt; /root/tmp
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link11"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#starlight"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/request.owl#Reservation"/>
+    <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link29"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link16"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link17"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link2"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#uc-staging"/>
+    <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link5"/>
+    <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#ucsd-cache"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#unl-compute-c0"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link20"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link24"/>
@@ -620,8 +769,11 @@ echo "done" &gt;&gt; /root/tmp
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link4"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#ucsd-router-n3"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#uc-router-n0"/>
-    <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#unl-submit"/>
+    <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#syr-cache"/>
+    <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link27"/>
+    <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link28"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link15"/>
+    <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#unl-submit"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link7"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#syr-compute-c0"/>
     <collections:element rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#syr-router-n2"/>
@@ -674,7 +826,7 @@ done
 echo "start saltstack" &gt;&gt; /root/tmp
 curl https://raw.githubusercontent.com/RENCI-NRIG/IRIS/master/saltstack/bootstrap.sh | bash
 
-while !(salt-key -L | grep cenic) || !(salt-key -L | grep internet2) || !(salt-key -L | grep esnet) ||  !(salt-key -L | grep starlight) || !(salt-key -L | grep syr-router-n2) || !(salt-key -L | grep unl-router-n1) || !(salt-key -L | grep ucsd-router-n3) || !(salt-key -L | grep uc-router-n0) || !(salt-key -L | grep syr-compute-c1) || !(salt-key -L | grep syr-compute-c0) || !(salt-key -L | grep unl-compute-c1) || !(salt-key -L | grep unl-compute-c0) || !(salt-key -L | grep ucsd-compute-c1) || !(salt-key -L | grep ucsd-compute-c0) || !(salt-key -L | grep uc-compute-c0) || !(salt-key -L | grep uc-compute-c1) || !(salt-key -L | grep uc-staging) || !(salt-key -L | grep uc-submit) || !(salt-key -L | grep syr-staging) || !(salt-key -L | grep syr-submit) || !(salt-key -L | grep ucsd-staging) || !(salt-key -L | grep ucsd-submit) || !(salt-key -L | grep unl-staging) || !(salt-key -L | grep unl-submit) 
+while !(salt-key -L | grep cenic) || !(salt-key -L | grep internet2) || !(salt-key -L | grep esnet) ||  !(salt-key -L | grep starlight) || !(salt-key -L | grep syr-router-n2) || !(salt-key -L | grep unl-router-n1) || !(salt-key -L | grep ucsd-router-n3) || !(salt-key -L | grep uc-router-n0) || !(salt-key -L | grep syr-compute-c1) || !(salt-key -L | grep syr-compute-c0) || !(salt-key -L | grep unl-compute-c1) || !(salt-key -L | grep unl-compute-c0) || !(salt-key -L | grep ucsd-compute-c1) || !(salt-key -L | grep ucsd-compute-c0) || !(salt-key -L | grep uc-compute-c0) || !(salt-key -L | grep uc-compute-c1) || !(salt-key -L | grep uc-staging) || !(salt-key -L | grep uc-submit) || !(salt-key -L | grep syr-staging) || !(salt-key -L | grep syr-submit) || !(salt-key -L | grep ucsd-staging) || !(salt-key -L | grep ucsd-submit) || !(salt-key -L | grep unl-staging) || !(salt-key -L | grep unl-submit) || !(salt-key -L | grep unl-cache) || !(salt-key -L | grep uc-cache) || !(salt-key -L | grep syr-cache) || !(salt-key -L | grep ucsd-cache) 
 do
 sleep 5s
 echo "saltstack not ready, sleep 5s" &gt;&gt; /root/tmp
@@ -765,7 +917,7 @@ curl https://raw.githubusercontent.com/RENCI-NRIG/IRIS/master/saltstack/bootstra
 echo "done" &gt;&gt; /root/tmp
 </request-schema:postBootScript>
     <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
-    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOLarge"/>
+    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOMedium"/>
     <domain:hasResourceType rdf:resource="http://geni-orca.renci.org/owl/compute.owl#VM"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
   </rdf:Description>
@@ -886,6 +1038,7 @@ echo "done" &gt;&gt; /root/tmp</request-schema:postBootScript>
     <request-schema:dependOn rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#cenic"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
     <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOMedium"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link27-uc-router-n0"/>
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link18-uc-router-n0"/>
     <request-schema:postBootScript rdf:datatype="http://www.w3.org/2001/XMLSchema#string">#!/bin/bash
 
@@ -1064,6 +1217,11 @@ echo "done" &gt;&gt; /root/tmp
     <layer:label_ID>192.168.27.3</layer:label_ID>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/ip4.owl#IPAddress"/>
   </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link29-unl-router-n1-ip-192-168-12-2">
+    <ip4:netmask>255.255.255.0</ip4:netmask>
+    <layer:label_ID>192.168.12.2</layer:label_ID>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/ip4.owl#IPAddress"/>
+  </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#uc-compute-c0">
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link3-uc-compute-c0"/>
     <request-schema:dependOn rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#uc-router-n0"/>
@@ -1125,7 +1283,7 @@ echo "start saltstack" &gt;&gt; /root/tmp
 curl https://raw.githubusercontent.com/RENCI-NRIG/IRIS/master/saltstack/bootstrap.sh | bash
 echo "done" &gt;&gt; /root/tmp</request-schema:postBootScript>
     <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
-    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOLarge"/>
+    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOMedium"/>
     <domain:hasResourceType rdf:resource="http://geni-orca.renci.org/owl/compute.owl#VM"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
   </rdf:Description>
@@ -1137,14 +1295,31 @@ echo "done" &gt;&gt; /root/tmp</request-schema:postBootScript>
     <ip4:localIPAddress rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link25-syr-router-n2-ip-192-168-25-2"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#Interface"/>
   </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link27-uc-cache-ip-192-168-31-3">
+    <ip4:netmask>255.255.255.0</ip4:netmask>
+    <layer:label_ID>192.168.31.3</layer:label_ID>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/ip4.owl#IPAddress"/>
+  </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link2-internet2">
     <ip4:localIPAddress rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link2-internet2-ip-10-100-2-3"/>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#Interface"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link27-uc-router-n0">
+    <ip4:localIPAddress rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link27-uc-router-n0-ip-192-168-31-2"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#Interface"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link4-uc-compute-c1-ip-192-168-17-3">
     <ip4:netmask>255.255.255.0</ip4:netmask>
     <layer:label_ID>192.168.17.3</layer:label_ID>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/ip4.owl#IPAddress"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link27">
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link27-uc-router-n0"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link27-uc-cache"/>
+    <layer:atLayer rdf:resource="http://geni-orca.renci.org/owl/ethernet.owl#EthernetNetworkElement"/>
+    <layer:bandwidth rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">10000000</layer:bandwidth>
+    <topology:hasGUID>46c190bc-babd-4add-a8c0-093d80e07b5a</topology:hasGUID>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#NetworkConnection"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link13-ucsd-compute-c1-ip-192-168-24-3">
     <ip4:netmask>255.255.255.0</ip4:netmask>
@@ -1239,6 +1414,11 @@ echo "done" &gt;&gt; /root/tmp
     <domain:hasResourceType rdf:resource="http://geni-orca.renci.org/owl/compute.owl#VM"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
   </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link28-syr-cache-ip-192-168-29-3">
+    <ip4:netmask>255.255.255.0</ip4:netmask>
+    <layer:label_ID>192.168.29.3</layer:label_ID>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/ip4.owl#IPAddress"/>
+  </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link7-esnet-ip-10-100-7-2">
     <ip4:netmask>255.255.255.0</ip4:netmask>
     <layer:label_ID>10.100.7.2</layer:label_ID>
@@ -1256,6 +1436,15 @@ echo "done" &gt;&gt; /root/tmp
   </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link17-ucsd-submit">
     <ip4:localIPAddress rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link17-ucsd-submit-ip-192-168-21-3"/>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#Interface"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link5-ucsd-router-n3-ip-192-168-30-2">
+    <ip4:netmask>255.255.255.0</ip4:netmask>
+    <layer:label_ID>192.168.30.2</layer:label_ID>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/ip4.owl#IPAddress"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link28-syr-cache">
+    <ip4:localIPAddress rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link28-syr-cache-ip-192-168-29-3"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#Interface"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link1">
@@ -1338,7 +1527,7 @@ echo "done" &gt;&gt; /root/tmp
 
 </request-schema:postBootScript>
     <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
-    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOLarge"/>
+    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOMedium"/>
     <domain:hasResourceType rdf:resource="http://geni-orca.renci.org/owl/compute.owl#VM"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
   </rdf:Description>
@@ -1412,7 +1601,7 @@ echo "start saltstack" &gt;&gt; /root/tmp
 curl https://raw.githubusercontent.com/RENCI-NRIG/IRIS/master/saltstack/bootstrap.sh | bash
 echo "done" &gt;&gt; /root/tmp</request-schema:postBootScript>
     <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
-    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOLarge"/>
+    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOMedium"/>
     <domain:hasResourceType rdf:resource="http://geni-orca.renci.org/owl/compute.owl#VM"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
   </rdf:Description>
@@ -1476,9 +1665,83 @@ echo "done" &gt;&gt; /root/tmp</request-schema:postBootScript>
     <ip4:localIPAddress rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link4-uc-compute-c1-ip-192-168-17-3"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#Interface"/>
   </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link28">
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link28-syr-router-n2"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link28-syr-cache"/>
+    <layer:atLayer rdf:resource="http://geni-orca.renci.org/owl/ethernet.owl#EthernetNetworkElement"/>
+    <layer:bandwidth rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">10000000</layer:bandwidth>
+    <topology:hasGUID>9f6ecc9b-4dcb-4789-8895-09baba175e13</topology:hasGUID>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#NetworkConnection"/>
+  </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link20-syr-submit">
     <ip4:localIPAddress rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link20-syr-submit-ip-192-168-28-3"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#Interface"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#syr-cache">
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link28-syr-cache"/>
+    <request-schema:dependOn rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#syr-router-n2"/>
+    <topology:hasGUID>c8ee6b9f-4fe6-4367-9be4-c03f92831e04</topology:hasGUID>
+    <request-schema:postBootScript rdf:datatype="http://www.w3.org/2001/XMLSchema#string">#!/bin/bash
+  
+#set ( $linkset = $self.Links()  )
+#set ( $linksetstr = $self.AllLinks()  )
+#set ( $num = $linkset.size() )
+#set ( $numIntf = $num + 2 )
+echo $linkset &gt;&gt; /root/tmp
+echo $linksetstr &gt;&gt; /root/tmp
+
+#set ( $link = $linkset[0] )
+echo $link &gt; /root/tmp
+#set ( $gw = $syr-router-n2.IP($link) )
+echo $gw &gt; /root/tmp
+
+while ! ping -c 1 -n -w 1 $gw &amp;&gt; /dev/null
+do
+    echo "ping gw...." &gt;&gt; /root/tmp
+    sleep 2
+done
+echo "\n%s\n"  "Server is back online" &gt;&gt; /root/tmp
+
+ip route add 10.100.0.0/16 via $gw dev ens6
+ip route add 172.16.0.0/16 via $gw dev ens6
+ip route add 192.168.0.0/16 via $gw dev ens6
+
+#set ( $hostname = $self.Name() )
+echo $hostname:$gw &gt; /root/tmp_gw
+#foreach ( $link2 in $linkset )
+  #set ( $IP=$self.IP($link2) )
+  echo export $self.Name()_$link2="$IP" &gt;&gt; /root/tmp_links.sh
+#end
+
+echo "Installing CJ and apache2" &gt;&gt; /root/tmp
+cd /root
+git clone --branch storage https://github.com/RENCI-NRIG/chaos-jungle.git
+git clone https://github.com/RENCI-NRIG/IRIS.git
+date &gt;&gt; /root/tmp
+until apt-get -y install apache2
+do
+        echo "installing apache2" &gt;&gt; /root/tmp
+        sleep 2
+done
+date &gt;&gt; /root/tmp
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4052245BD4284CDD
+echo "deb https://repo.iovisor.org/apt/$(lsb_release -cs) $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/iovisor.list
+apt-get -y update
+apt-get -y install bcc-tools libbcc-examples linux-headers-$(uname -r)
+apt-get -y install python3-bcc
+apt-get -y install python3-pyroute2 python-pyroute2 iperf3
+apt install -y python3-pip python3-setuptools
+pip3 install python-crontab  
+date &gt;&gt; /root/tmp
+python3 /root/chaos-jungle/storage/cj_storage.py --revert &gt;&gt; /root/tmp
+echo "start saltstack" &gt;&gt; /root/tmp
+curl https://raw.githubusercontent.com/RENCI-NRIG/IRIS/master/saltstack/bootstrap.sh | bash
+echo "done" &gt;&gt; /root/tmp
+</request-schema:postBootScript>
+    <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
+    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOLarge"/>
+    <domain:hasResourceType rdf:resource="http://geni-orca.renci.org/owl/compute.owl#VM"/>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link0">
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link0-cenic"/>
@@ -1494,6 +1757,10 @@ echo "done" &gt;&gt; /root/tmp</request-schema:postBootScript>
   </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link8-unl-router-n1">
     <ip4:localIPAddress rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link8-unl-router-n1-ip-192-168-13-2"/>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#Interface"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link5-ucsd-router-n3">
+    <ip4:localIPAddress rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link5-ucsd-router-n3-ip-192-168-30-2"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#Interface"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#ucsd-submit">
@@ -1629,7 +1896,7 @@ curl https://raw.githubusercontent.com/RENCI-NRIG/IRIS/master/saltstack/bootstra
 echo "done" &gt;&gt; /root/tmp
 </request-schema:postBootScript>
     <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
-    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOLarge"/>
+    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOMedium"/>
     <domain:hasResourceType rdf:resource="http://geni-orca.renci.org/owl/compute.owl#VM"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
   </rdf:Description>
@@ -1703,10 +1970,80 @@ echo "done" &gt;&gt; /root/tmp</request-schema:postBootScript>
     <domain:hasResourceType rdf:resource="http://geni-orca.renci.org/owl/compute.owl#VM"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
   </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link27-uc-cache">
+    <ip4:localIPAddress rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link27-uc-cache-ip-192-168-31-3"/>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#Interface"/>
+  </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link8-unl-submit-ip-192-168-13-3">
     <ip4:netmask>255.255.255.0</ip4:netmask>
     <layer:label_ID>192.168.13.3</layer:label_ID>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/ip4.owl#IPAddress"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#ucsd-cache">
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link5-ucsd-cache"/>
+    <request-schema:dependOn rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#uc-router-n0"/>
+    <topology:hasGUID>bba775ef-82c6-4e0b-bc48-6bfaee6e00de</topology:hasGUID>
+    <request-schema:postBootScript rdf:datatype="http://www.w3.org/2001/XMLSchema#string">#!/bin/bash
+  
+#set ( $linkset = $self.Links()  )
+#set ( $linksetstr = $self.AllLinks()  )
+#set ( $num = $linkset.size() )
+#set ( $numIntf = $num + 2 )
+echo $linkset &gt;&gt; /root/tmp
+echo $linksetstr &gt;&gt; /root/tmp
+
+#set ( $link = $linkset[0] )
+echo $link &gt; /root/tmp
+#set ( $gw = $ucsd-router-n3.IP($link) )
+echo $gw &gt; /root/tmp
+
+while ! ping -c 1 -n -w 1 $gw &amp;&gt; /dev/null
+do
+    echo "ping gw...." &gt;&gt; /root/tmp
+    sleep 2
+done
+echo "\n%s\n"  "Server is back online" &gt;&gt; /root/tmp
+
+ip route add 10.100.0.0/16 via $gw dev ens6
+ip route add 172.16.0.0/16 via $gw dev ens6
+ip route add 192.168.0.0/16 via $gw dev ens6
+
+#set ( $hostname = $self.Name() )
+echo $hostname:$gw &gt; /root/tmp_gw
+#foreach ( $link2 in $linkset )
+  #set ( $IP=$self.IP($link2) )
+  echo export $self.Name()_$link2="$IP" &gt;&gt; /root/tmp_links.sh
+#end
+
+echo "Installing CJ and apache2" &gt;&gt; /root/tmp
+cd /root
+git clone --branch storage https://github.com/RENCI-NRIG/chaos-jungle.git
+git clone https://github.com/RENCI-NRIG/IRIS.git
+date &gt;&gt; /root/tmp
+until apt-get -y install apache2
+do
+        echo "installing apache2" &gt;&gt; /root/tmp
+        sleep 2
+done
+date &gt;&gt; /root/tmp
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4052245BD4284CDD
+echo "deb https://repo.iovisor.org/apt/$(lsb_release -cs) $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/iovisor.list
+apt-get -y update
+apt-get -y install bcc-tools libbcc-examples linux-headers-$(uname -r)
+apt-get -y install python3-bcc
+apt-get -y install python3-pyroute2 python-pyroute2 iperf3
+apt install -y python3-pip python3-setuptools
+pip3 install python-crontab  
+date &gt;&gt; /root/tmp
+python3 /root/chaos-jungle/storage/cj_storage.py --revert &gt;&gt; /root/tmp
+echo "start saltstack" &gt;&gt; /root/tmp
+curl https://raw.githubusercontent.com/RENCI-NRIG/IRIS/master/saltstack/bootstrap.sh | bash
+echo "done" &gt;&gt; /root/tmp
+</request-schema:postBootScript>
+    <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
+    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOLarge"/>
+    <domain:hasResourceType rdf:resource="http://geni-orca.renci.org/owl/compute.owl#VM"/>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link3-uc-compute-c0-ip-192-168-20-3">
     <ip4:netmask>255.255.255.0</ip4:netmask>
@@ -1728,6 +2065,10 @@ echo "done" &gt;&gt; /root/tmp</request-schema:postBootScript>
     <layer:bandwidth rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">10000000</layer:bandwidth>
     <topology:hasGUID>3519bcc8-1fba-4b88-82f9-fb98c0b70028</topology:hasGUID>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#NetworkConnection"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link29-unl-router-n1">
+    <ip4:localIPAddress rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link29-unl-router-n1-ip-192-168-12-2"/>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#Interface"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link20-syr-router-n2-ip-192-168-28-2">
     <ip4:netmask>255.255.255.0</ip4:netmask>
@@ -2155,6 +2496,16 @@ echo "done" &gt;&gt; /root/tmp
     <ip4:localIPAddress rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link10-unl-staging-ip-192-168-14-3"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#Interface"/>
   </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link5-ucsd-cache-ip-192-168-30-3">
+    <ip4:netmask>255.255.255.0</ip4:netmask>
+    <layer:label_ID>192.168.30.3</layer:label_ID>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/ip4.owl#IPAddress"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link27-uc-router-n0-ip-192-168-31-2">
+    <ip4:netmask>255.255.255.0</ip4:netmask>
+    <layer:label_ID>192.168.31.2</layer:label_ID>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/ip4.owl#IPAddress"/>
+  </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link14">
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link14-unl-router-n1"/>
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link14-internet2"/>
@@ -2174,10 +2525,11 @@ echo "done" &gt;&gt; /root/tmp
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#unl-router-n1">
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link16-unl-router-n1"/>
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link8-unl-router-n1"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link29-unl-router-n1"/>
     <domain:hasResourceType rdf:resource="http://geni-orca.renci.org/owl/compute.owl#VM"/>
     <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
-    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link11-unl-router-n1"/>
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link10-unl-router-n1"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link11-unl-router-n1"/>
     <request-schema:dependOn rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#internet2"/>
     <request-schema:postBootScript rdf:datatype="http://www.w3.org/2001/XMLSchema#string">#!/bin/bash
 
@@ -2493,7 +2845,7 @@ echo "done" &gt;&gt; /root/tmp
 
 </request-schema:postBootScript>
     <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
-    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOLarge"/>
+    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOMedium"/>
     <domain:hasResourceType rdf:resource="http://geni-orca.renci.org/owl/compute.owl#VM"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
   </rdf:Description>
@@ -2579,6 +2931,10 @@ echo "done" &gt;&gt; /root/tmp
     <topology:hasGUID>446bb999-57a5-4c39-8905-184356e46130</topology:hasGUID>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#NetworkConnection"/>
   </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link28-syr-router-n2">
+    <ip4:localIPAddress rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link28-syr-router-n2-ip-192-168-29-2"/>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#Interface"/>
+  </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#unl-compute-c0">
     <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link11-unl-compute-c0"/>
     <request-schema:dependOn rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#unl-router-n1"/>
@@ -2640,7 +2996,7 @@ echo "start saltstack" &gt;&gt; /root/tmp
 curl https://raw.githubusercontent.com/RENCI-NRIG/IRIS/master/saltstack/bootstrap.sh | bash
 echo "done" &gt;&gt; /root/tmp</request-schema:postBootScript>
     <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
-    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOLarge"/>
+    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOMedium"/>
     <domain:hasResourceType rdf:resource="http://geni-orca.renci.org/owl/compute.owl#VM"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
   </rdf:Description>
@@ -2784,6 +3140,11 @@ echo "done" &gt;&gt; /root/tmp
     <topology:hasGUID>1beae374-452b-4222-91c2-565cb24b7d25</topology:hasGUID>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#NetworkConnection"/>
   </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link29-unl-cache-ip-192-168-12-3">
+    <ip4:netmask>255.255.255.0</ip4:netmask>
+    <layer:label_ID>192.168.12.3</layer:label_ID>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/ip4.owl#IPAddress"/>
+  </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link26-syr-compute-c0">
     <ip4:localIPAddress rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link26-syr-compute-c0-ip-192-168-26-3"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#Interface"/>
@@ -2867,7 +3228,7 @@ echo "done" &gt;&gt; /root/tmp
 
 </request-schema:postBootScript>
     <compute:diskImage rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Ubuntu+18.04+QCOW2+v1.0.2"/>
-    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOLarge"/>
+    <compute:specificCE rdf:resource="http://geni-orca.renci.org/owl/exogeni.owl#XOMedium"/>
     <domain:hasResourceType rdf:resource="http://geni-orca.renci.org/owl/compute.owl#VM"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/compute.owl#ComputeElement"/>
   </rdf:Description>
@@ -3031,9 +3392,26 @@ echo "done" &gt;&gt; /root/tmp
     <ip4:localIPAddress rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link14-unl-router-n1-ip-172-16-14-3"/>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#Interface"/>
   </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link5">
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link5-ucsd-cache"/>
+    <topology:hasInterface rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link5-ucsd-router-n3"/>
+    <layer:atLayer rdf:resource="http://geni-orca.renci.org/owl/ethernet.owl#EthernetNetworkElement"/>
+    <layer:bandwidth rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">10000000</layer:bandwidth>
+    <topology:hasGUID>27e98244-b25a-4de0-93a4-9e33f6882956</topology:hasGUID>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#NetworkConnection"/>
+  </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link2-esnet-ip-10-100-2-2">
     <ip4:netmask>255.255.255.0</ip4:netmask>
     <layer:label_ID>10.100.2.2</layer:label_ID>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/ip4.owl#IPAddress"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link5-ucsd-cache">
+    <ip4:localIPAddress rdf:resource="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link5-ucsd-cache-ip-192-168-30-3"/>
+    <rdf:type rdf:resource="http://geni-orca.renci.org/owl/topology.owl#Interface"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link28-syr-router-n2-ip-192-168-29-2">
+    <ip4:netmask>255.255.255.0</ip4:netmask>
+    <layer:label_ID>192.168.29.2</layer:label_ID>
     <rdf:type rdf:resource="http://geni-orca.renci.org/owl/ip4.owl#IPAddress"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://geni-orca.renci.org/owl/26067db0-2e26-4361-825d-904fe0968bbd#Link4-uc-router-n0-ip-192-168-17-2">
