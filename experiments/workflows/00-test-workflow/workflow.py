@@ -20,8 +20,8 @@ sys.path.append(util.pegasus_config_python())
 from Pegasus.api import *
 
 # --- Cleanup Caches -----------------------------------------------------------
-util.restart_caches("syr-compute-c2", "unl-compute-c1", "ucsd-compute-c3")
-util.clear_caches("syr-compute-c2", "unl-compute-c1", "ucsd-compute-c3")
+util.restart_caches("syr-staging", "unl-staging", "ucsd-staging", "uc-staging")
+util.clear_caches("syr-staging", "unl-staging", "ucsd-staging", "uc-staging")
 
 # --- Work Directory Setup -----------------------------------------------------
 BASE_DIR = Path(__file__).parent.resolve()
