@@ -1,28 +1,26 @@
-We created the topology shown in Figure~\ref{fig:topology} in ExoGENI to conduct our experiments. Among the $23$ nodes in this topology, we specify $6$ data origins and $6$ data sinks as the end hosts 
-to transfer a batch of data files ($886$ files) of different sizes that we randomly acquired from OSG. The emulated topology follows the power law, i.e., $4$ routing 
+We created the topology shown in Figure~\ref{fig:topology} in ExoGENI to conduct our experiments.  The emulated topology follows the power law, i.e., $4$ routing 
 nodes in the middle to emulate the backbone domains and the rest emulate the access domains in between the backbone nodes and the end hosts. 
 
-We ran two sets of experiments to collect two sets of raw training data. In the first one, called {\it Partial},
-data transfers only happen between the origins and sinks, where every origin node sends all the $886$ files 
+Among the $23$ nodes in this topology, we specify $6$ data origins and $6$ data sinks as the end hosts to transfer a batch of data files of different sizes that we randomly acquired from OSG. 
+This file batch is transferred between every chosen pair of end hosts. We ran two sets of experiments to collect two sets of raw training data. In the first one, called {\it Partial},
+data transfers only happen between the origins and sinks, where every origin node sends all the files in the batch 
 to all the receiving nodes in parallel. In the second one, called {\it Complete}, data transfers happen between all the end host pairs. 
-We further parallelized the data transfer process to reduce the emulation time down to about twenty-four hours for this particular network.  
-
-The file integrity is being checked at the receiving end host and each file transfer accounts for one data flow and therefore a
- data sample in a training data set.
+The file integrity is being checked at the receiving end host and each file transfer accounts for one data flow and therefore 
+a data sample in a training data set. We further parallelized the data transfer process to reduce the emulation time down to about twenty-four hours for this particular network.  
 
 For each experiment, probabilistic integrity error or network impairment via the Chaos Jungle tool is injected to the $54$ link interfaces and $12$ end hosts in sequence with the given probability setting, which 
 For each fault injection scenario, the entire set of {\it Partial} or {\it Complete} data transfers are conducted. Each link interface or node component with fault injected represents a label.  
 The receiving node checks if a received file is identical to its original copy via checksum and marks this data transfer as a failure data sample if checksums do not match. 
 We treat retransmission as a separate feature for the data samples.  A file could also be missed at the destination due to ultimate transfer failure which is also treated as a failure. 
 If the checksum matches, this data transfer becomes a success data sample in the training data set. Otherwise, it is labeled by the corresponding faulty element, one of the total $66$ labels in this study. 
-As a very basic benchmark, we note the accuracy of random classification would be merely $\frac{1}{66}$. 
+The final {\it Complete} training data set consists of 8,006,592 data samples.
 
 Through extensive training data analysis, we hope to achieve three major goals in our RCA study: (1) performance comparison in terms of accuracy and training time performance of different models, 
 (2) impact quantification of different types of features on the model performance, esp. the file size and the transfer throughput, because the other features like data transfer source and destination, integrity error, 
-and transfer status (retransmission, etc.) are all indispensable, (3) handling of the inherited data imbalance in the training data set.  
+and transfer status (retransmission, etc.) are all indispensable, (3) handling of the inherited data imbalance in the training data set. 
 
 We compared different variants out of the three ML model families presented in Section~\ref{sec:ml} and presented the best model from each one: Random Forest, Linear SVC, and Multinomial Naive Bayes.
-We use One Hot Encoding for all the categorical features. 
+We use One Hot Encoding for all the categorical features. As a very basic benchmark, we note the accuracy of random classification would be merely $\frac{1}{66}$. 
 
 Each figure shows five different performance metrics under four scenarios. The five metrics are F1 score with per-flow inference, the accuracy with per-flow ({\it Flow} inference, and the $Top-1$, $Top-2$, and $Top-3$ accuracy with
 the {\it Aggregated Flow} inference. The four scenarios are {\it Partial} and the {\it Complete} data sets with {\it All Features} or only {\it No File features}.
@@ -129,9 +127,9 @@ We take the {\it Complete-No File Features} data set with the Random Forest mode
 The main techniques to solve the dataset imbalance problem are to rebalance the data via oversampling or downsampling data from different classes. Since the labeled data subsets from the end host failure classes are rather small, the pure downsampling techniques will not improve on the model performance. We focus on two representative oversampling techniques: random and SMOTE as well as two methods that combine oversampling and downsampling.
 These methods have been implemented in the {\it imbalanced-learn} library~\cite{imbalance-learn:web}.
 
-The random oversampling approach is straightforward in which new samples are randomly generated by copying the existing samples from the underrepresented classes. The SMOTE(Synthetic Minority Oversampling Technique ) ~\cite{smote:2002} method and its variants are among the most popular oversampling techniques. SMOTE generates new samples by interpolation rather than duplication of existing samples using variants of k-Nearest Neighbors classifier method. At the end of the oversampling with the above example, the augmented data set will have 1443 labeled data for each of the 66 classes. 
+The random oversampling approach is straightforward in which new samples are randomly generated by copying the existing samples from the underrepresented classes. The SMOTE (Synthetic Minority Oversampling Technique) ~\cite{smote:2002} generates new samples by interpolation rather than duplication of existing samples using variants of k-Nearest Neighbors classifier method. At the end of the oversampling with the above example, the augmented data set will have 1443 labeled data for each of the 66 classes. 
 
-SMOTETomek is a combined method that uses SMOTE for Oversampling and removes Tomek links for downsampling. Tomek links identify two samples that are too close to each other. SMOTEENN is another popular method that combines over- and under-sampling using SMOTE and Edited Nearest Neighbors.
+SMOTETomek is a combined method that uses SMOTE for Oversampling and removes Tomek links for downsampling. Tomek links identify two samples that are too close to each other. SMOTEENN is another popular method that combines over- and under-sampling based on SMOTE.
 
 For the  {\it Complete-All Features} data set, our analysis indicated that both Random and combined SMOTE methods resulted in similar perfect $Top-k$ performance but slightly reduced flow-based F1 Score and accuracy. SMOTE actually deteriorated all the metrics. The observations on the  {\it Complete-No File Features} data set are similar. Since the performance of the original model is already perfect for the former case, we only present the results on the two {\it Partial} data sets.
 
@@ -141,7 +139,7 @@ For the  {\it Complete-All Features} data set, our analysis indicated that both 
 \includegraphics[width=0.45\textwidth]{./figure/partial-all-oversampling}
 \end{center}
 \caption{Oversampling with All Features}
-\label{fig:dt}
+\label{fig:os:all}
 \end{figure}
 
 \begin{figure}[!ht]
@@ -149,7 +147,7 @@ For the  {\it Complete-All Features} data set, our analysis indicated that both 
 \includegraphics[width=0.45\textwidth]{./figure/partial-nofile-oversampling}
 \end{center}
 \caption{Oversampling with No File Features}
-\label{fig:dt}
+\label{fig:os:nofile}
 \end{figure}
 
-The results show that the SMOTEENN method doesn't help the performance. The other three all improve the performance to some extent though at different scales, especially on the $Top-k$ accuracy measurement. The basic random oversampling demonstrates the best performance improvement in most cases.  The main takeaway is that multiple sampling methods have to be evaluated in order to find the best one.
+The results in Fig.~\ref{fig:os:all} and~\ref{fig:os:nofile} show that the SMOTEENN method doesn't help the performance. The other three all improve the performance to some extent though at different scales, especially on the $Top-k$ accuracy measurement. The basic random oversampling demonstrates the best performance improvement in most cases.  The main takeaway is that multiple sampling methods have to be carefully evaluated in order to find the best one.
