@@ -1,12 +1,12 @@
 In large-scale networked systems, root cause analysis (RCA) for error diagnosis 
-becomes extremely challenging due to the difficulty to build precise system models.
+remains extremely challenging due to the difficulty to build precise system models.
 With the evergrowing applications and services involving intensive data transfers, 
 a more challenging failure mode, integrity error, has raised much research interest recently 
 because it can cause severe data corruptions but the faulty infrastructural element(s) 
 can stay stealth from the existing reliable protocols like TCP, encrypted transfer and RAID, etc.
 
 In this paper, we present a RCA system to localize the root causes of ``gray or silent failures" like the integrity error through creating the mapping between the application 
-level flow characteristics and the network component faults. We targeted a typical multi-administrative-domain environment where sufficient end-to-end visibility 
+level flow characteristics and the network component faults. We targeted a typical multi-administrative-domain environment where network routing 
 and monitoring information are lacked and adopted a multi-class classification machine learning (ML) approach to learn the mapping from training data sets. 
 
 We built a high-fidelity emulation environment in a cloud testbed with a suite of software tools to automate the training data generation that includes bootstrapping the network, 
