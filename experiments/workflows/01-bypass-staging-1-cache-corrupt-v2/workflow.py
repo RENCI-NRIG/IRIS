@@ -122,31 +122,7 @@ if __name__=="__main__":
     log.info("test directory set to: {}".format(WORK_DIR))
 
     # --- Bypass Data Staging --------------------------------------------------
-    stage_cmd = ["ssh", "{}-staging.data-plane".format(args.submit_site), "mkdir", "-p", "~/public_html/inputs"]
-    stage = subprocess.run(stage_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    if stage.returncode != 0:
-        log.critical("Could not execute: {},\n{}\n{}".format(
-                " ".join(stage_cmd),
-                stage.stdout.decode(),
-                stage.stderr.decode()
-            ))
-        sys.exit(1)
-
-    scp_cmd = " ".join(
-        [
-            "scp", str(BASE_DIR / "job-wrapper.sh"), str(BASE_DIR / "inputs/*"),
-            "{}-staging.data-plane:~/public_html/inputs/".format(args.submit_site)
-        ]
-    )
-    scp = subprocess.run(scp_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-    if scp.returncode != 0:
-        log.critical("Could not execute: {},\n{}\n{}".format(
-                scp_cmd,
-                scp.stdout.decode(),
-                scp.stderr.decode()
-            ))
-        sys.exit(1)
-    log.info("bypass staging complete")
+    util.bypass_staging(args.submit_site)
 
     # --- Properties ------------------------------------------------------------
     props = Properties()
@@ -167,6 +143,7 @@ if __name__=="__main__":
     )
 
     # --- Transformations - Replicas - Workflow ---------------------------------
+    staging_site = "{}-staging.data-plane".format(args.submit_site)
     username = getpass.getuser()
     base_dir = os.getcwd()
 
@@ -176,8 +153,8 @@ if __name__=="__main__":
     tc = TransformationCatalog()
     script = Transformation(
                             'job.sh',
-                            site='uc-staging',
-                            pfn='http://{}-staging.data-plane/~{}/inputs/job-wrapper.sh'.format(args.submit_site, username),
+                            site='origin',
+                            pfn='http://{}/~{}/inputs/job-wrapper.sh'.format(staging_site, username),
                             is_stageable=True,
                             checksum={"sha256":sha256(str(BASE_DIR / "job-wrapper.sh"))}
                         )
@@ -191,7 +168,7 @@ if __name__=="__main__":
         infile = File(entry)
         inputs.append(infile)
         chksum = sha256(str(BASE_DIR / 'inputs/{}'.format(entry)))
-        pfn = 'http://{}-staging.data-plane/~{}/inputs/{}'.format(args.submit_site, username, entry)
+        pfn = 'http://{}/~{}/inputs/{}'.format(staging_site, username, entry)
         urls.append(pfn)
         rc.add_replica(
                     'origin',

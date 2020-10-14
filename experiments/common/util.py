@@ -4,6 +4,7 @@ import subprocess
 import datetime
 import time
 import sys
+import logging
 
 from pathlib import Path
 
@@ -67,3 +68,34 @@ def wait_on_pegasus_dagman() -> None:
         else:
             break
     print("pegasus-dagman down")
+
+def bypass_staging(wf_experiment_dir: Path, submit_site: str):
+    experiment_dir = wf_experiment_dir.parent.resolve()
+    staging_site = "{}-staging.data-plane".format(submit_site)
+    stage_cmd = ["ssh", staging_site, "mkdir", "-p", "~/public_html/inputs"]
+    
+    stage = subprocess.run(stage_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)   
+
+    if stage.returncode != 0:
+        logging.critical("Could not execute: {},\n{}\n{}".format(
+                " ".join(stage_cmd),
+                stage.stdout.decode(),
+                stage.stderr.decode()
+            ))
+        sys.exit(1)
+
+    scp_cmd = " ".join(
+        [
+            "scp", str(experiment_dir / "job-wrapper.sh"), str(experiment_dir / "inputs/*"), 
+            "{}:~/public_html/inputs/".format(staging_site)
+        ]
+    )
+    scp = subprocess.run(scp_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    if scp.returncode != 0:
+        logging.critical("Could not execute: {},\n{}\n{}".format(
+                scp_cmd,
+                scp.stdout.decode(),
+                scp.stderr.decode()
+            ))
+        sys.exit(1)
+    logging.info("bypass staging complete for site: {}".format(staging_site))
