@@ -4,7 +4,7 @@ import sys
 
 from Pegasus.api import *
 
-def write_basic_site_catalog(path: str, work_dir: str, run_id: str) -> None:
+def write_basic_site_catalog(path: str, work_dir: str, run_id: str, submit_site: str) -> None:
     # create local site
     SSH_PRIVATE_KEY_PATH = os.getenv("HOME") + "/.ssh/id_rsa"
     LOCAL_SHARED_SCRATCH_PATH = work_dir + "/" + run_id
@@ -23,8 +23,9 @@ def write_basic_site_catalog(path: str, work_dir: str, run_id: str) -> None:
 
     # create origin (staging) site
     ORIGIN_SHARED_SCRATCH_PATH = os.getenv("HOME") + "/public_html/"
-    ORIGIN_FILE_SERVER_GET_URL = "http://uc-staging.data-plane/~" + os.getenv("USER") + "/"
-    ORIGIN_FILE_SERVER_PUT_URL = "scp://" + os.getenv("USER") + "@uc-staging.data-plane/home/" + os.getenv("USER") + "/public_html"
+    ORIGIN_FILE_SERVER_GET_URL = "http://{}-staging.data-plane/~".format(submit_site) + os.getenv("USER") + "/"
+    ORIGIN_FILE_SERVER_PUT_URL = "scp://" + os.getenv("USER") +\
+         "@{}-staging.data-plane/home/".format(submit_site) + os.getenv("USER") + "/public_html"
     
     origin = Site("origin", arch=Arch.X86_64, os_type=OS.LINUX)\
                 .add_directories(
