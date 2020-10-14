@@ -33,6 +33,12 @@ def parse_args(args=sys.argv[1:]):
             )
 
     parser.add_argument(
+        "submit_site",
+        choices=["unl", "uc", "syr", "ucsd"],
+        help="The site from which this workflow is being submitted (e.g. 'unl', 'uc', 'syr', 'ucsd')"
+    )
+
+    parser.add_argument(
                 "dir",
                 help="Test directory for this workflow. One will be created if"
                 " it already does not exist."
@@ -113,8 +119,8 @@ if __name__=="__main__":
 
     # create origin (staging) site
     ORIGIN_SHARED_SCRATCH_PATH = os.getenv("HOME") + "/public_html/"
-    ORIGIN_FILE_SERVER_GET_URL = "http://uc-staging.data-plane/~" + os.getenv("USER") + "/"
-    ORIGIN_FILE_SERVER_PUT_URL = "scp://" + os.getenv("USER") + "@uc-staging.data-plane/home/" + os.getenv("USER") + "/public_html"
+    ORIGIN_FILE_SERVER_GET_URL = "http://{}-staging.data-plane/~".format(args.submit_site) + os.getenv("USER") + "/"
+    ORIGIN_FILE_SERVER_PUT_URL = "scp://" + os.getenv("USER") + "@{}-staging.data-plane/home/".format(args.submit_site) + os.getenv("USER") + "/public_html"
     
     origin = Site("origin", arch=Arch.X86_64, os_type=OS.LINUX)\
                 .add_directories(
@@ -149,8 +155,8 @@ if __name__=="__main__":
     tc = TransformationCatalog()
     script = Transformation(
                             'job.sh',
-                            site='uc-staging',
-                            pfn='http://uc-staging.data-plane/~{}/inputs/job-wrapper.sh'.format(username),
+                            site='origin',
+                            pfn='http://{}-staging.data-plane/~{}/inputs/job-wrapper.sh'.format(args.submit_site, username),
                             is_stageable=True,
                             checksum={"sha256":sha256(str(Path(BASE_DIR / "job-wrapper.sh")))}
                         )
@@ -164,10 +170,10 @@ if __name__=="__main__":
         infile = File(entry)
         inputs.append(infile)
         chksum = sha256(str(Path(BASE_DIR / 'inputs/{}'.format(entry))))
-        pfn = 'http://uc-staging.data-plane/~{}/inputs/{}'.format(username, entry)
+        pfn = 'http://{}-staging.data-plane/~{}/inputs/{}'.format(args.submit_site, username, entry)
         urls.append(pfn)
         rc.add_replica(
-                    'uc-staging',
+                    'origin',
                     infile,
                     pfn,
                     checksum={"sha256": chksum}
