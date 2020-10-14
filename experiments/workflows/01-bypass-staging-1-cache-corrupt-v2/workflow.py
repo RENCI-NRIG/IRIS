@@ -88,6 +88,13 @@ def parse_args(args=sys.argv[1:]):
                 type=str,
                 help="The probability of corruption (arg for chaos-jungle)"
             )
+    
+    parser.add_argument(
+                "-x",
+                "--populate",
+                action="store_true",
+                help="Set to enable the pre-population of caches with files used in this workflow"
+            )
 
     return parser.parse_args()
 
@@ -193,12 +200,13 @@ if __name__=="__main__":
                     checksum={"sha256": chksum}
                 )
 
-    # pre populate the caches
-    for site in ["syr", "unl", "ucsd", "uc"]:
-        proxy = "http://{}-cache:8000".format(site)
-        log.info("populating cache at {}".format(site))
-        for url in urls:
-            util.wget(url, http_proxy=proxy)
+    if args.populate:
+        # pre populate the caches
+        for site in ["syr", "unl", "ucsd", "uc"]:
+            proxy = "http://{}-cache:8000".format(site)
+            log.info("populating cache at {}".format(site))
+            for url in urls:
+                util.wget(url, http_proxy=proxy)
 
     for i in range(args.num_jobs):
         j = Job(script).add_args(i).add_inputs(*inputs)
