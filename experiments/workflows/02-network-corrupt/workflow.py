@@ -118,9 +118,11 @@ if __name__=="__main__":
                 .add_env(LANG="C.UTF-8")
 
     # create origin (staging) site
+    #STAGING_SITE = "{}-staging.data-plane".format(args.submit_site)
+    STAGING_SITE = "{}-staging".format(args.submit_site)
     ORIGIN_SHARED_SCRATCH_PATH = os.getenv("HOME") + "/public_html/"
-    ORIGIN_FILE_SERVER_GET_URL = "http://{}-staging.data-plane/~".format(args.submit_site) + os.getenv("USER") + "/"
-    ORIGIN_FILE_SERVER_PUT_URL = "scp://" + os.getenv("USER") + "@{}-staging.data-plane/home/".format(args.submit_site) + os.getenv("USER") + "/public_html"
+    ORIGIN_FILE_SERVER_GET_URL = "http://{}/~".format(STAGING_SITE) + os.getenv("USER") + "/"
+    ORIGIN_FILE_SERVER_PUT_URL = "scp://" + os.getenv("USER") + "@{}/home/".format(STAGING_SITE) + os.getenv("USER") + "/public_html"
     
     origin = Site("origin", arch=Arch.X86_64, os_type=OS.LINUX)\
                 .add_directories(
@@ -156,7 +158,7 @@ if __name__=="__main__":
     script = Transformation(
                             'job.sh',
                             site='origin',
-                            pfn='http://{}-staging.data-plane/~{}/inputs/job-wrapper.sh'.format(args.submit_site, username),
+                            pfn='http://{}/~{}/inputs/job-wrapper.sh'.format(STAGING_SITE, username),
                             is_stageable=True,
                             checksum={"sha256":sha256(str(Path(BASE_DIR / "job-wrapper.sh")))}
                         )
@@ -170,7 +172,7 @@ if __name__=="__main__":
         infile = File(entry)
         inputs.append(infile)
         chksum = sha256(str(Path(BASE_DIR / 'inputs/{}'.format(entry))))
-        pfn = 'http://{}-staging.data-plane/~{}/inputs/{}'.format(args.submit_site, username, entry)
+        pfn = 'http://{}/~{}/inputs/{}'.format(STAGING_SITE, username, entry)
         urls.append(pfn)
         rc.add_replica(
                     'origin',

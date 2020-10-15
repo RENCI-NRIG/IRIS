@@ -16,18 +16,18 @@ sys.path.append(util.pegasus_config_python())
 
 logging.basicConfig(level=logging.DEBUG)
 
-wf_exeriment_dir = Path(__file__).parent.resolve()
+wf_experiment_dir = Path(__file__).parent.resolve()
 
 def parse_args(args=sys.argv[1:]):
     parser = argparse.ArgumentParser(
         description="Bypass staging for the given site(s) "
-        " Example: bypass_staging.py unl-staging uc-staging"
+        " Example: bypass_staging.py unl uc"
     )
 
     parser.add_argument(
         "hostnames",
         nargs="+",
-        choices=["uc-staging", "unl-staging", "ucsd-staging", "syr-staging"],
+        choices=["uc", "unl", "ucsd", "syr"],
         help="One or more hostnames staging should be bypassed"
     )
 

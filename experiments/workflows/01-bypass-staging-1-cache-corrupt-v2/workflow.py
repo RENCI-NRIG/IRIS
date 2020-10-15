@@ -122,7 +122,7 @@ if __name__=="__main__":
     log.info("test directory set to: {}".format(WORK_DIR))
 
     # --- Bypass Data Staging --------------------------------------------------
-    util.bypass_staging(args.submit_site)
+    util.bypass_staging(BASE_DIR, args.submit_site)
 
     # --- Properties ------------------------------------------------------------
     props = Properties()
@@ -143,7 +143,8 @@ if __name__=="__main__":
     )
 
     # --- Transformations - Replicas - Workflow ---------------------------------
-    staging_site = "{}-staging.data-plane".format(args.submit_site)
+    #staging_site = "{}-staging.data-plane".format(args.submit_site)
+    staging_site = "{}-staging".format(args.submit_site)
     username = getpass.getuser()
     base_dir = os.getcwd()
 
