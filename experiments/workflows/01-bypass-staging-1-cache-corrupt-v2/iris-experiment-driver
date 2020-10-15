@@ -1,30 +1,29 @@
 #!/bin/bash
+set -x
 
-corruptsite=$1
-workdir=$2
-runid=$3
+CORRUPT_SITE=$1
+SUBMIT_SITE=$2
+LOG_FILE=$3
 CORRUPT_TIMES=$4
 CORRUPT_PROB=$5
 
-logfile=${workdir}/${corruptsite}_${runid}_corrupt.log
-tmplogfile=/tmp/iris_corrupt_${corruptsite}_${runid}.log  # so control machine can grap it easily
-
 sleep 2m
 echo
-echo `date` "Corrupting the cache at ${corruptsite}..."
-echo $(date +%s) CORRUPT_START ${corruptsite} > ${logfile}
+echo `date` "Corrupting the cache at ${CORRUPT_SITE}..."
+echo $(date +%s) CORRUPT_START ${CORRUPT_SITE} > ${LOG_FILE}
 # cj_storage.py might be confused about the state, so "revert" first
-ssh ${corruptsite} "sudo /root/chaos-jungle/storage/cj_storage.py --revert" >/dev/null 2>&1
+ssh ${CORRUPT_SITE} "sudo /root/chaos-jungle/storage/cj_storage.py --revert" >/dev/null 2>&1
 for (( j=1; j<=${CORRUPT_TIMES}; j++ ))
 do
-ssh ${corruptsite} "sudo /root/chaos-jungle/storage/cj_storage.py -d /cache/ -f \"uc-staging.data-plane-~$USER*\" -p ${CORRUPT_PROB} -r --onetime"
+ssh ${CORRUPT_SITE} "sudo /root/chaos-jungle/storage/cj_storage.py -d /cache/ -f \"$SUBMIT_SITE-staging.data-plane-~$USER*\" -p ${CORRUPT_PROB} -r --onetime"
 done
 sleep 1m
 
 echo
-echo `date` "Clearing the cache at ${corruptsite}..."
-ssh ${corruptsite} "sudo /root/chaos-jungle/storage/cj_storage.py --revert" >/dev/null 2>&1
-ssh ${corruptsite} "sudo rm -f /cache/uc-staging.data-plane-~$USER*"
-echo $(date +%s) CORRUPT_END ${corruptsite} >> ${logfile}
-cp  ${logfile} ${tmplogfile}
+echo `date` "Clearing the cache at ${CORRUPT_SITE}..."
+ssh ${CORRUPT_SITE} "sudo /root/chaos-jungle/storage/cj_storage.py --revert" >/dev/null 2>&1
+ssh ${CORRUPT_SITE} "sudo rm -f /cache/${SUBMIT_SITE}-staging.data-plane-~$USER*"
+echo $(date +%s) CORRUPT_END ${CORRUPT_SITE} >> ${LOG_FILE}
 
+# copy to tmp so controll machine can easily grab it
+cp  ${LOG_FILE} /tmp/${LOG_FILE}

@@ -58,35 +58,9 @@ def parse_args(args=sys.argv[1:]):
             )
 
     parser.add_argument(
-                "-c",
-                "--corrupt",
-                action="append",
-                default=[],
-                metavar="HOSTNAME",
-                help="Host to corrupt. Multiple hosts can be given by specifying"
-                " -c <hostname1> -c <hostname2> .."
-            )
-
-    parser.add_argument(
                 "-t",
                 "--timestamps-file",
                 help="Path to write timestamp file to."
-            )
-
-    parser.add_argument(
-                "-m",
-                "--corrupt_times",
-                default="1",
-                type=str,
-                help="This is the count that corruption command will be issued, for multiple files corruption"
-            )
-
-    parser.add_argument(
-                "-p",
-                "--corrupt_prob",
-                default="1",
-                type=str,
-                help="The probability of corruption (arg for chaos-jungle)"
             )
     
     parser.add_argument(
@@ -197,23 +171,6 @@ if __name__=="__main__":
         with open(args.timestamps_file, "w") as f:
             f.write(datetime.now().strftime('%Y-%m-%dT%H:%M:%S') + " START")
 
-    # start driver experiment(s) for the given site(s)
-    iris_experiment_drivers = list()
-    for site in args.corrupt:
-        iris_experiment_drivers.append(
-            subprocess.Popen(
-                [
-                    str(BASE_DIR / "iris-experiment-driver"),
-                    site,
-                    str(WORK_DIR),
-                    args.run_id,
-                    args.corrupt_times,
-                    args.corrupt_prob
-                ]
-            )
-        )
-        log.info("iris-experiment-driver started for site: {}".format(site))
-
     # start workflow
     try:
         log.info("planning and submitting workflow with {} jobs".format(args.num_jobs))
@@ -231,10 +188,6 @@ if __name__=="__main__":
     except PegasusClientError as e:
         log.error(e.output)
     finally:
-        # terminate driver experiment(s)
-        for ied in iris_experiment_drivers:
-            ied.terminate()
-
         if args.timestamps_file:
             with open(args.timestamps_file, 'a') as f:
                 f.write('\n' + datetime.now().strftime('%Y-%m-%dT%H:%M:%S') + " END")
