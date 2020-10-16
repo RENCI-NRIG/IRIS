@@ -72,7 +72,7 @@ optional arguments:
 Run the workflow. This must be run from the intented submit host. For example,
 if it is to be run from `uc-submit`, `ssh` there and when calling this script, 
 the first positional argument should be `uc`. To allow for multiple workflows to be run, 
-at the same time, this workflow will not block. 
+at the same time, background this process.
 
 ```
 usage: workflow.py [-h] [-t TIMESTAMPS_FILE] [-p] {unl,uc,syr,ucsd} dir run_id [1, 1000]
@@ -111,10 +111,22 @@ optional arguments:
 
 # start two workflows
 # this workflow will be affected by corrupted files
-ssh tanaka@ucsd-submit 'python3 ucsd /path/to/workflow.py /home/tanaka/test run1 30 -p -t wf1_ts_file'
+ssh tanaka@ucsd-submit 'python3 ucsd /path/to/workflow.py /home/tanaka/test run1 30 -p -t wf1_ts_file &'
 
 # this workflow will not be affected by corrupted files 
-ssh tanaka@unl-submit 'python3 unl /path/to/workflow.py /home/tanaka/test run1 30 -p -t wf1_ts_file'
+ssh tanaka@unl-submit 'python3 unl /path/to/workflow.py /home/tanaka/test run1 30 -p -t wf1_ts_file &'
 
 # TODO: add func to check that all submited workflows part of this experiment run are complete
+Maybe do something like this (https://stackoverflow.com/questions/356100/how-to-wait-in-bash-for-several-subprocesses-to-finish-and-return-exit-code-0)?
+
+# run processes and store pids in array
+for i in $n_procs; do
+    ./procs[${i}] &
+    pids[${i}]=$!
+done
+
+# wait for all pids
+for pid in ${pids[*]}; do
+    wait $pid
+done
 ```
