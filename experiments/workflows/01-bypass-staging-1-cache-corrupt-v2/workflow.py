@@ -117,8 +117,8 @@ if __name__=="__main__":
     )
 
     # --- Transformations - Replicas - Workflow ---------------------------------
-    #staging_site = "{}-staging.data-plane".format(args.submit_site)
-    staging_site = "{}-staging".format(args.submit_site)
+    staging_site = "{}-staging.data-plane".format(args.submit_site)
+    #staging_site = "{}-staging".format(args.submit_site)
     username = getpass.getuser()
     base_dir = os.getcwd()
 
@@ -137,7 +137,7 @@ if __name__=="__main__":
 
     # a list of common inputs for all jobs
     inputs = []
-    urls = []
+    urls = ["http://{}/~{}/inputs/job-wrapper.sh".format(staging_site, username)]
     rc = ReplicaCatalog()
     for entry in os.listdir(str(Path(BASE_DIR / 'inputs'))):
         infile = File(entry)
