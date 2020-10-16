@@ -71,8 +71,8 @@ def wait_on_pegasus_dagman() -> None:
 
 def bypass_staging(wf_experiment_dir: Path, submit_site: str):
     experiment_dir = wf_experiment_dir.resolve()
-    #staging_site = "{}-staging.data-plane".format(submit_site)
-    staging_site = "{}-staging".format(submit_site)
+    staging_site = "{}-staging.data-plane".format(submit_site)
+    #staging_site = "{}-staging".format(submit_site)
     stage_cmd = ["ssh", staging_site, "mkdir", "-p", "~/public_html/inputs"]
     
     stage = subprocess.run(stage_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)   
