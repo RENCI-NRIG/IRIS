@@ -8,7 +8,7 @@ def parse_args(args=sys.argv[1:]):
     parser = argparse.ArgumentParser(
         description="Corrupt a given cache. This will fork the iris-experiment-driver "
         " shell script and return immediately. "
-        " Example: ./iris-experiment-driver.py unl-cache ucsd -m 3 -p 0.05"
+        " Example: ./iris-experiment-driver.py unl-cache ucsd -m 3 -p 0.05 -d corrupt_ucsd_files_at_unl.log"
     )
 
     parser.add_argument(
@@ -46,6 +46,14 @@ def parse_args(args=sys.argv[1:]):
         help="The probability of corruption (arg for chaos-jungle) at each time of corruption"
     )
 
+    parser.add_argument(
+        "-d",
+        "--debug-file",
+        type=str,
+        default=None,
+        help="File to write debug output to"
+    )
+
     return parser.parse_args(args)
 
 if __name__=="__main__":
@@ -65,10 +73,11 @@ if __name__=="__main__":
         stderr=subprocess.PIPE
     )
     
-    # ebug
-    if 1:
-        out, err = proc.communicate()
-        with open("proc_output", "w") as f:
+    out, err = proc.communicate()
+
+    if args.debug_file:
+
+        with open(args.debug_file, "w") as f:
             if out:
                 f.write("stdout\n")
                 f.write(out.decode())

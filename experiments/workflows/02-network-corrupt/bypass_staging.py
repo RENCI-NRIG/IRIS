@@ -28,7 +28,7 @@ def parse_args(args=sys.argv[1:]):
         "hostnames",
         nargs="+",
         choices=["uc", "unl", "ucsd", "syr"],
-        help="One or more hostnames staging should be bypassed"
+        help="One or more sites where staging should be bypassed"
     )
 
     args = parser.parse_args()

@@ -29,7 +29,7 @@ def parse_args(args=sys.argv[1:]):
     parser = argparse.ArgumentParser(
                 description="Run a workflow with N independent jobs. Multiple "
                 " compute hosts may be corrupted if specified."
-                " Example: 'workflow.py unl /home/ryan/test1 run1 30 -c syr-compute-c2 -c unl-compute-c1 -t /tmp/iris_timestamps/this_run.txt'"
+                " Example: 'workflow.py unl /home/ryan/test1 run1 30 -p -t timestamp_file.txt"
             )
 
     parser.add_argument(
@@ -64,7 +64,7 @@ def parse_args(args=sys.argv[1:]):
             )
     
     parser.add_argument(
-                "-x",
+                "-p",
                 "--populate",
                 action="store_true",
                 help="Set to enable the pre-population of caches with files used in this workflow"
