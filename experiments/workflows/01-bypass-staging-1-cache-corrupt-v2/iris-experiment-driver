@@ -1,13 +1,24 @@
 #!/bin/bash
 set -x
 
+# Wait until files to be corrupted arrive. 
+# One option as opposed to giving some arbitrary time to wait.
+_wait() {
+    while [[ $(ls -1 /cache | egrep "$1-staging\.data-plane-~$2*" | wc -l) -le 6 ]]; do
+	echo nothing yet
+        sleep 1
+    done
+}
+
 CORRUPT_SITE=$1
 SUBMIT_SITE=$2
 LOG_FILE=$3
 CORRUPT_TIMES=$4
 CORRUPT_PROB=$5
 
-sleep 2m
+# sleep 2m
+ssh $CORRUPT_SITE "$(declare -f); _wait $SUBMIT_SITE $USER"
+
 echo
 echo `date` "Corrupting the cache at ${CORRUPT_SITE}..."
 echo $(date +%s) CORRUPT_START ${CORRUPT_SITE} > ${LOG_FILE}

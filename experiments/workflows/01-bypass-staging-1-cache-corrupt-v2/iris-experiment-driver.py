@@ -51,7 +51,8 @@ def parse_args(args=sys.argv[1:]):
 if __name__=="__main__":
     args = parse_args()
 
-    subprocess.Popen(
+
+    proc = subprocess.Popen(
         [
             str(pathlib.Path(__file__).parent.resolve() / "iris-experiment-driver"),
             args.cache,
@@ -59,8 +60,19 @@ if __name__=="__main__":
             args.log_file,
             args.corrupt_times,
             args.corrupt_probability
-        ]
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE
     )
     
+    # ebug
+    if 1:
+        out, err = proc.communicate()
+        with open("proc_output", "w") as f:
+            if out:
+                f.write("stdout\n")
+                f.write(out.decode())
 
-    
+            if err:
+                f.write("stderr\n")
+                f.write(err.decode())
