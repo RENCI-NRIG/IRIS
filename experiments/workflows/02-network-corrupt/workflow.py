@@ -118,8 +118,8 @@ if __name__=="__main__":
                 .add_env(LANG="C.UTF-8")
 
     # create origin (staging) site
-    #STAGING_SITE = "{}-staging.data-plane".format(args.submit_site)
-    STAGING_SITE = "{}-staging".format(args.submit_site)
+    STAGING_SITE = "{}-staging.data-plane".format(args.submit_site)
+    #STAGING_SITE = "{}-staging".format(args.submit_site)
     ORIGIN_SHARED_SCRATCH_PATH = os.getenv("HOME") + "/public_html/"
     ORIGIN_FILE_SERVER_GET_URL = "http://{}/~".format(STAGING_SITE) + os.getenv("USER") + "/"
     ORIGIN_FILE_SERVER_PUT_URL = "scp://" + os.getenv("USER") + "@{}/home/".format(STAGING_SITE) + os.getenv("USER") + "/public_html"
