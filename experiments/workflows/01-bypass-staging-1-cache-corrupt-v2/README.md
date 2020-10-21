@@ -111,10 +111,10 @@ optional arguments:
 
 # start two workflows
 # this workflow will be affected by corrupted files
-ssh tanaka@ucsd-submit 'python3 ucsd /path/to/workflow.py /home/tanaka/test run1 30 -p -t wf1_ts_file &'
+ssh tanaka@ucsd-submit 'python3 /path/to/workflow.py ucsd /home/tanaka/test run1 30 -p -t wf1_ts_file' &
 
 # this workflow will not be affected by corrupted files 
-ssh tanaka@unl-submit 'python3 unl /path/to/workflow.py /home/tanaka/test run1 30 -p -t wf1_ts_file &'
+ssh tanaka@unl-submit 'python3 /path/to/workflow.py unl /home/tanaka/test run1 30 -p -t wf1_ts_file' &
 
 # TODO: add func to check that all submited workflows part of this experiment run are complete
 Maybe do something like this (https://stackoverflow.com/questions/356100/how-to-wait-in-bash-for-several-subprocesses-to-finish-and-return-exit-code-0)?
