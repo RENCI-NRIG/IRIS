@@ -15,6 +15,7 @@ SUBMIT_SITE=$2
 LOG_FILE=$3
 CORRUPT_TIMES=$4
 CORRUPT_PROB=$5
+CORRUPT_DURATION=$6
 
 # sleep 2m
 ssh $CORRUPT_SITE "$(declare -f); _wait $SUBMIT_SITE $USER"
@@ -28,7 +29,7 @@ for (( j=1; j<=${CORRUPT_TIMES}; j++ ))
 do
 ssh ${CORRUPT_SITE} "sudo /root/chaos-jungle/storage/cj_storage.py -d /cache/ -f \"$SUBMIT_SITE-staging.data-plane-~$USER*\" -p ${CORRUPT_PROB} -r --onetime"
 done
-sleep 1m
+sleep $CORRUPT_DURATION
 
 echo
 echo `date` "Clearing the cache at ${CORRUPT_SITE}..."

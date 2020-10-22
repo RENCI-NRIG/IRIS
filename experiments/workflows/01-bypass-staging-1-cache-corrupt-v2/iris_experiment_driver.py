@@ -7,8 +7,8 @@ import subprocess
 def parse_args(args=sys.argv[1:]):
     parser = argparse.ArgumentParser(
         description="Corrupt a given cache. This will fork the iris-experiment-driver "
-        " shell script and return immediately. "
-        " Example: ./iris-experiment-driver.py unl-cache ucsd -m 3 -p 0.05 -d corrupt_ucsd_files_at_unl.log"
+        " and wait for it to complete. "
+        " Example: ./iris-experiment-driver.py unl-cache ucsd -l 120 -m 3 -p 0.05 -d corrupt_ucsd_files_at_unl.log"
     )
 
     parser.add_argument(
@@ -47,6 +47,13 @@ def parse_args(args=sys.argv[1:]):
     )
 
     parser.add_argument(
+        "-l",
+        "--length",
+        default="60",
+        help="Duration of corruption in seconds, defaults to 60"
+    )
+
+    parser.add_argument(
         "-d",
         "--debug-file",
         type=str,
@@ -67,7 +74,8 @@ if __name__=="__main__":
             args.submit_site,
             args.log_file,
             args.corrupt_times,
-            args.corrupt_probability
+            args.corrupt_probability,
+            args.length,
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE

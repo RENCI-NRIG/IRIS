@@ -48,9 +48,9 @@ times. **One caveat is that you need to background each process so that the work
 execution can start while this runs.** (e.g. `./iris-experiment-driver.py unl-cache ucsd -m 3 -p 1 -d corrupt_ucsd_files_at_unl.log &`)
 
 ```
-usage: iris_experiment_driver.py [-h] [-m CORRUPT_TIMES] [-p CORRUPT_PROBABILITY] [-d DEBUG_FILE] {unl-cache,ucsd-cache,uc-cache,syr-cache} {unl,ucsd,uc,syr} log_file
+usage: iris_experiment_driver.py [-h] [-m CORRUPT_TIMES] [-p CORRUPT_PROBABILITY] [-l LENGTH] [-d DEBUG_FILE] {unl-cache,ucsd-cache,uc-cache,syr-cache} {unl,ucsd,uc,syr} log_file
 
-Corrupt a given cache. This will fork the iris-experiment-driver shell script and return immediately. Example: ./iris-experiment-driver.py unl-cache ucsd -m 3 -p 0.05 -d corrupt_ucsd_files_at_unl.log
+Corrupt a given cache. This will fork the iris-experiment-driver and wait for it to complete. Example: ./iris-experiment-driver.py unl-cache ucsd -l 120 -m 3 -p 0.05 -d corrupt_ucsd_files_at_unl.log
 
 positional arguments:
   {unl-cache,ucsd-cache,uc-cache,syr-cache}
@@ -64,6 +64,8 @@ optional arguments:
                         The number of times corruption will occur.
   -p CORRUPT_PROBABILITY, --corrupt-probability CORRUPT_PROBABILITY
                         The probability of corruption (arg for chaos-jungle) at each time of corruption
+  -l LENGTH, --length LENGTH
+                        Duration of corruption in seconds, defaults to 60
   -d DEBUG_FILE, --debug-file DEBUG_FILE
                         File to write debug output to
 ```
@@ -111,10 +113,10 @@ optional arguments:
 
 # start two workflows
 # this workflow will be affected by corrupted files
-ssh tanaka@ucsd-submit 'python3 ucsd /path/to/workflow.py /home/tanaka/test run1 30 -p -t wf1_ts_file &'
+ssh tanaka@ucsd-submit 'python3 /path/to/workflow.py ucsd /home/tanaka/test run1 30 -p -t wf1_ts_file' &
 
 # this workflow will not be affected by corrupted files 
-ssh tanaka@unl-submit 'python3 unl /path/to/workflow.py /home/tanaka/test run1 30 -p -t wf1_ts_file &'
+ssh tanaka@unl-submit 'python3 /path/to/workflow.py unl /home/tanaka/test run1 30 -p -t wf1_ts_file' &
 
 # TODO: add func to check that all submited workflows part of this experiment run are complete
 Maybe do something like this (https://stackoverflow.com/questions/356100/how-to-wait-in-bash-for-several-subprocesses-to-finish-and-return-exit-code-0)?
