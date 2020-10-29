@@ -57,37 +57,38 @@ def wait_on_monitord(submit_dir: Path) -> None:
     # that this solution is good enough for now. If there was a pid file for
     # pegasus-dagman, it would be preferred to wait on that instead.
 
-    # wait for monitord.pid to exist
-    monitord_pid_file = submit_dir / "monitord.pid"
-    elapsed = 0
-    while not monitord_pid_file.exists():
-        print("{} looking for {}".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), monitord_pid_file))
-        time.sleep(1)
-        elapsed += 1
 
-        if elapsed > 10:
-            raise RuntimeError("{} should exist by now".format(monitord_pid_file))
+    # if monitord.pid doesn't exist, we are done, else wait until monitor.d completes
+    try:
+        monitord_pid_file = submit_dir / "monitord.pid"
+        # get pid from <submit_dir>/monitord.pid
+        with monitord_pid_file.open() as f:
+            mpid = int(f.read().split()[1].strip())
 
-    # get pid from <submit_dir>/monitord.pid
-    with monitord_pid_file.open() as f:
-        mpid = int(f.read().split()[1].strip())
+        # wait at most 10 min for monitord to finish, else something has gone probably wrong
+        TIMEOUT = 600
+        elapsed = 0
+        while elapsed < TIMEOUT:
+            try:
+                # if this is successful monitord is still running
+                os.kill(mpid, 0)
+            except OSError as e:
+                # ESRCH 3 No Such Process
+                if e.errno != 3:
+                    raise e
+                else:
+                    break
 
-    # wait at most 10 min for monitord to finish, else something has gone wrong
-    elapsed = 0
-    while elapsed < 600:
-        try:
-            # if this is successful monitord is still running
-            os.kill(mpid, 0)
-        except OSError as e:
-            # ESRCH 3 No Such Process
-            if e.errno != 3:
-                raise e
-            else:
-                break
+            print("{} monitord (pid={}) still running".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), mpid))
+            time.sleep(1)
+            elapsed += 1
+        if elapsed >= TIMEOUT:
+            print("wait_on_monitord timed out")
+        else:
+            print("monitord finished")
 
-        print("{} monitord (pid={}) still running".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), mpid))
-        time.sleep(1)
-        elapsed += 1
+    except FileNotFoundError:
+        print("{} not found. monitord is assumed to be done".format(monitord_pid_file))
 
 
 def bypass_staging(wf_experiment_dir: Path, submit_site: str):
