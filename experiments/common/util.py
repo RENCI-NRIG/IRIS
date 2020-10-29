@@ -52,22 +52,43 @@ def clear_caches(*hostnames) -> None:
         assert p.returncode == 0
         print("cache cleanup complete")
 
-def wait_on_pegasus_dagman() -> None:
-    while True:
-        p = subprocess.run(
-                ["ps", "-eo", "command"],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE
-            )
+def wait_on_monitord(submit_dir: Path) -> None:
+    # If monitord fails and is restarted, this won't work. However, we've agreed
+    # that this solution is good enough for now. If there was a pid file for
+    # pegasus-dagman, it would be preferred to wait on that instead.
 
-        if "pegasus-dagman" in p.stdout.decode():
-            print("pegasus-dagman still up {}".format(
-                    datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                ))
-            time.sleep(1)
-        else:
-            break
-    print("pegasus-dagman down")
+    # wait for monitord.pid to exist
+    monitord_pid_file = submit_dir / "monitord.pid"
+    elapsed = 0
+    while not monitord_pid_file.exists():
+        print("{} looking for {}".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), monitord_pid_file))
+        time.sleep(1)
+        elapsed += 1
+
+        if elapsed > 10:
+            raise RuntimeError("{} should exist by now".format(monitord_pid_file))
+
+    # get pid from <submit_dir>/monitord.pid
+    with monitord_pid_file.open() as f:
+        mpid = int(f.read().split()[1].strip())
+
+    # wait at most 10 min for monitord to finish, else something has gone wrong
+    elapsed = 0
+    while elapsed < 600:
+        try:
+            # if this is successful monitord is still running
+            os.kill(mpid, 0)
+        except OSError as e:
+            # ESRCH 3 No Such Process
+            if e.errno != 3:
+                raise e
+            else:
+                break
+
+        print("{} monitord (pid={}) still running".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), mpid))
+        time.sleep(1)
+        elapsed += 1
+
 
 def bypass_staging(wf_experiment_dir: Path, submit_site: str):
     experiment_dir = wf_experiment_dir.resolve()

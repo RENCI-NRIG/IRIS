@@ -213,9 +213,8 @@ if __name__=="__main__":
             with open(args.timestamps_file, 'a') as f:
                 f.write('\n' + datetime.now().strftime('%Y-%m-%dT%H:%M:%S') + " END")
 
-        # ensure pegasus-dagman is down
-        util.wait_on_pegasus_dagman()
-
+        # ensure monitord is done
+        util.wait_on_monitord(Path(args.dir) / args.run_id)
 
 
 
