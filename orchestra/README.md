@@ -13,8 +13,9 @@ $ cd IRIS/orchestra
 
 #### Modify configurations in `test_env.sh`
 ```
-export OUTPUT_DIR=~/iris_results
 export WORKFLOW_USER=""
+export ES_USERNAME=""
+export ES_PASSWORD=""
 ```
 
 #### RUN once `init.sh` to get the topology information (IP addresses of Nodes, Links...) to control machine
@@ -32,9 +33,9 @@ $ ./init.sh
 &nbsp;&nbsp;&nbsp;&nbsp;in `CORRUPT_NODES` file:
 
 ```
-199.165.75.188 syr-compute-c2
-199.165.75.193 unl-compute-c1
-199.165.75.224 ucsd-compute-c3
+199.165.75.188 syr-cache
+199.165.75.193 unl-cache
+199.165.75.224 ucsd-cache
 ```
 
 &nbsp;&nbsp;&nbsp;&nbsp;in `CORRUPT_EDGES` file:
@@ -48,9 +49,9 @@ export uc-staging_Link19=192.168.19.3
 Every line in these files will become one run of workflow experiment
 
 
-#### 2. Start the experiment by `run_wf_experiment.sh`, a result folder will be created under `OUTPUT_DIR`.
+#### 2. Start the experiment by `wf_experiment01.sh`, a result folder will be created under `OUTPUT_DIR` (i.e. /var/iris_results).
 ```
-$ ./run_wf_experiment.sh > ~/run_wf_experiment.log 2>&1
+$ ./wf_experiment01.sh > ~/console.log 2>&1
 ```
 
 #### 3. Check the latest folder under $OUTPUT_DIR (default:~/iris_results) for the result
