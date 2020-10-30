@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source ./test_env.sh
-source ./include.sh
+source ../test_env.sh
+source ../include.sh
 _get_all_nodes
 set -u
 

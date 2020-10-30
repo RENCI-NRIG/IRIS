@@ -55,11 +55,11 @@ done
 ##### experiment starts ######
 echo $(date +%Y-%m-%dT%H:%M:%S) > ${RESULT_DIR}/ts_start
 
+
 # corrupt caches in CORRUPT_NODES
+PREV_RUN=$run
 for v_nodeip in $CORRUPT_NODES
 do
-  PREV_RUN=$run
-
   run=$((run+1))
   echo; echo "### New Run" run${run}
   _get_hostname $v_nodeip
@@ -70,7 +70,7 @@ do
   _get_storage_probablity $v_nodeip
 
   echo "run$run $v_node ${CORRUPT_TIMES} ${STORAGE_PROB}" >> ${RESULT_DIR}/${RUN_LINKLABEL_FILE}
-    
+
   # clear caches
   cmd1="sudo -u $WORKFLOW_USER python3 /home/${WORKFLOW_USER}/IRIS/experiments/common/reset_caches.py uc-cache unl-cache ucsd-cache syr-cache"
   ${cmd1}
@@ -80,7 +80,7 @@ do
   ${SSH_CMD} ${v_node} "sudo cp /var/log/cj.log /var/log/cj_${currenttime}.log"
   ${SSH_CMD} ${v_node} "sudo rm /var/log/cj.log"
 
-  # randomly pick one victim as the corrupt_src, 
+  # randomly pick one victim as the corrupt_src,
   # and start cache corruption in background.
   corrupt_src=${sites[$(( $RANDOM % $n_sites ))]}
   echo "corrupt_src =" $corrupt_src
@@ -99,11 +99,9 @@ do
     echo ${cmd_wf}
     ${SSH_CMD} ${site}-submit ${cmd_wf} > ${RESULT_DIR}/run${run}_${site}_console.out 2>&1 &
     sleep 1
-
-    RUN_START=$(date +%Y-%m-%dT%H:%M:%S)
   done
 
-  echo "wait at least 5 mins before checking"
+  echo "[$(date +%Y-%m-%dT%H:%M:%S)] wait at least 5 mins before checking"
   sleep 300
 
   # make sure the workflow process in each submit site has finished
@@ -111,36 +109,39 @@ do
   for (( i=0; i<$n_sites; i++ ));
   do
     site=${sites[$i]};
+    echo "checking if workflow in ${site} finished:"
     while [[ -n $(${SSH_CMD} ${site}-submit ps ax | grep workflow.py) ]]; do
-        echo " workflows ongoing in ${site} ..."
+        echo -n "."
         sleep 5
     done
     ${SCP_CMD} ${site}-submit:${WORKFLOW_RESULT_DIR}/run${run}_timestamps ${RESULT_DIR}/run${run}_${site}_timestamps
-    echo Run${run} at ${site}-submit finished!
-    echo Duration: ${RUN_START} - $(date +%Y-%m-%dT%H:%M:%S)
+    echo; echo Run${run} at ${site}-submit finished!
+    cat ${RESULT_DIR}/run${run}_${site}_timestamps; echo
   done
 
   # make sure the corruption process has finished
   # and collect the corruption logs of driver and Chaos Jungle
+  echo -n "checking if corruption finished: "
   while [[ -n $(ps ax | grep iris_experiment_driver.py | grep -v sudo | grep -v grep) ]]; do
-    echo " corruption ongoing"
+    echo -n "."
     sleep 5
   done
+  echo "Done"
   ${SCP_CMD} ${v_node}:/var/log/cj.log ${RESULT_DIR}/${v_node}_run${run}_cj.log
   mv ${CORRUPT_TS_FILE} ${RESULT_DIR}/
 
   ### Break for test mod
-  if [[ $TEST_MODE == "1" ]]; then
-    if [[ $(($run - $PREV_RUN)) == $2 ]]; then
-      echo break
-      break
-    fi
+  if [[ ${TEST_MODE} == "1" ]]; then
+      if [[ $((run-PREV_RUN)) == ${2} ]]; then
+        echo "TEST_MODE break after done $2 times"; echo
+        break
+      fi
   fi
 
 done
 
-
 # corrupt network in CORRUPT_EDGES
+PREV_RUN=$run
 while IFS= read line || [ -n "$line" ]
 do
     if [[ $line = \#* ]] ; then
@@ -150,8 +151,6 @@ do
     if [ $run != 0 ]; then
       sleep 30
     fi
-
-    PREV_RUN=$run
 
     # parse link and packet-corrupt-rate P
     link=$(cut -d' ' -f2 <<< $line | cut -d= -f1)
@@ -210,19 +209,17 @@ EOF
       chmod u+x ${OUTPUT_DIR}/revert_previous.sh
     fi
 
+  # Running Workflow in each site
   for (( i=0; i<$n_sites; i++ ));
   do
     site=${sites[$i]}; echo "for site ${site}:"
-
-    # Running Workflow, and get the timestamp and corruption log
-    RUN_START=$(date +%Y-%m-%dT%H:%M:%S)
     command="python3 ${WORKFLOW_BASE_DIR}/${NETWORK_WORKFLOW_ID}/workflow.py ${site} ${WORKFLOW_RESULT_DIR} run${run} ${JOB_NUMBER} -t ${WORKFLOW_RESULT_DIR}/run${run}_timestamps"
     echo ${command}
     ${SSH_CMD} ${site}-submit ${command} > ${RESULT_DIR}/run${run}_${site}_console.out 2>&1 &
     sleep 1
   done
 
-  echo "wait at least 5 mins before checking"
+  echo "[$(date +%Y-%m-%dT%H:%M:%S)] wait at least 5 mins before checking"
   sleep 300
 
   # make sure the workflow process in each submit site has finished
@@ -230,13 +227,14 @@ EOF
   for (( i=0; i<$n_sites; i++ ));
   do
     site=${sites[$i]};
+    echo "checking if workflow in ${site} finished:"
     while [[ -n $(${SSH_CMD} ${site}-submit ps ax | grep workflow.py) ]]; do
-        echo " workflows ongoing in ${site} ..."
+        echo -n "."
         sleep 5
     done
     ${SCP_CMD} ${site}-submit:${WORKFLOW_RESULT_DIR}/run${run}_timestamps ${RESULT_DIR}/run${run}_${site}_timestamps
-    echo Run${run} at ${site}-submit finished!
-    echo Duration: ${RUN_START} - $(date +%Y-%m-%dT%H:%M:%S)
+    echo; echo Run${run} at ${site}-submit finished!
+    cat ${RESULT_DIR}/run${run}_${site}_timestamps; echo
   done
 
     # kill the cj network corrupter process and log the time
@@ -246,13 +244,13 @@ EOF
       echo $(date +%s) CORRUPT_END "${link//_/.}" >> ${link_corrupt_log}
     fi
 
-    ### Break for test mode
-    if [[ $TEST_MODE == "1" ]]; then
-      if [[ $(($run - $PREV_RUN)) == $2 ]]; then
-        echo break
+  ### Break for test mod
+  if [[ ${TEST_MODE} == "1" ]]; then
+      if [[ $((run-PREV_RUN)) == ${2} ]]; then
+        echo "TEST_MODE break after done $2 times"; echo
         break
       fi
-    fi
+  fi
 
 done < ${CORRUPT_EDGES_FILE}
 

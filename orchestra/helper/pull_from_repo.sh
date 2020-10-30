@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source ./test_env.sh
-source ./include.sh
+source ../test_env.sh
+source ../include.sh
 set -u
 sites=("uc" "syr" "ucsd" "unl")
 n_sites=${#sites[@]}
