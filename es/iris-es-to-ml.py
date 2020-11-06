@@ -126,9 +126,9 @@ def flip_event(event):
         # data from the job
         t['root_xwf_id'] = event['root_xwf_id']
         t['job_id'] = event['job_id']
-        t['start_time'] = event['ts']
+        t['end_time'] = event['ts']
     
-        t['end_time'] = event['ts'] + event['local_dur']
+        t['start_time'] = event['ts'] - event['local_dur']
         t['submit_host'] = event['submit_hostname']
         t['submit_user'] = event['wf_user']
         t['execution_host'] = safe_member(event, 'hostname')
