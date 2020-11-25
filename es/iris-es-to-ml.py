@@ -87,6 +87,47 @@ def safe_member(d, key):
     return d[key]
 
 
+def extract_site(host):
+    '''
+    given a hostname, try to come up with a normalized site label
+    '''
+    
+    site = host
+    comp = host.split('.')
+    
+    if len(comp) > 1:
+        # full hostname, strip tld and use only the domain
+        site = comp[-2]
+
+    # if we are on the exogeni testbed, we can drop part
+    # of the hostname
+    if host.startswith('syr-') or \
+       host.startswith('unl-') or \
+       host.startswith('uc-') or \
+       host.startswith('ucsd-'):
+        site = re.sub(r'-.*', '', site)
+
+    return site
+
+
+def fix_label(t, endp):
+    '''
+    replaces the default Pegasus labels with something that is 
+    more representative of the site
+    '''
+
+    # local or file transfer means we need to use the execution
+    # host name
+    if t[endp + '_label'] == 'local' or \
+       t[endp + '_url'].startswith('file://'):
+        t[endp + '_label'] = extract_site(t['execution_host'])
+        return
+
+    # use the hostname in the url
+    hostname = re.sub(r'^\w+://', '', t[endp + '_proto_host'])
+    t[endp + '_label'] = extract_site(hostname)
+
+
 def flip_event(event):
     '''
     Given a dict from ES, flip it for for what we want for ML - 
@@ -151,6 +192,9 @@ def flip_event(event):
         # src proto and host
         t['src_proto_host'] = proto_host(t['src_url'])
         t['dst_proto_host'] = proto_host(t['dst_url'])
+
+        fix_label(t, 'src')
+        fix_label(t, 'dst')
 
         # scenario is just a cleaned up dag name
         t['scenario'] = re.sub('^[0-9]+-', '', event['dag'])
