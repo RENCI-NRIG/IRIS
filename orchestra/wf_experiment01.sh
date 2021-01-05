@@ -101,8 +101,10 @@ do
     sleep 1
   done
 
-  echo "[$(date +%Y-%m-%dT%H:%M:%S)] wait at least 5 mins before checking"
-  sleep 300
+  if [[ ${TEST_MODE} == "0" ]]; then
+    echo "[$(date +%Y-%m-%dT%H:%M:%S)] wait at least 5 mins before checking"
+    sleep 300
+  fi
 
   # make sure the workflow process in each submit site has finished
   # and get the timestamp file from each site
@@ -115,6 +117,7 @@ do
         sleep 5
     done
     ${SCP_CMD} ${site}-submit:${WORKFLOW_RESULT_DIR}/run${run}_timestamps ${RESULT_DIR}/run${run}_${site}_timestamps
+    ${SCP_CMD} ${site}-submit:${WORKFLOW_RESULT_DIR}/run${run}/braindump.yml ${RESULT_DIR}/run${run}_${site}_braindump.yml
     echo; echo Run${run} at ${site}-submit finished!
     cat ${RESULT_DIR}/run${run}_${site}_timestamps; echo
   done
@@ -149,7 +152,7 @@ do
     fi
 
     if [ $run != 0 ]; then
-      sleep 30
+      sleep 5
     fi
 
     # parse link and packet-corrupt-rate P
@@ -219,8 +222,10 @@ EOF
     sleep 1
   done
 
-  echo "[$(date +%Y-%m-%dT%H:%M:%S)] wait at least 5 mins before checking"
-  sleep 300
+  if [[ ${TEST_MODE} == "0" ]]; then
+    echo "[$(date +%Y-%m-%dT%H:%M:%S)] wait at least 5 mins before checking"
+    sleep 300
+  fi
 
   # make sure the workflow process in each submit site has finished
   # and get the timestamp file from each site
@@ -233,6 +238,7 @@ EOF
         sleep 5
     done
     ${SCP_CMD} ${site}-submit:${WORKFLOW_RESULT_DIR}/run${run}_timestamps ${RESULT_DIR}/run${run}_${site}_timestamps
+    ${SCP_CMD} ${site}-submit:${WORKFLOW_RESULT_DIR}/run${run}/braindump.yml ${RESULT_DIR}/run${run}_${site}_braindump.yml
     echo; echo Run${run} at ${site}-submit finished!
     cat ${RESULT_DIR}/run${run}_${site}_timestamps; echo
   done
@@ -268,6 +274,10 @@ mv transfer-events.csv ${RESULT_DIR}/transfer-events.csv
 python3 iris_gen_result.py $RESULT_DIR
 
 cp /root/console.log ${RESULT_DIR}/
+cp ./test_env.sh ${RESULT_DIR}/
+cp ${OUTPUT_DIR}/CORRUPT_NODES ${RESULT_DIR}/
+cp ${OUTPUT_DIR}/CORRUPT_EDGES ${RESULT_DIR}/
+
 tar -czvf ${OUTPUT_DIR}/${RESULT_PREFIX}_${currenttime}.tar.gz $RESULT_DIR
 
 echo "Data parsed and zipped: "
