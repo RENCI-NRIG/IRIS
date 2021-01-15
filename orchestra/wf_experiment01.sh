@@ -8,6 +8,7 @@ _get_corrupt_edges
 #_get_end_nodes
 
 n_sites=${#sites[@]}
+total_sites=${#sites[@]}
 
 echo "CORRUPT_NODES:" $CORRUPT_NODES
 echo "CORRUPT_EDGES:" $CORRUPT_EDGES
@@ -79,14 +80,31 @@ do
   # backup and clear cj.log so later we get a clean one
   ${SSH_CMD} ${v_node} "sudo cp /var/log/cj.log /var/log/cj_${currenttime}.log"
   ${SSH_CMD} ${v_node} "sudo rm /var/log/cj.log"
+  ${SSH_CMD} ${v_node} "sudo /root/chaos-jungle/storage/cj_storage.py --revert" >/dev/null 2>&1
+
+  CORRUPT_TS_FILE=/tmp/${v_node}_run${run}_corrupt.log
 
   # randomly pick one victim as the corrupt_src,
   # and start cache corruption in background.
-  corrupt_src=${sites[$(( $RANDOM % $n_sites ))]}
+  idx=$(( $RANDOM % $total_sites ))
+  corrupt_src=${sites[$idx]}
   echo "corrupt_src =" $corrupt_src
 
-  CORRUPT_TS_FILE=/tmp/${v_node}_run${run}_corrupt.log
-  cmd1="sudo -u $WORKFLOW_USER python3 ${WORKFLOW_BASE_DIR}/${STORAGE_WORKFLOW_ID}/iris_experiment_driver.py ${v_node} ${corrupt_src} ${CORRUPT_TS_FILE} -m ${CORRUPT_TIMES} -p ${STORAGE_PROB}"
+  if (( n_sites > 1 )); then
+    # pick another victom submit site
+    n_remain_sites=$((total_sites-1))
+    idx2=$(( $RANDOM % $n_remain_sites ));
+    if [[ $idx == $idx2 ]]; then
+      #echo $idx "equal" $idx2; echo "set idx2 =" $idx2
+      idx2=$((idx2+1));
+    fi
+    corrupt_src2=${sites[$idx2]}; echo "corrupt_src2 =" $corrupt_src2
+    cmd2="sudo -u $WORKFLOW_USER python3 ${WORKFLOW_BASE_DIR}/${STORAGE_WORKFLOW_ID}/iris_experiment_driver.py ${v_node} ${corrupt_src2} ${CORRUPT_TS_FILE} -m ${CORRUPT_TIMES} -p ${STORAGE_PROB} -l 360"
+    $(${cmd2}) &
+    echo $cmd2;
+  fi
+
+  cmd1="sudo -u $WORKFLOW_USER python3 ${WORKFLOW_BASE_DIR}/${STORAGE_WORKFLOW_ID}/iris_experiment_driver.py ${v_node} ${corrupt_src} ${CORRUPT_TS_FILE} -m ${CORRUPT_TIMES} -p ${STORAGE_PROB} -l 360"
   $(${cmd1}) &
   echo $cmd1; sleep 5
 
@@ -128,6 +146,7 @@ do
   while [[ -n $(ps ax | grep iris_experiment_driver.py | grep -v sudo | grep -v grep) ]]; do
     echo -n "."
     sleep 5
+    pkill -u root -f "*iris_experiment_driver.py*"
   done
   echo "Done"
   ${SCP_CMD} ${v_node}:/var/log/cj.log ${RESULT_DIR}/${v_node}_run${run}_cj.log
