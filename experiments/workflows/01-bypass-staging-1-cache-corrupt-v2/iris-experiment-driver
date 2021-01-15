@@ -1,7 +1,7 @@
 #!/bin/bash
 set -x
 
-# Wait until files to be corrupted arrive. 
+# Wait until files to be corrupted arrive.
 # One option as opposed to giving some arbitrary time to wait.
 _wait() {
     while [[ $(ls -1 /cache | egrep "$1-staging\.data-plane-~$2*" | wc -l) -le 6 ]]; do
@@ -24,7 +24,10 @@ echo
 echo `date` "Corrupting the cache at ${CORRUPT_SITE}..."
 echo $(date +%s) CORRUPT_START ${CORRUPT_SITE} > ${LOG_FILE}
 # cj_storage.py might be confused about the state, so "revert" first
-ssh ${CORRUPT_SITE} "sudo /root/chaos-jungle/storage/cj_storage.py --revert" >/dev/null 2>&1
+# Orchestra control script should handle reverting CJ before calling this script.
+# Do not revert here before starting corruption because the script might be called multiple times to corrupt different submit site files.
+# ssh ${CORRUPT_SITE} "sudo /root/chaos-jungle/storage/cj_storage.py --revert" >/dev/null 2>&1
+
 for (( j=1; j<=${CORRUPT_TIMES}; j++ ))
 do
 ssh ${CORRUPT_SITE} "sudo /root/chaos-jungle/storage/cj_storage.py -d /cache/ -f \"$SUBMIT_SITE-staging.data-plane-~$USER*\" -p ${CORRUPT_PROB} -r --onetime"
