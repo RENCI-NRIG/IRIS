@@ -3,11 +3,17 @@ This particular ``gray failure mode" has raised much research interest recently
 because it can cause severe data corruptions but the faulty system element(s) 
 can stay stealth from the existing reliable protocols like TCP, encrypted transfer and RAID, etc.
 
-We targeted a typical multi-domain environment where network routing 
-and monitoring information are normally lacking and thereafter adopted a multi-class classification machine learning (ML) approach. 
-Different from most existing system that based on packet level monitoring and statistics,  
-we developed a RCA system that learns the mapping between the application level flow characteristics and the network component failures.
+Most existing RCA systems take an infrastructure operator's view and rely on a dedicated packet level monitoring infrastructure.
+In contrast, we take an application-centric view and target a typical 
+wide area network environment where complete network and packet monitoring information are normally lacking, but end-to-end flow monitoring information 
+can be instrumented and obtained from the applications. We thereafter adopt a multi-class classification machine learning (ML) approach to design a system to learn the mappings 
+between the application level flow measurement and the network component failures.
 
 We built a high-fidelity emulation environment in a cloud testbed with a suite of software tools that can 
-emulate a data transfer workflow system over a wide-area network topology and inject integrity errors at chosen network elements.
-We demonstrated that high accuracy root cause localization can be trained with a random forest model, feature engineering, and data oversampling techniques.
+emulate data transfer workflows over arbitrary wide-area network topologies and inject integrity errors at chosen network elements.
+This environment serves two purposes. It can generate training data sets for us to evaluate our system under 
+realistic network conditions and different feature availabilities. It could also be used as a sandbox to train a high-fidelity 
+RCA model for a production network system to use.
+   
+We demonstrated that root cause localization with high accuracy can be obtained with a random forest model and data balancing techniques. 
+We especially studied the impacts of different realistic combinations of features based on the available information from the measurement system.   
