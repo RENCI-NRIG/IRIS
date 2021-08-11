@@ -15,10 +15,6 @@ We treat retransmission as a separate feature for the data samples.  A file coul
 If the checksum matches, this data transfer becomes a success data sample in the training data set. Otherwise, it is labeled by the corresponding faulty element.
 The final {\it Complete} training data set consists of 8{M} data samples.
 
-The evaluation focuses on following three aspects: (1) performance comparison in terms of accuracy and training time performance, 
-(2) impact quantification of different types of features on the model performance, esp. the file size and the transfer throughput, because the other features like data transfer source and destination, integrity error, 
-and transfer status (retransmission, etc.) are all indispensable, (3) handling of the inherited data imbalance in the training data set.  We use One Hot Encoding for all the categorical features. 
-
 Each figure shows five different performance metrics under four scenarios. The five metrics are F1 score with per-flow inference, the accuracy with per-({\it Flow}) inference, and the $Top-1$, $Top-2$, and $Top-3$ accuracy with
 the {\it Aggregated Flow} inference. The four scenarios are {\it Partial} and the {\it Complete} data sets with {\it All Features} or only {\it No File features}.
 
@@ -37,42 +33,6 @@ the flows between end hosts along can guarantee very high RCA inference accuracy
 Secondly, training with {\it All Features} outperforms its {\it No File Features} counterpart by a large margin. This means the file transfer statistics can boost the inference performance.  
 We also learned that the file transfer throughput has a bigger impact than the file size, though the result is not shown here. 
 
-For comparison, we show the results from training Multinomial Naive Bayes model in Fig.~\ref{fig:bn}. Again, the accuracy increases with $k$. The single flow level accuracy is very poor 
-and the accuracy increases dramatically with bigger $k$. It shows the same tendency with regards to Complete file transfer coverage and the aggregated flow inference. 
-However, the inclusion of file transfer features poses very negative impacts. We believe this is due to the effect of the mixed numerical and categorical features. 
-Overall, comparing to the rain forest model, it scores worse in every performance metric. For example, its $Top-3$ accuracy is just above $0.8$. 
-Another interesting observation is that, in the {\it Partial} scenario, it performs better with the {\it All-Features} than that with only {\it No File Features (NF) } for the F1-score, flow-based accuracy, and the $Top-1$ accuracy.
-
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics[width=0.45\textwidth]{./figure/nb-accuracy}
-\end{center}
-\caption{Classification Accuracy with Multinomial Naive Bayes}
-\label{fig:bn}
-\end{figure}
-
-We next look into the training time of the above three models when using a Macbook Pro laptop with the Quad-Core i7 CPU and 16GB RAM. We note this is only meaningful for the relative compute time performance comparison among the models since we can always use more powerful servers with larger training data set. From Table.~\ref{tab:time}, it is clear that the BN model takes the shortest time (in sub-seconds) but the random forest models converge just in a few seconds. The next observation is that the training with the {\it Complete} data set finishes much faster than its counterpart with {\it Partial} data set. This makes sense because more complete training data helps the model training converge faster. Due to the same reason, the data set with the {\it All Features (AF)} converges faster sometimes.
-
-\begin{table}[!ht]
-\caption{Training Time }
-\label{tab:time}
-%\vspace{-0.1in}
-\begin{center}
-\begin{tabular}{ |c|c|c|c|c| } 
- \hline
-  & Partial-AF & Partial-NF & Complete-AF & Complete-NF\\ 
- \hline
- Forest & 5.45s & 2.42s & 4.23s & 1.54s\\ 
- \hline
- Bayes & 0.5s & 1.54s & 0.18s & 0.43s\\
- \hline
-\end{tabular}
-\end{center}
-%\vspace{-0.1in}
-\end{table}
-
-Combining both training accuracy and training time, the random forest model appears to be a clear winner for the RCA problem under our study since its trained model achieves excellent accuracy performance with rather short training time. BN models deserve further exploration due to its fast convergency and relative benign performance.
-
 When we zoom into more details, we can see that the combined {\it Complete-All Features} data set presents satisfactory performance even with the single flow-based testing data samples with 
 both F1 score and accuracy reaching above $0.90$. When the aggregated flow data samples are used for inference, the accuracy scores perfect $1$. The next best scenario is when {\it All Features} presented with 
 {\it Partial} data transfer, while the single flow-based inference only achieved under $0.5$ accuracy, the aggregated flow-based inference doubles the accuracy and quickly narrows down the root cause to the 
@@ -81,38 +41,7 @@ and {\it Complete} path coverage appears more important than the inclusion of fi
 
 In order to gain more insight into the classification accuracy performance, we observed that the majority of mislabeled data in the classification inference are those with labels of end host faults in all the scenarios whose accuracy is less than $1$.  This is because the raw training data set is highly imbalanced due to the different impacts of the injected failures on the data files being transferred (Section~\ref{sub:ml:imbalance}). There are significantly fewer integrity errors caused by the faulty end hosts, \ie, significantly less labeled data in these classes. 
 
-\begin{table}[!ht]
-\caption{Classification Accuracy Differentiation}
-\label{tab:class}
-\vspace{-0.1in}
-\begin{center}
-\begin{tabular}{ |c|c|c|c|c| } 
- \hline
-  \multicolumn{5}{|c|}{Link Faults} \\
- \hline
- Max & Min & $Top-1$ & $Top-2$ & $Top-3$\\ 
- \hline
- 1443 & 121  & 0.70 &  0.96 & 1 \\
- \hline
-\end{tabular}
-
-\begin{tabular}{ |c|c|c|c|c|} 
- \hline
-\multicolumn{5}{|c|}{Host Faults} \\
- \hline
- Max & Min & $Top-1$ & $Top-2$ & $Top-3$ \\ 
- \hline
-11 & 11  & 0 &  0 & 0\\
-  \hline
-\end{tabular}
-\end{center}
-%\vspace{-0.2in}
-\end{table}
-
-We take the {\it Complete-No File Features} data set with the Random Forest model as an example. The details are shown in Table~\ref{tab:class}. We first categorize all the labeled data into two groups: those with faulty link interfaces and those with faulty end hosts, {\it Max} and {\it Min} represent the maximum and the minimum number of samples in a class in each category and the $Top-k$ up to $k=3$ accuracy under each category is calculated separately. We can see that there are a hundred times more samples in a few link failure classes than those in all the end host failure classes, and samples from some link failures classes are about ten times less than those from some other link failure classes. As a result, all the end host failures are misclassified in all the cases, while most link failure cases are correctly classified and the accuracy reaches $1$ when $k=3$.
-
-The main techniques to solve the dataset imbalance problem are to rebalance the data via oversampling or downsampling data from different classes. Since the labeled data subsets from the end host failure classes are rather small, the pure downsampling techniques will not improve on the model performance. We focus on two representative oversampling techniques: random and SMOTE as well as two methods that combine oversampling and downsampling in SMOTETomek and SMOTEENN.
-These methods have been implemented in the {\it imbalanced-learn} library~\cite{imbalance-learn:web}.
+The main techniques to solve the dataset imbalance problem are to rebalance the data via oversampling or downsampling data from different classes. Since the labeled data subsets from the end host failure classes are rather small, the pure downsampling techniques will not improve on the model performance. We focus on two representative oversampling techniques: random and SMOTE as well as two methods that combine oversampling and downsampling in SMOTETomek and SMOTEENN~\cite{imbalance-learn:web}.
 
 For the  {\it Complete-All Features} data set, our analysis indicated that both Random and combined SMOTE methods resulted in similar perfect $Top-k$ performance but slightly reduced flow-based F1 Score and accuracy. SMOTE actually deteriorated all the metrics. The observations on the  {\it Complete-No File Features} data set are similar. Since the performance of the original model is already perfect for the former case, we only present the results on the two {\it Partial} data sets.
 

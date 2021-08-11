@@ -1,19 +1,11 @@
-In this paper, we present a system to localize the root causes of integrity errors in large-scale networked systems. 
-This particular ``gray failure mode" has raised much research interest recently 
-because it can cause severe data corruptions but the faulty system element(s) 
-can stay stealth from the existing reliable protocols like TCP, encrypted transfer and RAID, etc.
+There are renewed interests recently in data integrity error detection and localization driven by the exponentially growing data volumes 
+over large-scale networked systems. Most existing RCA (Root cause analysis) systems take an infrastructure operator's view and rely on 
+dedicated and expensive monitoring capabilities to instrument and facilitate the analysis. Unfortunately, in our targeted wide area network 
+environment, complete network information and monitoring capability are normally lacking. 
 
-Most existing RCA systems take an infrastructure operator's view and rely on a dedicated packet level monitoring infrastructure.
-In contrast, we take an application-centric view and target a typical 
-wide area network environment where complete network and packet monitoring information are normally lacking, but end-to-end flow monitoring information 
-can be instrumented and obtained from the applications. We thereafter adopt a multi-class classification machine learning (ML) approach to design a system to learn the mappings 
-between the application level flow measurement and the network component failures.
+In this paper, we present a RCA system that leverages the end-to-end flow monitoring information 
+from the application layer, augmented by limited network information. We demonstrated that root cause localization with high accuracy 
+can be obtained using multi-class classification models. We specifically studied the 
+impacts of different realistic combinations of features based on the available yet incomplete information from both application and 
+network layers. 
 
-We built a high-fidelity emulation environment in a cloud testbed with a suite of software tools that can 
-emulate data transfer workflows over arbitrary wide-area network topologies and inject integrity errors at chosen network elements.
-This environment serves two purposes. It can generate training data sets for us to evaluate our system under 
-realistic network conditions and different feature availabilities. It could also be used as a sandbox to train a high-fidelity 
-RCA model for a production network system to use.
-   
-We demonstrated that root cause localization with high accuracy can be obtained with a random forest model and data balancing techniques. 
-We especially studied the impacts of different realistic combinations of features based on the available information from the measurement system.   

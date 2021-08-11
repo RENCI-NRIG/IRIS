@@ -1,23 +1,40 @@
 %% This BibTeX bibliography file was created using BibDesk.
 %% http://bibdesk.sourceforge.net/
 
-%% Created for Yufeng Xin at 2021-03-05 14:50:34 -0500 
+%% Created for Yufeng Xin at 2021-08-11 16:53:23 -0400 
 
 
 %% Saved with string encoding Unicode (UTF-8) 
 
 
 
+@article{tcp:ccr2000,
+	abstract = {Traces of Internet packets from the past two years show that between 1 packet in 1,100 and 1 packet in 32,000 fails the TCP checksum, even on links where link-level CRCs should catch all but 1 in 4 billion errors. For certain situations, the rate of checksum failures can be even higher: in one hour-long test we observed a checksum failure of 1 packet in 400. We investigate why so many errors are observed, when link-level CRCs should catch nearly all of them.We have collected nearly 500,000 packets which failed the TCP or UDP or IP checksum. This dataset shows the Internet has a wide variety of error sources which can not be detected by link-level checks. We describe analysis tools that have identified nearly 100 different error patterns. Categorizing packet errors, we can infer likely causes which explain roughly half the observed errors. The causes span the entire spectrum of a network stack, from memory errors to bugs in TCP.After an analysis we conclude that the checksum will fail to detect errors for roughly 1 in 16 million to 10 billion packets. From our analysis of the cause of errors, we propose simple changes to several protocols which will decrease the rate of undetected error. Even so, the highly non-random distribution of errors strongly suggests some applications should employ application-level checksums or equivalents.},
+	address = {New York, NY, USA},
+	author = {Stone, Jonathan and Partridge, Craig},
+	date-added = {2021-08-10 16:44:42 -0400},
+	date-modified = {2021-08-11 16:52:01 -0400},
+	doi = {10.1145/347057.347561},
+	issn = {0146-4833},
+	issue_date = {October 2000},
+	journal = {SIGCOMM Comput. Commun. Rev.},
+	month = aug,
+	number = {4},
+	numpages = {11},
+	publisher = {Association for Computing Machinery},
+	title = {When the CRC and TCP Checksum Disagree},
+	volume = {30},
+	year = {2000},
+	Bdsk-Url-1 = {https://doi.org/10.1145/347057.347561}}
+
 @article{deelman-fgcs-2015,
 	author = {Ewa Deelman and Karan Vahi and Gideon Juve and Mats Rynge and Scott Callaghan and Philip J Maechling and Rajiv Mayani and Weiwei Chen and Ferreira da Silva, Rafael and Miron Livny and Kent Wenger},
 	date-added = {2021-03-05 14:50:29 -0500},
-	date-modified = {2021-03-05 14:50:29 -0500},
+	date-modified = {2021-08-11 16:47:06 -0400},
 	doi = {10.1016/j.future.2014.10.008},
 	journal = {Future Generation Computer Systems},
-	note = {Funding Acknowledgements: NSF ACI SDCI 0722019, NSF ACI SI2-SSI 1148515 and NSF OCI-1053575},
 	pages = {17--35},
 	title = {Pegasus: a Workflow Management System for Science Automation},
-	url = {http://pegasus.isi.edu/publications/2014/2014-fgcs-deelman.pdf},
 	volume = {46},
 	year = {2015},
 	Bdsk-Url-1 = {http://pegasus.isi.edu/publications/2014/2014-fgcs-deelman.pdf},
@@ -28,10 +45,9 @@
 	author = {Arzani, Behnaz and Ciraci, Selim and Chamon, Luiz and Zhu, Yibo and Liu, Hongqiang and Padhye, Jitu and Loo, Boon Thau and Outhred, Geoff},
 	booktitle = {15th USENIX Symposium on Networked Systems Design and Implementation (NSDI 18)},
 	date-added = {2021-03-04 18:29:22 -0500},
-	date-modified = {2021-03-04 18:29:22 -0500},
+	date-modified = {2021-08-11 16:45:30 -0400},
 	month = {April},
 	title = {007: Democratically Finding The Cause of Packet Drops},
-	url = {https://www.microsoft.com/en-us/research/publication/007-democratically-finding-cause-packet-drops/},
 	year = {2018},
 	Bdsk-Url-1 = {https://www.microsoft.com/en-us/research/publication/007-democratically-finding-cause-packet-drops/}}
 
@@ -40,13 +56,12 @@
 	author = {Yanghua Peng and Ji Yang and Chuan Wu and Chuanxiong Guo and Chengchen Hu and Zongpeng Li},
 	booktitle = {2017 {USENIX} Annual Technical Conference ({USENIX} {ATC} 17)},
 	date-added = {2021-03-04 18:26:46 -0500},
-	date-modified = {2021-03-04 18:27:18 -0500},
+	date-modified = {2021-08-11 16:45:49 -0400},
 	isbn = {978-1-931971-38-6},
 	month = jul,
 	pages = {55--68},
 	publisher = {{USENIX} Association},
 	title = {deTector: a Topology-aware Monitoring System for Data Center Networks},
-	url = {https://www.usenix.org/conference/atc17/technical-sessions/presentation/peng},
 	year = {2017},
 	Bdsk-Url-1 = {https://www.usenix.org/conference/atc17/technical-sessions/presentation/peng}}
 
@@ -57,22 +72,20 @@ We have developed the Pingmesh system for large-scale data center network latenc
 	author = {Guo, Chuanxiong},
 	booktitle = {SIGCOMM},
 	date-added = {2021-03-04 17:47:06 -0500},
-	date-modified = {2021-03-04 17:47:06 -0500},
+	date-modified = {2021-08-11 16:44:58 -0400},
 	edition = {SIGCOMM},
 	month = {August},
 	publisher = {ACM},
 	title = {Pingmesh: A Large-Scale System for Data Center Network Latency Measurement and Analysis},
-	url = {https://www.microsoft.com/en-us/research/publication/pingmesh-large-scale-system-data-center-network-latency-measurement-analysis/},
 	year = {2015},
 	Bdsk-Url-1 = {https://www.microsoft.com/en-us/research/publication/pingmesh-large-scale-system-data-center-network-latency-measurement-analysis/}}
 
 @inproceedings{topology_obf_20,
 	author = {T. {Hou} and Z. {Qu} and T. {Wang} and Z. {Lu} and Y. {Liu}},
-	booktitle = {IEEE INFOCOM 2020 - IEEE Conference on Computer Communications},
+	booktitle = {IEEE Conference on Computer Communications (Infocom)},
 	date-added = {2021-01-31 13:40:51 -0500},
-	date-modified = {2021-01-31 13:41:30 -0500},
+	date-modified = {2021-08-11 16:53:22 -0400},
 	doi = {10.1109/INFOCOM41043.2020.9155255},
-	pages = {1598-1607},
 	title = {ProTO: Proactive Topology Obfuscation Against Adversarial Network Topology Inference},
 	year = {2020},
 	Bdsk-Url-1 = {https://doi.org/10.1109/INFOCOM41043.2020.9155255}}
@@ -118,12 +131,12 @@ We have developed the Pingmesh system for large-scale data center network latenc
 
 @inproceedings{swip:pearc:2019,
 	acmid = {3332222},
-	address = {New York, NY},
+	address = {New York},
 	articleno = {17},
 	author = {Rynge, Mats and Vahi, Karan and Deelman, Ewa and Mandal, Anirban and Baldin, Ilya and Bhide, Omkar and Heiland, Randy and Welch, Von and Hill, Raquel and Poehlman, William L. and Feltus, F. Alex},
 	booktitle = {Practice and Experience in Advanced Research Computing on Rise of the Machines Learning ({PEARC})},
 	date-added = {2019-12-19 12:47:13 -0500},
-	date-modified = {2020-10-29 23:36:30 -0400},
+	date-modified = {2021-08-11 16:43:16 -0400},
 	doi = {10.1145/3332186.3332222},
 	isbn = {978-1-4503-7227-5},
 	location = {Chicago, IL, USA},
@@ -290,10 +303,10 @@ We have developed the Pingmesh system for large-scale data center network latenc
 
 @article{Boutaba:2018aa,
 	abstract = {Machine Learning (ML) has been enjoying an unprecedented surge in applications that solve problems and enable automation in diverse domains. Primarily, this is due to the explosion in the availability of data, significant improvements in ML techniques, and advancement in computing capabilities. Undoubtedly, ML has been applied to various mundane and complex problems arising in network operation and management. There are various surveys on ML for specific areas in networking or for specific network technologies. This survey is original, since it jointly presents the application of diverse ML techniques in various key areas of networking across different network technologies. In this way, readers will benefit from a comprehensive discussion on the different learning paradigms and ML techniques applied to fundamental problems in networking, including traffic prediction, routing and classification, congestion control, resource and fault management, QoS and QoE management, and network security. Furthermore, this survey delineates the limitations, give insights, research challenges and future opportunities to advance ML in networking. Therefore, this is a timely contribution of the implications of ML for networking, that is pushing the barriers of autonomic network operation and management.},
-	author = {Boutaba, Raouf and Salahuddin, Mohammad A. and Limam, Noura and Ayoubi, Sara and Shahriar, Nashid and Estrada-Solano, Felipe and Caicedo, Oscar M.},
+	author = {Boutaba, Raouf and Salahuddin, Mohammad and Limam, Noura and Ayoubi, Sara and Shahriar, Nashid and Estrada-Solano, Felipe and Caicedo, Oscar},
 	da = {2018/06/21},
 	date-added = {2019-07-03 16:46:27 -0400},
-	date-modified = {2019-07-03 16:46:27 -0400},
+	date-modified = {2021-08-11 16:42:59 -0400},
 	doi = {10.1186/s13174-018-0087-2},
 	id = {Boutaba2018},
 	isbn = {1869-0238},
