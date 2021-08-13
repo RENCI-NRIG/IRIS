@@ -8,7 +8,7 @@ to all the receiving nodes in parallel. In the second one, called {\it Complete}
 The file integrity is being checked at the receiving end host and each file transfer accounts for one data flow and therefore 
 a data sample in a training data set. We further parallelized the data transfer process to reduce the emulation time down to about twenty-four hours for this particular network.  
 
-For each experiment, probabilistic integrity error or network impairment via the Chaos Jungle tool is injected to the $54$ link interfaces and $12$ end hosts in sequence with the given probability setting, which 
+For each experiment, probabilistic integrity error or network impairment via the Chaos Jungle tool is injected to the $54$ link interfaces and $12$ end hosts in sequence with the given probability setting.
 For each fault injection scenario, the entire set of {\it Partial} or {\it Complete} data transfers are conducted. Each link interface or node component with fault injected represents a label.  
 The receiving node checks if a received file is identical to its original copy via checksum and marks this data transfer as a failure data sample if checksums do not match. 
 We treat retransmission as a separate feature for the data samples.  A file could also be missed at the destination due to ultimate transfer failure which is also treated as a failure. 

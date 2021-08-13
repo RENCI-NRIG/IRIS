@@ -8,15 +8,15 @@ that often takes days or even weeks.
 
 In this paper, we focus on the root cause analysis of one important failure mode, data integrity errors, in large-scale networked systems. These systems typically run 
 over the Internet or dedicated wide area networks that are managed by multiple middleware and infrastructure service providers in a distributed fashion. 
-Due to the insufficient capability of existing reliable protocols (TCP, , encrypted transfer and RAID, \et),  incomplete end-to-end data integrity coverage, and 
-more possible component bugs, data integrity errors can stay stealth or be very difficult to be localized for long time.  
+Due to the insufficient capability of existing reliable protocols (TCP, encrypted transfer and RAID, \et),  incomplete end-to-end integrity data coverage, and 
+more possible component bugs, data integrity errors can stay stealth or be very difficult to be localized for long periods of time.  
 Driven by the exponentially growing data volumes and the sheer scale of the network, detecting and localizing the data integrity errors have garnered 
 lots of research and development interests in recent years~\cite{tcp:ccr2000,swip:pearc:2019}. 
 
 Data integrity errors carry the attributes of the so-called {\it gray failures} and {\it silent failure} in the networked system. This is in contrast to the so-called {\it hard failures} 
-that cause data loss or corruption permanently. Recent studies showed that {\it gray failures}, of the probabilistic nature  causing performance degradation in terms 
-of packet losses and latency could be efficiently localized using the machine learning (ML) approach~\cite{GrayFailure:2017,DeepView:NSDI18}. The data integrity errors, 
-on the other hand, may randomly corrupt bits in a block of data or packets over network transfer, that can evade the existing checksum mechanisms implemented in TCP 
+that cause data loss or corruption permanently. Recent studies showed that {\it gray failures} of probabilistic nature  causing performance degradation in terms 
+of packet losses and latency could be efficiently localized using machine learning (ML) approaches~\cite{GrayFailure:2017,DeepView:NSDI18}. The data integrity errors, 
+on the other hand, may randomly corrupt bits in a block of data or packets over network transfer, which can evade the existing checksum mechanisms implemented in TCP 
 and the storage system. Due to its low error probability and silent nature in which it may result in both performance degradation and just wrong results, detection and localization 
 of data integrity error become very challenging. Modern middleware systems have just started to add end-to-end integrity check mechanisms, 
 for example, Pegasus~\cite{deelman-fgcs-2015} and Globus~\cite{IntegrityVerification:DataTransfer}, which efficiently addressed the detection problem. 
@@ -39,8 +39,8 @@ routing information is normally unavailable as the {\it ping} and {\it tracerout
 from the service providers~\cite{topology_obf_20}. It is also not realistic to deploy and operate a comprehensive probe instrumentation 
 and measurement system in this typical multi-domain environment with continuous network coverage like in the data center networks~\cite{guo2015pingmesh}. 
 
-Therefore we take an application-centric view, rather than the infrastructure-centric view, to develop 
-a machine learning RCA system to localize the data integrity errors. Our basic idea is to formulate the targeted RCA problem as a multi-class classification problem, 
+In this work, we \emph {take an application-centric view, rather than the infrastructure-centric view, to develop 
+a machine learning RCA system to localize the data integrity errors}. Our basic idea is to formulate the targeted RCA problem as a multi-class classification problem, 
 where the potential root causes can be classified using flow level measurements provided by the application layer, augmented by limited network information.
 And we assume only passive measurement on the flows between the end hosts is possible from the application layer. 
 
