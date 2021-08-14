@@ -1,7 +1,7 @@
 A network system can be represented as a simple graph $G(V,E)$ where $V$ is the set of nodes that includes $H$ end hosts and $R$ routers. $E$ is the set of links. 
 Due to scalability or privacy constraints, deploying monitoring capabilities at every point of the targeted large-scale network is not possible. Therefore, the problem can be concisely modeled as a bipartite mapping graph between the path level flows and its network components as shown in Fig.~\ref{fig:bipartite}. 
 
-We further observe that one component failure (e.g., $L_j$) will cause multiple paths to be erroneous while one flow error (e.g., $F_i$) may be caused by multiple component failures. And because the component gray failure probability is normally low ($10^{-3} - 10^{-6}$), it would require a large number of file transfers to catch a few corrupted files. Our ultimate goal is to localize the possible root causes in node or link errors by inference from the observed flow level abnormalities only at the end hosts, which can be translated to learning the mappings in such a graph.
+We further observe that one component failure (e.g., $L_j$) will cause multiple paths to be erroneous while one flow error (e.g., $F_i$) may be caused by multiple component failures. And because the component error probability is normally low ($10^{-3} - 10^{-6}$), it would require a large number of file transfers to catch a few corrupted files. Our ultimate goal is to localize the possible root causes in node or link errors by inference from the observed flow level abnormalities only at the end hosts, which can be translated to learning the mappings in such a graph.
 
 \begin{wrapfigure}{ht}{0.25\textwidth}
   \begin{center}
