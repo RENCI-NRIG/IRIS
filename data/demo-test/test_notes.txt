@@ -1,0 +1,37 @@
+Cache corruption:
+
+- syr-cache
+	01v2_02_20210908_1751PM.tar.gz
+
+	1) syr-cache is prediction ranking 1
+	2) syr-cache is prediction ranking 1 
+	3) syr site is prediction ranking 1
+	4) wrong prediction (ucsd.compute.c1.Link13)
+
+- syr-cache
+	01v2_02_20210831_1741PM_full_syr-cache.csv
+
+	1) syr-cache is prediction ranking 2
+	2) syr-cache is prediction ranking 1 
+	3) syr site is prediction ranking 1
+	4) wrong prediction (ucsd.compute.c1.Link13)
+
+Network corruption:
+
+- uc-router-n0_Link12
+	01v2_02_20210901_1241PM_full_uc-router-n0-link.csv
+
+	1) uc-router-n0_Link12 is prediction ranking 1
+	2) uc-router-n0_Link12 is prediction ranking 1
+	3) uc site is prediction ranking 1
+	4) uc-router-n0_Link12 is the prediction
+
+
+- uc-compute-c1_Link4
+	01v2_02_20210909_1745PM.tar.gz
+	
+	1) uc-compute-c1_Link4 is prediction ranking 1
+	2) uc-compute-c1_Link4 is prediction ranking 1
+	3) uc site is prediction ranking 1
+	4) uc-compute-c1_Link4 is the prediction
+
