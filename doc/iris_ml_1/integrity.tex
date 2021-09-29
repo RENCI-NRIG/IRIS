@@ -17,7 +17,7 @@ In general, the fundamental network RCA problem is to use the path-level measure
 A path $P_i$ that a file transfer (flow) $i$ traverses consists of origin node $H_i^o$, a set of links where each $e_i^{\tilde{j}}\in E$ has two interfaces $e_i^t$ and $e_i^r$ on the route, and destination node $H_i^d$. 
 As our main concern is if a file is corrupted rather than packet losses, the file characteristics, $F_i$, \eg, the source and destination nodes, file size, transfer time, retransmission, etc. all become part of the data features. 
 Some of the features are continuous variables and some are categorical variables.
-As the components ($\tilde{j}$) of $P_i$ that file transfer $i$ traverses is unknown except for its two end hosts $H_i^o$ and $H_i^d$, the model actually needs to implicitly learn the file routes in order to infer the root causes.   
+As the components ($\tilde{j}$) of $P_i$ that file transfer $i$ traverses is unknown except for its two end hosts $H_i^o$ and $H_i^d$, the model needs to implicitly learn the file routes in order to infer the root causes.   
 As a result, we can not use the traditional stochastic learning approach.
 
 \begin{flalign}\label{eq:prob}
@@ -29,7 +29,7 @@ As a result, we can not use the traditional stochastic learning approach.
 
 The majority of recent studies assume flow information between any pair of nodes in the network is available because they focus on data center networks where they have full ownership and their modern routers allow originating and receiving probing data. This is very important because, as shown in~\cite{netbouncer:nsdi18}, there exists a minimal set of source-destination pairs to guarantee successful pinpointing of link errors in the network. They further assume the routes for all flows are known, i.e., the mapping represented in Fig.~\ref{fig:bipartite}. However, both assumptions do not hold for our targeted Internet environment due to obvious administrative constraints, complex topology, and the lack of monitoring coverage. In the Internet-scale network, traffic routing and forwarding paths are hard to obtain because of frequent topology and policy changes, the widely adaptation of multi-path routing, and disabled {\it Ping} and {\it Traceroute} in many places~\cite{arzani2018democratically}. Furthermore, deployment of a monitoring infrastructure to conduct system-wide active and passive monitoring is administratively and costly prohibitive.     
 
-What makes problem problem unique is that the flow routes are unknown, \ie, the mapping relationship in~\ref{fig:bipartite} is unknown.
+What makes the presented  RCA problem uniquely challenging is that the flow routes, \ie, the mapping relationships in~(\ref{fig:bipartite}) are unknown in our targeted network environment.
 However, the file level measurement and characteristics give us extra data features that could enhance the model accuracy, which is the case that we'll show in the evaluation. 
 
 In summary we made more restrictive but more realistic assumptions in this study in that (1) only the data file transfer information including integrity error states can be obtained at the end hosts from the application layer; (2) only the physical nodes (or abstract representation of domains) and their interfaces are known to us, but the network topology and traffic routing are unknown. 

@@ -12,7 +12,7 @@ For each experiment, probabilistic integrity error or network impairment via the
 For each fault injection scenario, the entire set of {\it Partial} or {\it Complete} data transfers are conducted. Each link interface or node component with fault injected represents a label.  
 The receiving node checks if a received file is identical to its original copy via checksum and marks this data transfer as a failure data sample if checksums do not match. 
 We treat retransmission as a separate feature for the data samples.  A file could also be missed at the destination due to ultimate transfer failure which is also treated as a failure. 
-If the checksum matches, this data transfer becomes a success data sample in the training data set. Otherwise, it is labeled by the corresponding faulty element.
+If the checksum matches, this data transfer becomes a positive data sample in the training data set. Otherwise, it is labeled by the corresponding faulty element.
 The final {\it Complete} training data set consists of 8{M} data samples.
 
 Each figure shows five different performance metrics under four scenarios. The five metrics are F1 score with per-flow inference, the accuracy with per-({\it Flow}) inference, and the $Top-1$, $Top-2$, and $Top-3$ accuracy with
@@ -28,8 +28,8 @@ the {\it Aggregated Flow} inference. The four scenarios are {\it Partial} and th
 
 Fig.~\ref{fig:dt} presents the results from training random forest models with different data sets. Two prominent observations stand out. 
 First, it clearly shows that the model with {\it Complete} data performs significantly better than the {\it Partial} case. This illustrates the importance of sufficient 
-coverage of the network path information in the training data set. It also shows that, even without the full coverage of network path between the network routers, 
-the flows between end hosts along can guarantee very high RCA inference accuracy.   
+coverage of the network path information in the training data set. It also shows that, even without the full coverage of network paths between the network routers, 
+the flows between end hosts alone can guarantee very high RCA inference accuracy.   
 Secondly, training with {\it All Features} outperforms its {\it No File Features} counterpart by a large margin. This means the file transfer statistics can boost the inference performance.  
 We also learned that the file transfer throughput has a bigger impact than the file size, though the result is not shown here. 
 
@@ -43,7 +43,7 @@ In order to gain more insight into the classification accuracy performance, we o
 
 The main techniques to solve the dataset imbalance problem are to rebalance the data via oversampling or downsampling data from different classes. Since the labeled data subsets from the end host failure classes are rather small, the pure downsampling techniques will not improve on the model performance. We focus on two representative oversampling techniques: random and SMOTE as well as two methods that combine oversampling and downsampling in SMOTETomek and SMOTEENN~\cite{imbalance-learn:web}.
 
-For the  {\it Complete-All Features} data set, our analysis indicated that both Random and combined SMOTE methods resulted in similar perfect $Top-k$ performance but slightly reduced flow-based F1 Score and accuracy. SMOTE actually deteriorated all the metrics. The observations on the  {\it Complete-No File Features} data set are similar. Since the performance of the original model is already perfect for the former case, we only present the results on the two {\it Partial} data sets.
+For the  {\it Complete-All Features} data set, our analysis indicated that both Random and combined SMOTE methods resulted in similar perfect $Top-k$ performance but slightly reduced flow-based F1 Score and accuracy. SMOTE deteriorated all the metrics. The observations on the  {\it Complete-No File Features} data set are similar. Since the performance of the original model is already perfect for the former case, we only present the results on the two {\it Partial} data sets.
 
 \begin{figure}[!ht]
 \begin{center}

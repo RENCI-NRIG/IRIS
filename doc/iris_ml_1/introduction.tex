@@ -21,7 +21,7 @@ and the storage system. Due to its low error probability and silent nature in wh
 of data integrity error become very challenging. Modern middleware systems have just started to add end-to-end integrity check mechanisms, 
 for example, Pegasus~\cite{deelman-fgcs-2015} and Globus~\cite{IntegrityVerification:DataTransfer}, which efficiently addressed the detection problem. 
 
-As it is not possible to build a complete system model, machine learning has become the leading candidate to develop RCA system for complex networks~\cite{Boutaba:2018aa}.  
+As it is not possible to build a complete system model, machine learning has become the leading candidate to develop RCA systems for complex networks~\cite{Boutaba:2018aa}.  
 In~\cite{Link-JIoT-2019}, the authors attempted to identify the hard failures of network links via the popular multi-class ML models using end-to-end 
 passive traffic engineering measurements (throughput, latency, and packet loss). The authors in \cite{DeepView:NSDI18} took an active probe approach to localize the fault in a 
 virtual disk system to the finest granularity up to the network switches. In~\cite{netbouncer:nsdi18}, a necessary condition was derived on the minimal set of paths 
@@ -42,15 +42,15 @@ and measurement system in this typical multi-domain environment with continuous 
 In this work, we \emph {take an application-centric view, rather than the infrastructure-centric view, to develop 
 a machine learning RCA system to localize the data integrity errors}. Our basic idea is to formulate the targeted RCA problem as a multi-class classification problem, 
 where the potential root causes can be classified using flow level measurements provided by the application layer, augmented by limited network information.
-And we assume only passive measurement on the flows between the end hosts is possible from the application layer. 
+And we assume only passive measurement of the flows between the end hosts is possible from the application layer. 
 
 We specifically use a workflow management system (WMS)~\cite{deelman-fgcs-2015}, a popular Internet-scale distributed application, as the targeted system. 
-WMS facilitates in-order execution of jobs in workflows and includes large amounts of interdependent
+WMS facilitates the in-order execution of jobs in workflows and includes large amounts of interdependent
   data transfers, storage functions, and computation tasks. These tasks are often distributed over distributed hardware, software, and data resources 
   located in different facilities nationwide or globally. Inevitably, frequent system failures and reliability issues 
 caused by errors and faults from underlying subsystems have been serious concerns for the WMS community. 
 
-The rest of this paper is organized as follows.We first define the network system integrity error RCA problem with incomplete system and measurement information in Section~\ref{sec:integrity}. 
-We present our machine learning approach and model selection in Section~\ref{sec:ml}. We identified that using the network-wide aggregated data flow as the input, training data balancing, 
-and a Top-$k$ accuracy metric can significantly improve the classification accuracy.  Then a high-fidelity system emulation environment in a cloud testbed is introduced in Section~\ref{sec:emulation}. 
-We evaluated the system performance from the extensive emulation of a representative network in Section~\ref{sec:evaluation}. The paper is concluded in Section~\ref{sec:future}.
+The rest of this paper is organized as follows. We first define the network system integrity error RCA problem with incomplete system and measurement information in Section~\ref{sec:integrity}. 
+We present a machine learning solution approach and the model selection in Section~\ref{sec:ml}. We identified that using the network-wide aggregated data flow as the input, training data balancing, 
+and a Top-$k$ accuracy metric can significantly improve the classification accuracy.  A high-fidelity system emulation environment we built in a cloud testbed is introduced in Section~\ref{sec:emulation}. 
+The performance evaluation results are presented in Section~\ref{sec:evaluation}. The paper is concluded in Section~\ref{sec:future}.
