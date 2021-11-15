@@ -1,5 +1,11 @@
-For large-scale distributed applications involving intensive data transfers over a network, root cause analysis (RCA) for error diagnosis becomes extremely challenging. One main reason is that the underneath network is often of multi-domain nature, where limited component level information is available, and where it is not possible to gather sufficient measurements. It is also challenging to build comprehensive system diagnosis models. As a result, RCA remains a guessing art that requires intensive manual debugging and daunting amount of communication between operators from different organizations that often takes days or even weeks.  
-
-Among the more challenging failure modes are the so-called ``grey failures" that only come to effect randomly, often at low probability. One such common failure mode is the integrity errors that may corrupt data, which is caused either by the storage subsystem or a network component along data transfer path. 
-
-In this paper, we first cast the integrity error RCA problem as a multi-class classification problem with the goal to enable root cause inference only from the flow level check at the end hosts. Collecting sufficient training data is fundamentally difficult with a machine learning approach, which is typical for production systems due to lack of monitoring services and administrative access. We therefore built an emulation environment in a Cloud testbed that allows creating virtual systems to mimic arbitrary large-scale networks and run real application software. We further developed a suite of software tools to automate the training process that includes configuring the network routing, instrumenting data transfers between end hosts, injecting arbitrary integrity errors into the network components, and collecting and processing the raw data. This gives us extra benefits in experiment repeatability and efficiency. We studied several machine learning models and validated their performance with a Top-$k$ accuracy metric based on class probability distribution. The results demonstrate the efficacy of the approach and potential to apply the learned models to production systems.  
+Most recent network failure diagnosis systems focused on data center networks where 
+complex measurement system can be deployed to derive routing information and ensure network coverage 
+in order to achieve accurate and fast fault localization. In this paper, we target the wide area networks to 
+support the data intensive distributed applications. We first present a new multi-output prediction model 
+that directly maps the application level observations to localize the system component failures. 
+In reality, this application-centric approach may face the missing data challenge as some input (feature) data 
+to the inference models may be missing due to incomplete or lost measurements in the wide area networks. 
+We show that the presented prediction model naturally allows the {\it multivariate} imputation to recover the missing data. 
+We evaluate multiple imputation algorithms and show the prediction performance can be improved significantly in 
+a large-scale network. As far as we know, this is the first study on the missing data issue and applying imputation techniques 
+in the area of network failure diagnosis.

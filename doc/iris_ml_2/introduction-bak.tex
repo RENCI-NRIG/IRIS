@@ -1,0 +1,72 @@
+In recent years, machine learning (ML) techniques have found phenomenal success in solving the root cause analysis (RCA) problems of complex networked systems.
+Efficient application of ML models can relieve the systems from the need to construct accurate system domains models. Rather, models reflecting the complex relationships 
+and dynamic interactions among system components can be learnt and inferred from observation and measurement data. A good model will lead to fast and accurate detection of 
+the system failures and the mappings to the faults, either hardware and software components or their configurations.  
+
+In reality, how to acquire sufficient data in both training phase and inference phase, along with choosing the right one among abundant ML models, remains a major challenge.  
+This challenge stems from two fundamental, often conflicting, requirements on a RCA system: accurate and fast localization of faulty components. 
+
+ 
+Accurate fault localization requires complete network coverage from the observation and measurement perspective. 
+ 
+ Fast fault localization requires these complete observations can be made within a limited time window.  
+ 
+this happens to complete for training and testing/inference data
+
+This is particularly difficult for failures in networks, where failure rate is normally extremely low. 
+
+Assurance of data integrity has been one of the most fundamental aspects of networked system and Internet applications.
+Different mechanisms of error tolerance, detection, and mitigation have been widely implemented and deployed in different layers of 
+the compute, storage, network, and applications systems.
+
+However, due to the insufficient capability of existing protocols, incomplete end-to-end data integrity coverage, 
+and more possible component bugs in highly distributed and complex systems, integrity errors can become undetected in 
+the system, dubbed {\it `silent errors'}.  Unaccountable integrity errors not only degrade the application performance, but also pass the corrupted data
+to the critical applications that may lead to catastrophic results~\cite{Jung2019HighPerformanceEI}.
+
+While the probability of undetected integrity errors seems to be extremely low, the proliferation of big data accompanied by the ever-growing scales of Internet, 
+Cloud, IoT (Internet of Things), and HPC (High-Performance Computer) in recent years has amplified the challenges to maintain high data integrity for 
+Internet applications that often rely on distributed compute and storage systems over wide-area networks. For example, it was estimated that up to 1 in 10 billion 
+TCP segments may encounter undetected TCP checksum error in~\cite{tcp:ccr2000}. A simple calculation tells that 10 billion maximum Ethernet frames translates to 
+only 3.4 hours of data transfer on a 10gbps (gigabit per second) link. 
+
+Certain bugs in CPUs, switches, and software can cause data integrity errors that would evade the existing error capture mechanisms.
+For example, Facebook recently reported a CPU bug that caused severe silent data corruption in its hyper-scale data 
+centers~\cite{facebook:cpu:2021}. A bug in a network switch that caused random data corruption and bypassed the TCP checksum 
+mechanism was also reported in a production network~\cite{swip:pearc:2019}. It is well known that the Ethernet CRC and TCP checksums are 
+too small for modern data sizes~\cite{tcp:ccr2000}.
+
+The traditional redundancy measures of retransmission and various fault tolerance mechanisms are designed to mask the negative impacts of the errors.
+However, the emerging systems of large scale and exponentially growing data volumes have made these measures less efficient and prohibitively expensive to deploy 
+widely~\cite{GrayFailure:2017}.
+
+These recent development has led to renewed interests in integrity error detection and mitigation techniques at the end-to-end file transfer level. 
+Several prominent Internet application softwares have added such integrity error checksum capability in an attempt to prevent the data corruptions 
+from getting to their final user  applications~\cite{IntegrityVerification:DataTransfer}. While the application systems can help with the detection of the silent errors, 
+the ultimate solution is to identify the root causes so that the right culprit(s) in the system, be it the faulty hardware components or operational factors, 
+can be promptly localized, replaced or reconfigured. 
+
+In general, localizing any kinds of failures in the complex distributed Internet system remains a difficult task which has been done mostly through manual debugging. 
+It is well understood that the main barriers come from the exponentially growing scale of the system and the reality that the 
+infrastructure system is divided and conquered by different administrative parties in multiple network domains, storage and compute subsystems in data centers at different sites. 
+Vertically, there are different middleware and applications running end-to-end on top of the infrastructural system. These two barriers implies several realistic constraints 
+in automating the debugging process with software: lack of comprehensive monitoring capabilities, less likelihood in freely sharing system and real-time monitoring information across 
+the horizontal and vertical boundaries, daunting job to process huge volume of monitoring data, 
+
+
+Root cause analysis (RCA) for error diagnosis in large-scale networked system remains a guessing art that requires 
+intensive manual debugging and daunting amount of communication between operators from different organizations that often takes days or even weeks. 
+Lack of complex network models and the component level monitoring information is regarded as 
+one of the biggest barriers in reality. 
+
+
+
+
+
+
+
+
+
+
+
+

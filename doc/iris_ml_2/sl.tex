@@ -1,28 +1,91 @@
-Due to the scalability challenge, some recent work in large scale data center networks (possibly thousands of nodes) adopted stochastic learning approaches in localizing tomography based performance downgrades or probabilistic grey failure issues. Basically, they attempted to learn an estimate regression model between the output variables in the end-to-end performance measurements and the root causes as the input variables in either performance degradation at the end hosts~\cite{NetPoirot:Sigcomm2016} or gray failure probabilities inside the network nodes or links~\cite{netbouncer:nsdi18,Link-JIoT-2019}. Both inputs and outputs are explicitly defined as continuous variables. Their technical challenges are the regression model optimization algorithms (e.g., regularization and gradient methods) and statistical significance test~\cite{DeepView:NSDI18}. 
+As we discussed in Section~\ref{sec:introduction}, missing data is pervasive in reality due to lost or unavailable measurement data . 
+It means that some samples, in the training set or the test set, have missing features. 
+Using the example network in Fig.~\ref{fig:example} to illustrate, during a diagnosis time window, the application may not incur traffic between 
+$c1$ and $d1$, or it never needs to transfer data between the origin sites, or the application measurement system may corrupt or loss some 
+measurement data for some traffic flows. All these will lead 'holes' in the feature columns in the data sets. In the first two cases, 
+entire feature columns will be missing in our model~\ref{eq:inverse}.
 
-Our targeted networks are of multi-domain nature where the RCA granularity can be limited to individual domains instead of individual routers inside a domain, which are totally unknown to the outside. The network can be represented as a simple graph $G(V,E)$ where $V$ is the set of nodes that includes $H$ end hosts and $R$ routers. $E$ is the set of links. We say a file is corrupted when it incurs integrity errors. In general, the problem at hand can be concisely represented by the following formula.
+Missing data can be categorized into three types: (i) the data is missing completely at random (MCAR) if the missingness does not depend 
+on any of the observed and unobserved variables, (ii) the data is missing at random (MAR) if the missingness is dependent only on the observed variables, 
+(iii) the data is missing not at random (MNAR) if the missingness is neither MCAR nor MAR, \ie, the missingness depends on both observed variables and the 
+unobserved variables. The majority of existing studies used the MCAR assumption~\cite{Yoon2018GAINMD}. 
 
-\begin{flalign}\label{eq:prob}
+There are many kinds of missing data recovery methods commonly used in the literature. These methods largely fall into three categories.
+
+The {\it univariate} methods imputes values in a  feature dimension using only non-missing values in that feature dimension. It simply replaces the missed 
+values with certain statistics of the non-missing values such as the zero, mean, median, mode, max, or min. 
+
+The {\it multivariate} imputation algorithms use the entire set of available feature dimensions to estimate the missing values based on the assumption 
+of correlations between the feature dimensions. Each feature with missing values is modeled as a function of other features, and therefore the imputation itself 
+is modeled as a regression problem that are trained and used to estimate the imputation. In order to achieve the best performance, especially to avoid the 
+overfitting from certain features, it is conducted in a series of regression iterations: at each step, a feature is used as the output of other features and the resulted model is used to estimate the missing feature. After all features are processed or the designated max iteration is reached, the results of the final estimation are used to impute 
+the missing data.
+
+Our prediction model in Eq.~(\ref{eq:inverse})  uses the path (flow) measurements as the input. It naturally fits the multivariate imputation approach 
+because the path failures caused by a common component failure are correlated. In contrast, the existing models based on Eq.~(\ref{eq:linear}) use the 
+component failure as the input variables that are independent from each other. The {\it multivariate} imputation does not seem to make sense.
+The {\it univariate} method is deemed not applicable due to the sparse nature of the feature matrix and lack of reasonable explanation.
+
+Most recently,  the Generative Adversarial Nets ({\it GAN)} framework has shown good performance to generate the missing data.
+In this model, the generator’s goal is to accurately impute missing data, and the discriminator’s goal is to distinguish between observed and imputed 
+components. The discriminator is trained to minimize the classification loss (when classifying which components were observed and 
+which have been imputed), and the generator is trained to maximize the discriminator’s misclassification rate. Thus, these 
+two networks are trained using an adversarial process~\cite{Yoon2018GAINMD,Awan2021ImputationOM}.
+
+There are off-the-shelf libraries that support both univariate and multivariate imputations in popular software packages like R and 
+Scikit-learn~\cite{JSSv045i03,10.1371/journal.pone.0254720}. The imputation can also be performed multiple times with different 
+random number seeds to generate multiple imputations. This is important if statistical analysis is needed, \eg, in the medical domain. 
+
+Most of existing missing data studies focus on minimizing the imputation errors of the data in the feature space. However the ultimate goal 
+is the performance of the prediction models in after missing data being imputed.
+
+Corresponding to our model in Eq.~(\ref{eq:inverse}), missing data will cause values of some $x_p$ to be null. 
+The feature space is defined in a $|P|$-dimensional space $\mathbf{X} = \mathbf{X_1} \times \ldots \times \mathbf{X_{|P|}}$. 
+Following the MCAR assumption 
+on the missing data, we can define a mask vector $M = (M_1, \ldots, M_{|P|})$ taking random values in ${(0, 1)}^{|P|}$.  
+A sample vector $X = (X_1 \times \ldots \times X_{|P|})$ 
+can be masked by $M$ to generate a corresponding sample vector with missing data $\tilde{X} = \tilde{X}_1 \times \ldots \times \tilde{X}_{|P|}$ as follow:
+
+\[
+\tilde{X_p} = 
+\begin{cases}
+  X_p & \text{if $M_p = 1$} \\
+  null & \text{otherwise}
+\end{cases}
+\]
+
+From an arbitrary missing rate $r \in (0, 1)$, a random mask vector $M_r$ can be created to emulate missing data from a given feature matrix $X$. 
+For a particular missing feature $X_r \in X$, the imputation essentially creates a regression model that makes $X_r$ the output variable and all the 
+other features the input variables.   
+
+\begin{flalign}\label{eq:imputation}
 \begin{aligned}
-&P(File\ i\ succeeds) =\\
-&f(F_i, \prod_{j \in Path\ i}P(component\ j\ is\ normal) )
+X_r = F(x_1, \cdots, x_p, \cdots, x_{|P|} ), \ p \neq r \\
 \end{aligned}
 \end{flalign}
 
-As our main concern is if a file (flow) is corrupted rather than packet losses, the file characteristics, $F_i$, eg, the file size, transfer time, etc. may play an important role. We emphasize again that the components ($j$) of $Path\ i$ that file transfer $i$ traverses is unknown. And we need large amount of data transfer flows to generate sufficient training data since our targeted grey failure, the integrity error, has very low probability (often in the order of $10^{-3}$).
+At the end of the imputation, a recovered data $\hat{X_r}$ is generated to goal is to make these as close as possible.
 
-We model our problem as a multi-class classification problem where the labels are defined as all the nodes and links that may incur integrity errors and the features are flow level characteristics that include source, destination, size, transfer time, throughput, whether a flow is corrupted, missed, or retried, etc. In general, the training process takes as input two arrays: an array X of size $[n_{samples}, n_{features}]$ holding the training samples, and an array y of class labels of size $[n_{samples}]$. The total number of labels is the number of the links and the end hosts in the topology, $L=|E|+|H|$.
+Our main results are based on the MCAR missing data model, the {\it multivariate} imputation algorithms, and regularized regression model, 
+which can be summarized in the following pipeline definition with Scikit\_Learn.
+%~\cite{Scikit:web}. 
+\begin{verbatim}
+    estimator = make_pipeline(
+        IterativeImputer(random_state=0, 
+        		missing_values=np.nan, 
+        		estimator=impute_estimator),
+        PolynomialFeatures(poly),
+        br_estimator
+    )
+\end{verbatim}
 
-As there is a large number of different models and associated parameters to be tuned, in this paper, we will not try to exhaust all the models and extensive parameter tuning. Rather, we choose the following three supervised learning models that have proved suitable for multi-class classification in the literature. We use the popular Scikit-learn library to implement these methods and used the default parameters in training these models. 
+In the pipeline, the {\it impute\_estimator} specifies the regressor for missing data imputation and the {\it br\_estimator} specifies the regressor to infer the 
+localized failure probability. We added a {PolynomialFeatures} element to evaluate if polynomials of higher degree perform better than the linear regressor.
 
-{\bf Decision Tree.}  Decision tree is a natural choice to multi-class classification as the multiple leaves represent the labels. Its $predict\_proba$ method gives the class membership probability estimates. One of its main advantages is the fast prediction time after the tree is trained. In this study, we tried several ensemble methods based on randomized decision trees or random forests. By fitting over multiple randomized decision trees built from randomized samples, the random forest model achieves higher accuracy and controls overfitting. 
+This pipeline construct allow us to systematically evaluate the performance of multiple regressors in both {\it impute\_estimator} and {\it br\_estimator}, as well 
+as tuning their hyperparameters. As we discussed earlier, in theory, Lasso should be a suitable regressor in both places. We also evaluated other popular 
+regressors that include Ridge, BayesianRidge, ExtraTreesRegressor, and KNeighborsRegressor.
 
-{\bf Support Vector Machine (SVM).} When using SVM for multi-class classification, the ``one-against-one" approach is adapted. As such, the training may take long time to converge when the data set is big or the feature set is big. However, it doesn't have the native method to calculate probability distribution over all the classes. The $decision\_function$ method of SVC (Support Vector Classification) produces per-class confidence scores for each sample. We use the \emph{CalibratedClassifierCV} class of {\it scikit-learn} library in the evaluation. We experimented with both linear SVC and the general SVC with the default RBF kernel.
 
-{\bf Bayesian Networks (BN).} Since our ultimate goal is to infer the cause of the failures, BN is a model that is worth investigating. Specifically, we use the Multinomial Naive Bayes method, which is suitable for the multi-class classification. Again its $predict\_proba$ method gives the class membership probability estimates.
 
-\subsection{Data sample definition and training accuracy.}
-One key observation is that an erratic link may cause integrity errors on all paths traversing it. While the training can be done with the set of individual flows, inference is better to be done in the unit of all aggregated flows that are affected by a particular cause, i.e., a particular label. As a result, the training accuracy should be computed with the same unit of aggregated flows. As there are $L$ labels, all the labeled data (one per flow) will be aggregated into $M$ instances to be tested against the trained model. The resulting total number of correct label matches divided by $L$ is defined as the accuracy.
-
-\subsection{Top-$k$ classification accuracy.} 
-Since we assume training data from data transfer flows only between the end hosts, it doesn't satisfy the necessary condition presented in~\cite{netbouncer:nsdi18}. The conventional classification on a single label resulted trained models perform relatively poorly in terms of accuracy and F-score. In practice it would be very useful if the model can produce a small set of highly likely causes for the operators to zoom in. Therefore we used a Top-$k$ Accuracy metric in evaluation, for which a prediction is defined as correct as long as the set of $k$ labels of highest probability in the classification results contains the correct label of the sample.
+ 

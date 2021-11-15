@@ -1,10 +1,21 @@
-In this paper, we studied the Root Cause Analysis (RCA) problem for integrity error diagnosis that is critical to reliably operate large-scale distributed applications. The main challenges of the incomplete network state information, low probabilistic nature of gray failures, and infeasible scalable system model have inspired much research interest recently.
+In this paper, we studied the diagnosis of data integrity error in a wide area network that support the data intensive distributed applications. 
+Due to its multi-domain nature, information of the network topology and traffic routing, and network layer measurement system 
+are either not feasible or too costly. Nevertheless, it is viable to construct Machine Learning models that relies on the application layer 
+measurements to infer the failures inside the network. We first present a new multi-output ML prediction model that directly maps 
+the application level measurements to the possible failure locations at the network components.   
 
-In our study we cast the problem as a multi-class classification problem and adopt the machine learning approach. We first built an emulation environment in a Cloud testbed that allows creating high-fidelity virtual systems to emulate arbitrary large-scale networks and run the real application software. We further developed a suite of software tools to automate the whole analysis workflow that includes virtual network creation, routing control plane configuration, integrity error injection, experimental data transfer and integrity check, training data collection, and ML model training and analysis.
+In reality, this application-centric approach may face the {\it missing data} challenge 
+as some input (feature) data to the inference models may be missing due to incomplete or lost measurements in the wide area networks. 
+Missing data and the associated imputation techniques have been prominent research topics in statistics and are garnering more 
+active research interests in ML applications as it is a pervasive problem in reality.
+ 
+As our prediction model uses the path (flow) measurements as the input, it naturally allows the multivariate imputation because the path failures 
+caused by a common component failure are correlated. We introduced several imputation algorithms under different missing data scenario.
+Using an high-fidelity emulation environment we built in a Cloud testbed we evaluated the performance of the predication model and 
+the imputation techniques. The results showed fine-tuned regression model with regularization is very efficient in term of missing data recovery 
+and failure localization prediction accuracy.   
 
-We compared several machine learning models on data generated from an emulated network. We defined a specific preprocessing procedure to generate the data samples for the model training and a Top-$k$ accuracy metric based on class probability distribution. The results demonstrate the efficacy of the approach and its potential to apply the learned models to production systems.  
-
-For our future work, we plan to experiment with larger networks with different graph characteristics to gain more insights on the accuracy of the ML models. As we have explained that end host level flow information only is not sufficient to gain very high model accuracy, we will explore efficient algorithmic approaches to find minimum monitoring capability in chosen components of the network. Another interesting extension is to distinguish the error probabilities of different types of devices in the network. We need a finer RCA model that not only pinpoints the error locations, but also the error probability estimate. We are also exploring broader range of machine learning models including the neural network and more adequate validation methods. 
-
-Our ultimate goal is to use the developed system and models in production systems for real-time RCA with high accuracy.
+For our future work, we plan to experiment with larger networks with different graph characteristics. We note full network coverage is not the focus of this study. 
+As we explained, traffic in a particular application may not pass through all the network components. We will explore mechanisms to federate measurements from 
+multiple applications to achieve higher of complete network failure diagnosis coverage. 
 
