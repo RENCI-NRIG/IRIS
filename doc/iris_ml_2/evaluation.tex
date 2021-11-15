@@ -7,9 +7,9 @@ that can automatically create a virtual network system with virtual machines (VM
 bootstrap the network routing, initiate data transfers, and inject arbitrary integrity errors into the virtual router interfaces 
 and end hosts to generate labeled training data and test data.
 
-The network consists of 15 end hosts that can originate and receive data transfers and 87 network interfaces that an simulated 
+The network consists of 15 end hosts that can originate and receive data transfers and 87 network interfaces that a simulated 
 distributed application may transfer data over. The application can check the data integrity of every data transfer at the receiving end hosts.
-During the emulation, errors with a given probability will be injected into the every end host and network interfaces in sequence and one hundred 
+During the emulation, errors with a given probability will be injected into the every end host and network interfaces in sequence, and one hundred 
 data transfers are activated between all pairs of the end hosts in each round and the data transfer failure rates are computed. 
 Therefore the training data set has 210 features, each of which represents a path between a pair of end hosts. We alter the error probability to generate 
 multiple samples that are used to train the regression model.
@@ -35,7 +35,7 @@ missing data in the input matrix. The imputation performance is measured by the 
 
 \subsection{Missing data imputation performance}
 \label{subsec:im}
-As we discussed in last section, the regression models with a regularization term are normally suitable to sparse input matrix.
+As we discussed in the last section, the regression models with a regularization term are normally suitable to sparse input matrices.
 We evaluated two representative $L_1$ regularization models, Ridge and Lasso with different penalty constant $\lambda$ in Fig.~\ref{fig:rmse:regu}.
 When varying the missing rate from $5\%$ to $60\%$, $\lambda = 0.01$ for Ridge and $\lambda = 0.001$ and $\lambda = 0.0001$ for Lasso are the clear 
 winners. Comparing the two figures, Lasso performs better than the Ridge counterpart.
@@ -52,8 +52,8 @@ winners. Comparing the two figures, Lasso performs better than the Ridge counter
     \label{fig:rmse:regu}
   \end{figure}
 
-We further evaluate three other regressors against the tuned Lasso and Ridge regressors in Fig.~\ref{rmse:im}. It confirms that the Lasso with small 
-penalty constant ($\lambda = 0.0001$) outperform all other regressors except for the cases of very low missing rate. The BayesianRidge regressor performs 
+We further evaluate three other regressors against the tuned Lasso and Ridge regressors in Fig.~\ref{rmse:im}. It confirms that the Lasso with a small 
+penalty constant ($\lambda = 0.0001$) outperforms all other regressors except for the cases of very low missing rate. The BayesianRidge regressor performs 
 closest to Lasso, the K-Neighbors regress the second, and the ExtraTrees regressor the next. When the missing rate is low ($<20\%$), the ExtraTrees regressor 
 performs much better than the other algorithms.
 
@@ -73,7 +73,7 @@ Since we implement the imputation regressor in the pipeline consisting of the ul
 with the best Lasso imputation regressor. From Fig.~\ref{rmse:br}, their impacts on the imputation performance seem to be small, though different 
 with different missing rates.
  
-As we discussed in last section, the latest GAN based imputation algorithms showed some promising results in the medical domain. 
+As we discussed in the last section, the latest GAN based imputation algorithms showed some promising results in the medical domain. 
 We applied the Generative Adversarial Imputation Nets (GAIN) developed in~\cite{Yoon2018GAINMD} to our data set and compared its performance 
 with Lasso in Table~\ref{tab:gain}. The results actually do not the GAIN model outperforms the Lasso algorithm. We'll leave the further validation and 
 customization of GAN framework to our future work.
@@ -99,7 +99,7 @@ customization of GAN framework to our future work.
 
 \subsection{Inference performance with imputed missing data}
 Many missing data imputation studies stoped after evaluating imputation performance as we did in subsection~\ref{subsec:im}. 
-However, our ultimate goal is to improve inference accuracy of failure localization. In Fig.~\ref{fig:score}, we first evaluate the 
+However, our ultimate goal is to improve the inference accuracy of failure localization. In Fig.~\ref{fig:score}, we first evaluate the 
 regression performance with different prediction algorithms on the best Lasso imputation regressor in terms of the 
 coefficient of determination $R^2$ (Score) and the mean squared error (MSE) on the predicted output, the component 
 failure probability vector $Y$ in Eq.~(\ref{eq:inverse}). We recall the higher score (best 1) and lower MSE mean better regression performance. 
@@ -117,14 +117,14 @@ failure probability vector $Y$ in Eq.~(\ref{eq:inverse}). We recall the higher s
   \end{figure}
   
   The two metrics show the ExtraTrees regressor actually achieves the highest score and lowest MSE. The Ridge regressor with 
-  small penalty constant ($0.01$) results the worst performance. The Ridge with
-  bigger penalty constant ($0.1$) the the Lasso with very small penalty constant ($0.000001$) result in similar performance, 
+  a small penalty constant ($0.01$) results in the worst performance. The Ridge with
+  a bigger penalty constant ($0.1$) and the Lasso with a very small penalty constant ($0.000001$) result in a similar performance, 
   not far from the ExtraTrees algorithm. 
   
-  We proceed to attempt to determine the failure locations with above combinations of prediction and imputation algorithms.
+  We proceed to attempt to determine the failure locations with the above combinations of prediction and imputation algorithms.
   For each test sample, after the predicted component failure probability vector $\hat{Y}$ is calculated, we sort the vector 
-  elements in the descending order. In anticipating higher missing rate will likely significantly deteriorate the localization accuracy, 
-  we evaluate the $Top-K$ accuracy with small number $k\le4$, which counts the correct label falls in the first $k$ elements in the 
+  elements in descending order. In anticipating higher missing rate will likely significantly deteriorate the localization accuracy, 
+  we evaluate the $Top-K$ accuracy with small $k\le4$, which counts the correct label falls in the first $k$ elements in the 
   sorted $Y$ vector. Fig.~(\ref{fig:topk}) shows the localization accuracy when $k=1,2,3,4$. 
   
   The results are promising. For the exact match ($Top-1$) in Fig.~(\ref{a:t:1}), two best algorithms achieves over 
@@ -147,7 +147,7 @@ failure probability vector $Y$ in Eq.~(\ref{eq:inverse}). We recall the higher s
       \includegraphics[width=0.23\textwidth]{./figure/Accuracy_test_train_4.png}
     }
     
-    \caption{Top-k Classification Accuracy With Imputed Missing Data}
+    \caption{Top-k Localization Accuracy With Imputed Missing Data}
     \label{fig:topk}
   \end{figure}
   

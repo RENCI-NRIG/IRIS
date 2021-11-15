@@ -1,8 +1,8 @@
-As we discussed in Section~\ref{sec:introduction}, missing data is pervasive in reality due to lost or unavailable measurement data . 
+As we discussed in Section~\ref{sec:introduction}, missing data is pervasive in reality due to lost or unavailable measurement data. 
 It means that some samples, in the training set or the test set, have missing features. 
 Using the example network in Fig.~\ref{fig:example} to illustrate, during a diagnosis time window, the application may not incur traffic between 
-$c1$ and $d1$, or it never needs to transfer data between the origin sites, or the application measurement system may corrupt or loss some 
-measurement data for some traffic flows. All these will lead 'holes' in the feature columns in the data sets. In the first two cases, 
+$c1$ and $d1$, or it never needs to transfer data between the origin sites, or the application measurement system may corrupt or lose some 
+measurement data for some traffic flow. All these will lead to 'holes' in the feature columns in the data sets. In the first two cases, 
 entire feature columns will be missing in our model~\ref{eq:inverse}.
 
 Missing data can be categorized into three types: (i) the data is missing completely at random (MCAR) if the missingness does not depend 
@@ -12,18 +12,18 @@ unobserved variables. The majority of existing studies used the MCAR assumption~
 
 There are many kinds of missing data recovery methods commonly used in the literature. These methods largely fall into three categories.
 
-The {\it univariate} methods imputes values in a  feature dimension using only non-missing values in that feature dimension. It simply replaces the missed 
+The {\it univariate} methods impute values in a  feature dimension using only non-missing values in that feature dimension. It simply replaces the missed 
 values with certain statistics of the non-missing values such as the zero, mean, median, mode, max, or min. 
 
 The {\it multivariate} imputation algorithms use the entire set of available feature dimensions to estimate the missing values based on the assumption 
 of correlations between the feature dimensions. Each feature with missing values is modeled as a function of other features, and therefore the imputation itself 
-is modeled as a regression problem that are trained and used to estimate the imputation. In order to achieve the best performance, especially to avoid the 
+is modeled as a regression problem that is trained and used to estimate the imputation. In order to achieve the best performance, especially to avoid the 
 overfitting from certain features, it is conducted in a series of regression iterations: at each step, a feature is used as the output of other features and the resulted model is used to estimate the missing feature. After all features are processed or the designated max iteration is reached, the results of the final estimation are used to impute 
 the missing data.
 
 Our prediction model in Eq.~(\ref{eq:inverse})  uses the path (flow) measurements as the input. It naturally fits the multivariate imputation approach 
 because the path failures caused by a common component failure are correlated. In contrast, the existing models based on Eq.~(\ref{eq:linear}) use the 
-component failure as the input variables that are independent from each other. The {\it multivariate} imputation does not seem to make sense.
+component failure as the input variables that are independent of each other. The {\it multivariate} imputation does not seem to make sense.
 The {\it univariate} method is deemed not applicable due to the sparse nature of the feature matrix and lack of reasonable explanation.
 
 Most recently,  the Generative Adversarial Nets ({\it GAN)} framework has shown good performance to generate the missing data.
@@ -34,10 +34,10 @@ two networks are trained using an adversarial process~\cite{Yoon2018GAINMD,Awan2
 
 There are off-the-shelf libraries that support both univariate and multivariate imputations in popular software packages like R and 
 Scikit-learn~\cite{JSSv045i03,10.1371/journal.pone.0254720}. The imputation can also be performed multiple times with different 
-random number seeds to generate multiple imputations. This is important if statistical analysis is needed, \eg, in the medical domain. 
+random number seeds to generate multiple imputations. This is important if the statistical analysis is needed, \eg, in the medical domain. 
 
 Most of existing missing data studies focus on minimizing the imputation errors of the data in the feature space. However the ultimate goal 
-is the performance of the prediction models in after missing data being imputed.
+is the performance of the prediction models after missing data is imputed.
 
 Corresponding to our model in Eq.~(\ref{eq:inverse}), missing data will cause values of some $x_p$ to be null. 
 The feature space is defined in a $|P|$-dimensional space $\mathbf{X} = \mathbf{X_1} \times \ldots \times \mathbf{X_{|P|}}$. 
@@ -64,7 +64,7 @@ X_r = F(x_1, \cdots, x_p, \cdots, x_{|P|} ), \ p \neq r \\
 \end{aligned}
 \end{flalign}
 
-At the end of the imputation, a recovered data $\hat{X_r}$ is generated to goal is to make these as close as possible.
+At the end of the imputation, a recovered data set $\hat{X_r}$ is generated. The goal is to make these as close as possible.
 
 Our main results are based on the MCAR missing data model, the {\it multivariate} imputation algorithms, and regularized regression model, 
 which can be summarized in the following pipeline definition with Scikit\_Learn.
@@ -82,7 +82,7 @@ which can be summarized in the following pipeline definition with Scikit\_Learn.
 In the pipeline, the {\it impute\_estimator} specifies the regressor for missing data imputation and the {\it br\_estimator} specifies the regressor to infer the 
 localized failure probability. We added a {PolynomialFeatures} element to evaluate if polynomials of higher degree perform better than the linear regressor.
 
-This pipeline construct allow us to systematically evaluate the performance of multiple regressors in both {\it impute\_estimator} and {\it br\_estimator}, as well 
+This pipeline construct allows us to systematically evaluate the performance of multiple regressors in both {\it impute\_estimator} and {\it br\_estimator}, as well 
 as tuning their hyperparameters. As we discussed earlier, in theory, Lasso should be a suitable regressor in both places. We also evaluated other popular 
 regressors that include Ridge, BayesianRidge, ExtraTreesRegressor, and KNeighborsRegressor.
 

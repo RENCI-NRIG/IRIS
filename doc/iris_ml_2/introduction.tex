@@ -1,4 +1,4 @@
-Assurance of data integrity has been one of the most fundamental aspects of networked system and Internet applications. 
+Assurance of data integrity has been one of the most fundamental aspects of networked systems and Internet applications. 
 Different mechanisms of error tolerance, detection, and mitigation have been widely implemented and deployed in different layers of 
 the compute, storage, network, and applications systems. Unfortunately, these measures are not sufficient to cover the data corruptions 
 in large-scale networks. For example, It is well known that the Ethernet CRC and TCP checksums are too small for 
@@ -16,21 +16,21 @@ centers~\cite{facebook:cpu:2021}.
 Data integrity error is a representative ``gray'' network failure~\cite{GrayFailure:2017}, for which, 
 network component faults are probabilistic and often evasive from the monitoring system. Gray failure diagnosis in large-scale networks 
 is often a latent act after disastrous results from the applications and services. It remains a guessing art in most systems that requires intensive 
-manual debugging and daunting amount of communication between operators 
-from different organizations that often takes days or even weeks, primarily due to the infeasibility of accurate network models and 
+manual debugging and a daunting amount of communication between operators 
+from different organizations that often takes days or weeks, primarily due to the infeasibility of accurate network models and 
 incomplete coverage of system monitoring. 
 
 In recent years, machine learning (ML) techniques have found phenomenal success in solving the failure diagnosis challenges.
 The strength of ML models in learning the complex mapping between the failure root causes and the system level measurement 
-observations effectively relieves the need on accurate domain models and full element level monitoring.  However, the majority of 
+observations effectively relieves the need for accurate domain models and full element level monitoring.  However, the majority of 
 these systems targeted the data center networks, where detailed network topology and traffic routing information can be determined and 
-costly active and passive measurement system can be deployed by the operators. Their main 
-technical contributions have been developing scalable inference models and measurement system of complete coverage for 
+costly active and passive measurement systems can be deployed by the operators. The main 
+technical contributions have been developing scalable inference models and measurement systems of complete coverage for 
 fine classification or regression performance~\cite{netbouncer:nsdi18,DeepView:NSDI18,arzani2018democratically}.
 
 Accurate and fast fault localization requires complete network coverage from the measurement system within a limited time window. 
 From ML perspective, training and test data sets with complete features are required for the model and inference. 
-This is why substantial efforts were made in the existing work to develop complex measurement system to ensure the network failure coverage. 
+This is why substantial efforts were made in the existing work to develop complex measurement systems to ensure the network failure coverage. 
 
 In this study, we target a completely different network environment, Internet scale network, where multiple networks of different 
 administrative domains are used to support distributed applications. Different from the data center networks, while the scalability might be smaller 
@@ -42,16 +42,16 @@ always-on passive monitoring system over the edges of the whole network.
 On the other hand, modern Internet application software systems have built-in measurement and monitoring capabilities to ensure the application performance 
 and mitigate the effects of failures in the network system layer~\cite{IntegrityVerification:DataTransfer,swip:pearc:2019,iris:ictc21}. 
 From the gray failure diagnostic perspective, the fundamental ML based solution approach appears to be a very viable choice with its promise in 
-learning a model to map the observations to the system internal behaviors. In our case, the design goal is application-centric: to infer the fault information at the 
+learning a model to map the observations to internal faulty behaviors of the network. In our case, the design goal is application-centric: to infer the fault information at the 
 component level from the application level measurement and monitoring information. 
 
 A big challenge in end host based application-centric solution approach is the data completeness being discussed above. First of all, the end hosts deployed on the network 
-by an application may not need all the network components in forwarding the traffic.  Even we limit our scope to exclude the part of network not being covered,  
-in both training data set and testing data set, some features data may be missing in some data samples. In the extreme case, some features may be totally missed. 
+by an application may not need all the network components in forwarding the traffic.  Even we limit our scope to exclude the part of the network not being covered,  
+in both training data set and testing data set, some features data may be missing in some data samples. In extreme case, some features may be missed totally for the entire data set. 
 This data missingness challenge is exacerbated to deal with the data integrity errors for which the failure rate is normally very low and the application traffic 
 may be very imbalanced among the source and destination hosts at the edge of the network.
 They may be caused by either incomplete coverage of the measurement, or the lost measurement records as the distributed measurement 
-sub-system itself is not complete reliable in realtime, or there are just no measurements available for a part of application traffic during some time windows. 
+sub-system itself is not completely reliable in real-time, or there are just no measurements available for a part of application traffic during some time windows. 
 
 Missing data has been a prominent research topic in statistics and is garnering more active research interests
  in ML applications in the areas of medical science~\cite{DONDERS20061087} and sensor applications~\cite{missingdata:sensor:20}.
@@ -60,7 +60,7 @@ not apply to our network failure diagnosis model because of the strong dependenc
 The more suitable choices are the multivariate imputation algorithms that use the whole feature space to estimate (impute) the missing data in particular features.
 
 In this paper, we first present a new multi-output ML prediction model that directly maps the application level observations to localize the system component failures. 
-This model not only captures the fact that one faulty component would cause failures in multiple application flows, but also naturally allow application of 
+This model not only captures the fact that one faulty component would cause failures in multiple application flows, but also naturally allow the application of 
 proven imputation methodologies to address the {\it missing data} challenge. Instead of pursuing more system information and complete measurement coverage, 
 we focus on the multivariate imputation algorithms, parameter tuning, and quantifying their performance in improving the inference accuracy of failure localization.  
 We also looked into the most recent algorithms based on the Generative Adversarial Nets (GAN) framework to generate the 
