@@ -36,7 +36,7 @@ missing data in the input matrix. The imputation performance is measured by the 
 \subsection{Missing data imputation performance}
 \label{subsec:im}
 As we discussed in the last section, the regression models with a regularization term are normally suitable to sparse input matrices.
-We evaluated two representative $L_1$ regularization models, Ridge and Lasso with different penalty constant $\lambda$ in Fig.~\ref{fig:rmse:regu}.
+We evaluated two representative regularization methods, Ridge ($L_2$) and Lasso ($L_1$) with different penalty constant $\lambda$ in Fig.~\ref{fig:rmse:regu}.
 When varying the missing rate from $5\%$ to $60\%$, $\lambda = 0.01$ for Ridge and $\lambda = 0.001$ and $\lambda = 0.0001$ for Lasso are the clear 
 winners. Comparing the two figures, Lasso performs better than the Ridge counterpart.
 
