@@ -1,32 +1,27 @@
-As we discussed in Section~\ref{sec:introduction}, missing data is pervasive in reality due to lost or unavailable measurement data. 
+As discussed in Section~\ref{sec:introduction}, missing data is pervasive in reality due to lost or unavailable measurement data. 
 It means that some samples, in the training set or the test set, have missing features. 
 Using the example network in Fig.~\ref{fig:example} to illustrate, during a diagnosis time window, the application may not incur traffic between 
 $c1$ and $d1$, or it never needs to transfer data between the origin sites, or the application measurement system may corrupt or lose some 
-measurement data for some traffic flow. All these will lead to 'holes' in the feature columns in the data sets. In the first two cases, 
-entire feature columns will be missing in our model~\ref{eq:inverse}.
+measurement data for some traffic flow. All these will lead to `holes' in the feature columns in the data sets. In the first two cases, 
+entire feature columns will be missing in our model (Eq.~\ref{eq:inverse}).
 
-Missing data can be categorized into three types: (i) the data is missing completely at random (MCAR) if the missingness does not depend 
-on any of the observed and unobserved variables, (ii) the data is missing at random (MAR) if the missingness is dependent only on the observed variables, 
-(iii) the data is missing not at random (MNAR) if the missingness is neither MCAR nor MAR, \ie, the missingness depends on both observed variables and the 
-unobserved variables. The majority of existing studies used the MCAR assumption~\cite{Yoon2018GAINMD}. 
+Missing data can be categorized into three types: (i) the data is missing completely at random (MCAR), i.e. it does not depend on any of the observed and unobserved variables, (ii) the data is missing at random (MAR) if it is dependent only on the observed variables, (iii) the data is missing not at random (MNAR) if it is neither MCAR nor MAR, \ie, whether the data is missing depends on both observed variables and the unobserved variables. The majority of existing studies used the MCAR assumption~\cite{Yoon2018GAINMD}. 
 
-There are many kinds of missing data recovery methods commonly used in the literature. These methods largely fall into three categories.
+There are many kinds of missing data recovery methods commonly used in the literature. These methods largely fall into two categories.
 
 The {\it univariate} methods impute values in a  feature dimension using only non-missing values in that feature dimension. It simply replaces the missed 
 values with certain statistics of the non-missing values such as the zero, mean, median, mode, max, or min. 
 
-The {\it multivariate} imputation algorithms use the entire set of available feature dimensions to estimate the missing values based on the assumption 
-of correlations between the feature dimensions. Each feature with missing values is modeled as a function of other features, and therefore the imputation itself 
-is modeled as a regression problem that is trained and used to estimate the imputation. In order to achieve the best performance, especially to avoid the 
-overfitting from certain features, it is conducted in a series of regression iterations: at each step, a feature is used as the output of other features and the resulted model is used to estimate the missing feature. After all features are processed or the designated max iteration is reached, the results of the final estimation are used to impute 
+The {\it multivariate} imputation algorithms use the entire set of available feature dimensions to estimate the missing values based on the assumption of correlations between the feature dimensions. Each feature with missing values is modeled as a function of other features, and therefore the imputation itself is modeled as a regression problem that is trained and used to estimate the imputation. In order to achieve the best performance, especially to avoid the 
+overfitting from certain features, it is conducted in a series of regression iterations: at each step, a feature is used as the output of other features and the resulting model is used to estimate the missing feature. After all features are processed or the designated max iteration is reached, the results of the final estimation are used to impute 
 the missing data.
 
 Our prediction model in Eq.~(\ref{eq:inverse})  uses the path (flow) measurements as the input. It naturally fits the multivariate imputation approach 
 because the path failures caused by a common component failure are correlated. In contrast, the existing models based on Eq.~(\ref{eq:linear}) use the 
-component failure as the input variables that are independent of each other. The {\it multivariate} imputation does not seem to make sense.
+component failure as the input variables that are independent of each other, where the {\it multivariate} imputation does not make sense.
 The {\it univariate} method is deemed not applicable due to the sparse nature of the feature matrix and lack of reasonable explanation.
 
-Most recently,  the Generative Adversarial Nets ({\it GAN)} framework has shown good performance to generate the missing data.
+Most recently,  the Generative Adversarial Nets {\it (GAN)} framework has shown good performance to generate the missing data.
 In this model, the generator’s goal is to accurately impute missing data, and the discriminator’s goal is to distinguish between observed and imputed 
 components. The discriminator is trained to minimize the classification loss (when classifying which components were observed and 
 which have been imputed), and the generator is trained to maximize the discriminator’s misclassification rate. Thus, these 
@@ -44,7 +39,7 @@ The feature space is defined in a $|P|$-dimensional space $\mathbf{X} = \mathbf{
 Following the MCAR assumption 
 on the missing data, we can define a mask vector $M = (M_1, \ldots, M_{|P|})$ taking random values in ${(0, 1)}^{|P|}$.  
 A sample vector $X = (X_1 \times \ldots \times X_{|P|})$ 
-can be masked by $M$ to generate a corresponding sample vector with missing data $\tilde{X} = \tilde{X}_1 \times \ldots \times \tilde{X}_{|P|}$ as follow:
+can be masked by $M$ to generate a corresponding sample vector with missing data $\tilde{X} = \tilde{X}_1 \times \ldots \times \tilde{X}_{|P|}$ as follows:
 
 \[
 \tilde{X_p} = 

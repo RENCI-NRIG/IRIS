@@ -1,21 +1,9 @@
-In this paper, we studied the diagnosis of data integrity error in a wide-area network that supports data-intensive distributed applications. 
-Due to its multi-domain nature, information of the network topology and traffic routing, and network layer measurement system 
-are either not feasible or too costly. Nevertheless, it is viable to construct Machine Learning models that rely on the application layer 
-measurements to infer the failures inside the network. We first present a new multi-output ML prediction model that directly maps 
-the application level measurements to the possible failure locations at the network components.   
-
-In reality, this application-centric approach may face the {\it missing data} challenge 
-as some input (feature) data to the inference models may be missing due to incomplete or lost measurements in the wide-area networks. 
-Missing data and the associated imputation techniques have been prominent research topics in statistics and are garnering more 
-active research interests in ML applications as it is a pervasive problem in reality.
+In this paper, we studied the diagnosis of data integrity errors in a wide-area network that supports data-intensive distributed applications. 
+Due to its multi-domain nature, information of the network topology and traffic routing, and network layer measurements are either not available or are too expensive to obtain. Nevertheless, it is viable to construct Machine Learning models that rely on the application layer 
+measurements to infer the failures inside the network. We first present a new multi-output ML prediction model that directly maps the application level measurements to the possible failure locations at the network components. In reality, this application-centric approach may face the {\it missing data} challenge as some input (feature) data to the inference models may be missing due to incomplete or lost measurements in the wide-area networks. Missing data and the associated imputation techniques have been prominent research topics in statistics and are garnering more active research interests in ML applications as it is a pervasive problem in reality.
  
-As our prediction model uses the path (flow) measurements as the input, it naturally allows the multivariate imputation because the path failures 
-caused by a common component failure are correlated. We introduced several imputation algorithms under different missing data scenarios.
-Using a high-fidelity emulation environment we built in a Cloud testbed we evaluated the performance of the prediction model and 
-the imputation techniques. The results showed fine-tuned regression model with regularization is very efficient in terms of missing data recovery performance
-and failure localization prediction accuracy.   
+As our prediction model uses path measurements as input, it allows the multivariate imputation because path failures caused by a common component failure are correlated. We introduced several imputation algorithms under different missing data scenarios. Using a high-fidelity emulation environment we built using a Cloud testbed, we evaluated the performance of the prediction model and 
+the imputation techniques. The results showed fine-tuned regression model with regularization is very efficient in terms of missing data recovery performance and failure localization prediction accuracy.   
 
-For our future work, we plan to experiment with larger networks with different graph characteristics. We note full network coverage is not the focus of this study. 
-As we explained, traffic in a particular application may not pass through all the network components. We will explore mechanisms to federate measurements from 
-multiple applications to achieve higher network failure diagnosis coverage. 
+For our future work, we plan to experiment with larger networks having different graph properties and GAN based imputation methods. We note full network coverage is not the focus of this study. As traffic in a particular application may not pass through all the network components, we will explore mechanisms to federate measurements from multiple applications to achieve higher network failure diagnosis coverage. 
 
